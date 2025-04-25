@@ -1,0 +1,72 @@
+[
+  {
+    "id": "a8a74baf-131e-4e41-a59c-853439b6ff61",
+    "business_name": "Innow8Apps",
+    "owner": {
+      "id": "46eb7d9f-59c5-451c-ae3f-1570ad803c6d",
+      "email": "yash.kaushik@highpointe.tech",
+      "name": "Yash Kaushik",
+      "profile_picture": "https://d1gwaen2hyp79t.cloudfront.net/user_0_46eb7d9f-59c5-451c-ae3f-1570ad803c6d_1745498873.png",
+      "trial_starts": null,
+      "trial_ends": "2025-05-01T12:47:54.188809Z",
+      "is_profile_complete": true,
+      "role": "admin"
+    }
+  },
+  {
+    "id": "888e9216-e7d0-4329-8f1b-80bf6bca60b5",
+    "business_name": "Innow8Apps",
+    "owner": {
+      "id": "892e1859-7c96-4a72-9e6a-249672397330",
+      "email": "ykaushik@innow8apps.com",
+      "name": "Yash Kaushik",
+      "profile_picture": null,
+      "trial_starts": null,
+      "trial_ends": "2025-05-01T14:03:16.580409Z",
+      "is_profile_complete": true,
+      "role": "admin"
+    }
+  },
+  {
+    "id": "a9068e80-6f5b-4412-9c8c-96423951b6b6",
+    "business_name": "Fresh Designs Florist",
+    "owner": {
+      "id": "22c56eec-d3f3-44c5-853b-fd5fbf02e3ba",
+      "email": "sue@mybloomvision.com",
+      "name": "Susan Davis",
+      "profile_picture": "https://d1gwaen2hyp79t.cloudfront.net/profile_pictures_0_Susan Davis_1744393093.png",
+      "trial_starts": null,
+      "trial_ends": null,
+      "is_profile_complete": false,
+      "role": "admin"
+    }
+  },
+  {
+    "id": "139e95eb-950c-4f23-9800-00eed4753db0",
+    "business_name": "BV Test",
+    "owner": {
+      "id": "d198c812-e5d7-4d72-a754-e224820d4486",
+      "email": "mike@mybloomvision.com",
+      "name": "Mike Smalls",
+      "profile_picture": "https://d1gwaen2hyp79t.cloudfront.net/profile_pictures_0_Mike Smalls_1744121705.png",
+      "trial_starts": null,
+      "trial_ends": null,
+      "is_profile_complete": false,
+      "role": "admin"
+    }
+  },
+  {
+    "id": "a3aabf1e-a9f7-4b05-8ee3-4e336affd670",
+    "business_name": "Innow8",
+    "owner": {
+      "id": "fbc44efb-590a-4c1b-badf-3179344ed7e4",
+      "email": "saggarwal@innow8apps.com",
+      "name": "sumit",
+      "profile_picture": "https://d1gwaen2hyp79t.cloudfront.net/user_0_fbc44efb-590a-4c1b-badf-3179344ed7e4_1745405444.png",
+      "trial_starts": null,
+      "trial_ends": "2025-05-05T10:45:30.447419Z",
+      "is_profile_complete": true,
+      "role": "admin"
+    }
+  }
+]

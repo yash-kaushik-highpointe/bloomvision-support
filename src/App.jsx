@@ -1,0 +1,49 @@
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Redirect from "./pages/Redirect";
+
+import { ROUTES } from "./config/constants";
+import { authService } from "./services/authService";
+
+import "react-toastify/dist/ReactToastify.css";
+
+// Protected Route component
+const ProtectedRoute = ({ children }) => {
+  return authService.isAuthenticated() ? (
+    children
+  ) : (
+    <Navigate to={ROUTES.LOGIN} />
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <ToastContainer position="top-right" autoClose={3000} />
+      <Routes>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/" element={<Login />} />
+        <Route path="/redirect" element={<Redirect />} />
+        {/* Catch-all route to redirect to home page */}
+        <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
