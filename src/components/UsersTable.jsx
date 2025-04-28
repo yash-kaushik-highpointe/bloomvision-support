@@ -109,7 +109,7 @@ const UsersTable = ({ users, formatDate, handleOpenModal, handleDelete }) => {
                     </button>
                   )}
                   <button
-                    onClick={() => handleDelete(org)}
+                    onClick={() => handleDelete(org.id)}
                     className="rounded-full hover:bg-gray-100 transition-colors duration-200"
                     data-tooltip-id="delete-tooltip"
                     data-tooltip-content="Delete Organisation"

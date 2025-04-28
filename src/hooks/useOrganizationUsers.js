@@ -16,6 +16,7 @@ export const useOrganizationUsers = () => {
   const [selectedOwner, setSelectedOwner] = useState(null);
   const [newTrialDate, setNewTrialDate] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!authService.isAuthenticated()) {
@@ -98,9 +99,18 @@ export const useOrganizationUsers = () => {
     }
   };
 
-  const handleDelete = () => {
-    // Implement delete functionality
-    console.log("Delete functionality not implemented yet");
+  const handleDelete = async (organizationId) => {
+    setIsDeleting(true);
+    try {
+      await organizationService.deleteOrganization(organizationId);
+      setUsers(users.filter((org) => org.id !== organizationId));
+      toast.success("Organization deleted successfully");
+    } catch (err) {
+      console.error("Failed to delete organization:", err);
+      toast.error("Failed to delete organization");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return {
@@ -111,6 +121,7 @@ export const useOrganizationUsers = () => {
     selectedOwner,
     newTrialDate,
     isUpdating,
+    isDeleting,
     formatDate,
     handleOpenModal,
     handleCloseModal,

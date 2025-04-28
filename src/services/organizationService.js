@@ -24,6 +24,17 @@ const organizationService = {
       throw error;
     }
   },
+  deleteOrganization: async (organizationId) => {
+    try {
+      const response = await axios.delete(
+        `${API_BASE_URL}organisations/${organizationId}/`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting organization:", error);
+      throw error;
+    }
+  },
 };
 
 export default organizationService;

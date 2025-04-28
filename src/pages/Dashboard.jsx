@@ -2,6 +2,7 @@ import { Tooltip } from "react-tooltip";
 
 import UsersTable from "../components/UsersTable";
 import TrialDateModal from "../components/TrialDateModal";
+import FullScreenLoader from "../components/FullScreenLoader";
 
 import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
 
@@ -11,6 +12,7 @@ const Dashboard = () => {
     error,
     loading,
     isUpdating,
+    isDeleting,
     formatDate,
     isModalOpen,
     newTrialDate,
@@ -23,6 +25,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {isDeleting && <FullScreenLoader />}
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg p-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">
