@@ -18,6 +18,10 @@
       {
         "id": "5cf62703-0fd6-4e58-b689-f3e304e8087d",
         "label": "Poppy Bouquet"
+      },
+      {
+        "id": "open-garden-commingsoon",
+        "label": "Open Garden"
       }
     ]
   },
@@ -26,8 +30,20 @@
     "label": "Centerpiece",
     "skeletons": [
       {
+        "id": "low-poppy-commingsoon",
+        "label": "Low Poppy"
+      },
+      {
         "id": "8272c47c-23bf-436e-ae25-3286ca7d5fa0",
         "label": "Centerpiece Bouquet"
+      },
+      {
+        "id": "compote-centerpiece-commingsoon",
+        "label": "Compote Centerpiece"
+      },
+      {
+        "id": "open-compote-commingsoon",
+        "label": "Open Compote"
       }
     ]
   },
