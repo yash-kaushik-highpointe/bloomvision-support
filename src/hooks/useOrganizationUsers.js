@@ -14,7 +14,6 @@ export const useOrganizationUsers = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedOwner, setSelectedOwner] = useState(null);
   const [newTrialDate, setNewTrialDate] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -53,7 +52,7 @@ export const useOrganizationUsers = () => {
   };
 
   const handleOpenModal = (org) => {
-    setSelectedOwner(org);
+    setSelectedOrganization(org);
     const formattedDate = org.owner.trial_ends
       ? new Date(org.owner.trial_ends).toISOString().split("T")[0]
       : new Date().toISOString().split("T")[0];
@@ -69,19 +68,19 @@ export const useOrganizationUsers = () => {
   };
 
   const handleUpdateTrialDate = async () => {
-    if (!selectedOwner) return;
+    if (!selectedOrganization) return;
 
     setIsUpdating(true);
     try {
       await organizationService.updateTrialEndDate(
-        selectedOwner.owner.id,
+        selectedOrganization.owner.id,
         newTrialDate,
-        selectedOwner.skeletons
+        selectedOrganization.skeletons
       );
 
       setUsers(
         users.map((org) => {
-          if (org.owner.id === selectedOwner.owner.id) {
+          if (org.owner.id === selectedOrganization.owner.id) {
             return {
               ...org,
               owner: {
@@ -162,19 +161,18 @@ export const useOrganizationUsers = () => {
     users,
     loading,
     error,
-    isModalOpen,
-    selectedOwner,
-    newTrialDate,
     isUpdating,
     isDeleting,
     formatDate,
-    handleOpenModal,
-    handleCloseModal,
-    handleUpdateTrialDate,
+    isModalOpen,
+    newTrialDate,
     handleDelete,
+    handleOpenModal,
     setNewTrialDate,
+    handleCloseModal,
     isTemplateModalOpen,
     selectedOrganization,
+    handleUpdateTrialDate,
     handleOpenTemplateModal,
     handleCloseTemplateModal,
     handleUpdateTemplateAccess,

@@ -50,6 +50,7 @@ const Dashboard = () => {
               formatDate={formatDate}
               handleDelete={handleDelete}
               handleOpenModal={handleOpenModal}
+              selectedOrganization={selectedOrganization}
               handleOpenTemplateModal={handleOpenTemplateModal}
             />
           )}

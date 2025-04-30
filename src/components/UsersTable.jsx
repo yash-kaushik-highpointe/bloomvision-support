@@ -19,6 +19,7 @@ const UsersTable = ({
   formatDate,
   handleOpenModal,
   handleDelete,
+  selectedOrganization,
   handleOpenTemplateModal,
 }) => {
   const [hoveredTemplate, setHoveredTemplate] = useState(null);
@@ -190,7 +191,13 @@ const UsersTable = ({
                 >
                   {getTemplateLabels(org.skeletons, org)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 min-w-[150px] sticky right-0 bg-white z-10">
+                <td
+                  className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 min-w-[150px] sticky right-0 bg-white ${
+                    (selectedOrganization?.id ?? org.id) === org.id
+                      ? "z-10"
+                      : ""
+                  }`}
+                >
                   <div className="flex items-center justify-start space-x-3">
                     <button
                       onClick={() => handleOpenTemplateModal(org)}
@@ -244,8 +251,9 @@ const UsersTable = ({
 UsersTable.propTypes = {
   users: PropTypes.array.isRequired,
   formatDate: PropTypes.func.isRequired,
-  handleOpenModal: PropTypes.func.isRequired,
+  selectedOrganization: PropTypes.object,
   handleDelete: PropTypes.func.isRequired,
+  handleOpenModal: PropTypes.func.isRequired,
   handleOpenTemplateModal: PropTypes.func.isRequired,
 };
 
