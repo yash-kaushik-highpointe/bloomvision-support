@@ -9,6 +9,7 @@ import { authService } from "../services/authService";
 
 export const useOrganizationUsers = () => {
   const navigate = useNavigate();
+
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,6 +18,8 @@ export const useOrganizationUsers = () => {
   const [newTrialDate, setNewTrialDate] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [selectedOrganization, setSelectedOrganization] = useState(null);
 
   useEffect(() => {
     if (!authService.isAuthenticated()) {
@@ -56,6 +59,7 @@ export const useOrganizationUsers = () => {
       : new Date().toISOString().split("T")[0];
     setNewTrialDate(formattedDate);
     setIsModalOpen(true);
+    setIsTemplateModalOpen(false);
   };
 
   const handleCloseModal = () => {
@@ -71,7 +75,8 @@ export const useOrganizationUsers = () => {
     try {
       await organizationService.updateTrialEndDate(
         selectedOwner.owner.id,
-        newTrialDate
+        newTrialDate,
+        selectedOwner.skeletons
       );
 
       setUsers(
@@ -113,6 +118,46 @@ export const useOrganizationUsers = () => {
     }
   };
 
+  const handleOpenTemplateModal = (org) => {
+    setSelectedOrganization(org);
+    setIsTemplateModalOpen(true);
+    setIsModalOpen(false);
+  };
+
+  const handleCloseTemplateModal = () => {
+    setIsTemplateModalOpen(false);
+    setSelectedOrganization(null);
+  };
+
+  const handleUpdateTemplateAccess = async (
+    org,
+    ownerId,
+    selectedTemplateIds
+  ) => {
+    try {
+      await organizationService.updateTemplateAccess(
+        ownerId,
+        selectedTemplateIds,
+        org.owner.trial_ends
+      );
+
+      setUsers(
+        users.map((org) => {
+          if (org.owner.id === ownerId) {
+            return {
+              ...org,
+              skeletons: selectedTemplateIds,
+            };
+          }
+          return org;
+        })
+      );
+    } catch (err) {
+      console.error("Failed to update template access:", err);
+      toast.error("Failed to update template access");
+    }
+  };
+
   return {
     users,
     loading,
@@ -128,5 +173,10 @@ export const useOrganizationUsers = () => {
     handleUpdateTrialDate,
     handleDelete,
     setNewTrialDate,
+    isTemplateModalOpen,
+    selectedOrganization,
+    handleOpenTemplateModal,
+    handleCloseTemplateModal,
+    handleUpdateTemplateAccess,
   };
 };

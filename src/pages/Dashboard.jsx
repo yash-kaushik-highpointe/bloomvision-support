@@ -2,6 +2,7 @@ import { Tooltip } from "react-tooltip";
 
 import UsersTable from "../components/UsersTable";
 import TrialDateModal from "../components/TrialDateModal";
+import TemplateAccessModal from "../components/TemplateAccessModal";
 import FullScreenLoader from "../components/FullScreenLoader";
 
 import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
@@ -21,6 +22,11 @@ const Dashboard = () => {
     setNewTrialDate,
     handleCloseModal,
     handleUpdateTrialDate,
+    isTemplateModalOpen,
+    selectedOrganization,
+    handleOpenTemplateModal,
+    handleCloseTemplateModal,
+    handleUpdateTemplateAccess,
   } = useOrganizationUsers();
 
   return (
@@ -42,8 +48,9 @@ const Dashboard = () => {
             <UsersTable
               users={users}
               formatDate={formatDate}
-              handleOpenModal={handleOpenModal}
               handleDelete={handleDelete}
+              handleOpenModal={handleOpenModal}
+              handleOpenTemplateModal={handleOpenTemplateModal}
             />
           )}
         </div>
@@ -56,6 +63,15 @@ const Dashboard = () => {
         setNewTrialDate={setNewTrialDate}
         onUpdate={handleUpdateTrialDate}
         isUpdating={isUpdating}
+      />
+
+      <TemplateAccessModal
+        org={selectedOrganization}
+        isOpen={isTemplateModalOpen}
+        onClose={handleCloseTemplateModal}
+        onSave={handleUpdateTemplateAccess}
+        ownerId={selectedOrganization?.owner.id}
+        currentTemplates={selectedOrganization?.skeletons}
       />
 
       <Tooltip
@@ -72,6 +88,18 @@ const Dashboard = () => {
       />
       <Tooltip
         id="delete-tooltip"
+        place="top"
+        className="z-50"
+        style={{
+          backgroundColor: "#1F2937",
+          color: "white",
+          borderRadius: "4px",
+          padding: "4px 8px",
+          fontSize: "12px",
+        }}
+      />
+      <Tooltip
+        id="bouquet-tooltip"
         place="top"
         className="z-50"
         style={{

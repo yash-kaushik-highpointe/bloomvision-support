@@ -12,9 +12,10 @@ const organizationService = {
       throw error;
     }
   },
-  updateTrialEndDate: async (ownerId, newDate) => {
+  updateTrialEndDate: async (ownerId, newDate, skeletons) => {
     try {
       const response = await axios.post(`${API_BASE_URL}users/update/trial/`, {
+        skeletons,
         trial_ends: newDate,
         owner_id: ownerId,
       });
@@ -32,6 +33,19 @@ const organizationService = {
       return response.data;
     } catch (error) {
       console.error("Error deleting organization:", error);
+      throw error;
+    }
+  },
+  updateTemplateAccess: async (ownerId, skeletons, trial_ends) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}users/update/trial/`, {
+        skeletons,
+        trial_ends,
+        owner_id: ownerId,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error updating trial end date:", error);
       throw error;
     }
   },
