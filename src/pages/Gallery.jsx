@@ -18,6 +18,15 @@ function Gallery() {
     setSelectedFlower(null);
   };
 
+  const handleFlowerUpdate = (updatedFlower) => {
+    setSelectedFlower(updatedFlower);
+    setImages((prevImages) =>
+      prevImages.map((flower) =>
+        flower.id === updatedFlower.id ? updatedFlower : flower
+      )
+    );
+  };
+
   useEffect(() => {
     setLoading(true);
     GalleryService.getImagesByCategory(selectedCategory)
@@ -52,6 +61,7 @@ function Gallery() {
         <RightPanel
           selectedFlower={selectedFlower}
           selectedCategory={selectedCategory}
+          onUpdate={handleFlowerUpdate}
         />
       )}
     </div>

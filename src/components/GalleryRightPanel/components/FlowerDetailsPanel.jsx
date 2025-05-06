@@ -4,36 +4,39 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import Dropdown from "../../Dropdown";
 import GalleryService from "../../../services/flowerService";
 
-function FlowerDetailsPanel({ flower, colors, onImageChange }) {
+function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
   const fileInputRef = useRef();
 
   const [touched, setTouched] = useState(false);
   const [name, setName] = useState(flower.name);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [color, setColor] = useState(flower.color);
   const [image, setImage] = useState(flower.image);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
     setTouched(true);
+    setIsSaved(false);
   };
 
   const handleColorChange = (val) => {
     setColor(val);
     setTouched(true);
+    setIsSaved(false);
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onload = (ev) => {
         setImage(ev.target.result);
         setTouched(true);
+        setIsSaved(false);
         if (onImageChange) onImageChange(ev.target.result);
       };
       reader.readAsDataURL(file);
-      // Clear the file input value
       e.target.value = "";
     }
   };
@@ -44,26 +47,45 @@ function FlowerDetailsPanel({ flower, colors, onImageChange }) {
 
   const handleSave = async () => {
     try {
-      await GalleryService.updateImage(flower.id, {
+      setIsSaving(true);
+      const updatedFlower = await GalleryService.updateImage(flower.id, {
         name,
         color,
         image,
         view: flower.view,
       });
       setTouched(false);
+      setIsSaving(false);
+      setIsSaved(true);
+      onUpdate?.(updatedFlower);
     } catch (_) {
       toast.error("Error updating flower details");
+      setIsSaving(false);
+      setIsSaved(false);
     }
   };
 
   const isEditDisabled = useMemo(() => flower?.view === "view_2", [flower]);
+
+  const getButtonText = useMemo(() => {
+    if (isSaving) return `Saving...`;
+
+    if (isSaved) return "Saved";
+
+    return "Save";
+  }, [isSaving, isSaved]);
 
   useEffect(() => {
     setTouched(false);
     setName(flower.name);
     setColor(flower.color);
     setImage(flower.image);
+    setIsSaved(false);
   }, [flower.id]);
+
+  useEffect(() => {
+    if (touched) setIsSaved(false);
+  }, [touched]);
 
   return (
     <div className="h-full flex items-center">
@@ -117,9 +139,9 @@ function FlowerDetailsPanel({ flower, colors, onImageChange }) {
         <button
           className="w-full bg-green-500 text-white py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-600 transition text-base font-semibold"
           onClick={handleSave}
-          disabled={!touched}
+          disabled={!touched || isSaving || isSaved}
         >
-          Save
+          {getButtonText}
         </button>
       </div>
     </div>
