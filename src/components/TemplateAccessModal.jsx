@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import templateData from "../template.json";
+import templateData from "../data/template.json";
 
 const TemplateAccessModal = ({
   org,

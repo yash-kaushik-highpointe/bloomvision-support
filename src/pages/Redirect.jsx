@@ -21,7 +21,7 @@ const Redirect = () => {
 
         const { access_token } = await authenticateWithCode(code);
         setToken(access_token);
-        navigate("/dashboard");
+        navigate("/organisations");
       } catch (error) {
         error;
         toast.error("Authentication failed. Please try again.");

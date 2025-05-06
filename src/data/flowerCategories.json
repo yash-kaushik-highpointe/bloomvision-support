@@ -1,0 +1,46 @@
+[
+  {
+    "id": "largeRound",
+    "label": "Large Round"
+  },
+  {
+    "id": "smallRound",
+    "label": "Small Round"
+  },
+  {
+    "id": "mediumRound",
+    "label": "Medium Round"
+  },
+  {
+    "id": "bulk",
+    "label": "Bulk"
+  },
+  {
+    "id": "dancing",
+    "label": "Dancing"
+  },
+  {
+    "id": "lateral",
+    "label": "Lateral"
+  },
+  {
+    "id": "drapping",
+    "label": "Drapping"
+  },
+  {
+    "id": "filler",
+    "label": "Filler"
+  },
+  {
+    "id": "stem",
+    "label": "Stem"
+  },
+  {
+    "id": "vase",
+    "label": "Vase"
+  },
+  {
+    "id": "frame",
+    "label": "Frame"
+  }
+]

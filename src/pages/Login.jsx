@@ -12,7 +12,7 @@ const Login = () => {
 
   useEffect(() => {
     if (authService.isAuthenticated()) {
-      navigate(ROUTES.DASHBOARD);
+      navigate(ROUTES.ORGANISATIONS);
     }
   }, [navigate]);
 

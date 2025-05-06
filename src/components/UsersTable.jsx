@@ -12,7 +12,7 @@ import {
 import deleteIcon from "../assets/delete.svg";
 import timeChangeIcon from "../assets/time-change.svg";
 import bouquetIcon from "../assets/bouquet.svg";
-import templateData from "../template.json";
+import templateData from "../data/template.json";
 
 const UsersTable = ({
   users,

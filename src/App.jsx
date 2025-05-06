@@ -7,8 +7,10 @@ import {
 import { ToastContainer } from "react-toastify";
 
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+import Gallery from "./pages/Gallery";
 import Redirect from "./pages/Redirect";
+import Layout from "./components/Layout";
+import Dashboard from "./pages/Dashboard";
 
 import { ROUTES } from "./config/constants";
 import { authService } from "./services/authService";
@@ -29,17 +31,20 @@ function App() {
     <Router>
       <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
         <Route path="/" element={<Login />} />
         <Route path="/redirect" element={<Redirect />} />
-        {/* Catch-all route to redirect to home page */}
+
+        <Route
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/organisations" element={<Dashboard />} />
+        </Route>
+
         <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
       </Routes>
     </Router>
