@@ -12,7 +12,7 @@ function RightPanel({ selectedFlower, selectedCategory, onUpdate }) {
   }, [selectedFlower]);
 
   return (
-    <div className="flex-1 bg-[#fafbfc] flex flex-row">
+    <div className="flex-1 bg-gray-100 flex flex-row">
       <ImageRenderer
         name={selectedFlower.name}
         image={image}

@@ -30,7 +30,7 @@ const Dashboard = () => {
   } = useOrganizationUsers();
 
   return (
-    <div className="h-full bg-gray-50">
+    <div className="h-full">
       {isDeleting && <FullScreenLoader />}
       <div className="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg p-6">
