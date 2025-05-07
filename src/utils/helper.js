@@ -4,9 +4,8 @@ export function transformFlowerData(apiResponse) {
   const roundCategories = ["largeRound", "mediumRound", "smallRound"];
 
   return apiResponse.flatMap((flower) => {
-    const { category, name, color, image_detail } = flower;
+    const { category, name, color, image_detail, id } = flower;
     const imageDetails = Object.values(image_detail || {});
-    const expectedViews = roundCategories.includes(category) ? 2 : 1;
 
     // Check for missing views
     let dirtyMessage = "";
@@ -24,12 +23,13 @@ export function transformFlowerData(apiResponse) {
     }
 
     return imageDetails.map((detail) => ({
-      id: detail.id,
-      image: detail.image,
       name,
-      view: detail.view_angle,
       color,
       dirtyMessage,
+      flowerId: id,
+      id: detail.id,
+      image: detail.image,
+      view: detail.view_angle,
     }));
   });
 }

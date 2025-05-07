@@ -1,116 +1,141 @@
 import { toast } from "react-toastify";
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 
 import Dropdown from "../../Dropdown";
 import GalleryService from "../../../services/flowerService";
 
 function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
   const fileInputRef = useRef();
+  const view2InputRef = useRef();
 
-  const [touched, setTouched] = useState(false);
-  const [name, setName] = useState(flower.name);
-  const [isSaved, setIsSaved] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [color, setColor] = useState(flower.color);
-  const [image, setImage] = useState(flower.image);
-
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-    setTouched(true);
-    setIsSaved(false);
-  };
-
-  const handleColorChange = (val) => {
-    setColor(val);
-    setTouched(true);
-    setIsSaved(false);
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        setImage(ev.target.result);
-        setTouched(true);
-        setIsSaved(false);
-        if (onImageChange) onImageChange(ev.target.result);
-      };
-      reader.readAsDataURL(file);
-      e.target.value = "";
-    }
-  };
-
-  const handleReupload = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleSave = async () => {
-    try {
-      setIsSaving(true);
-      const updatedFlower = await GalleryService.updateImage(flower.id, {
-        name,
-        color,
-        image,
-        view: flower.view,
-      });
-      setTouched(false);
-      setIsSaving(false);
-      setIsSaved(true);
-      onUpdate?.(updatedFlower);
-    } catch (_) {
-      toast.error("Error updating flower details");
-      setIsSaving(false);
-      setIsSaved(false);
-    }
-  };
+  const [formState, setFormState] = useState({
+    name: flower.name,
+    color: flower.color,
+    image: flower.image,
+    touched: false,
+    isSaved: false,
+    isSaving: false,
+    isView2Upload: false,
+  });
 
   const isEditDisabled = useMemo(() => flower?.view === "view_2", [flower]);
 
-  const getButtonText = useMemo(() => {
-    if (isSaving) return `Saving...`;
+  const handleInputChange = useCallback((field, value) => {
+    setFormState((prev) => ({
+      ...prev,
+      [field]: value,
+      touched: true,
+      isSaved: false,
+    }));
+  }, []);
 
-    if (isSaved) return "Saved";
+  const handleFileChange = useCallback(
+    (e, isView2 = false) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          setFormState((prev) => ({
+            ...prev,
+            image: ev.target.result,
+            touched: true,
+            isSaved: false,
+            isView2Upload: isView2,
+          }));
+          if (onImageChange) onImageChange(ev.target.result);
+        };
+        reader.readAsDataURL(file);
+        e.target.value = "";
+      }
+    },
+    [onImageChange]
+  );
 
-    return "Save";
-  }, [isSaving, isSaved]);
+  const handleSave = useCallback(async () => {
+    try {
+      setFormState((prev) => ({ ...prev, isSaving: true }));
+
+      const updateData = {
+        name: formState.name,
+        color: formState.color,
+        image: formState.image,
+        view: formState.isView2Upload ? "view_2" : flower.view,
+      };
+
+      const updatedFlower = formState.isView2Upload
+        ? await GalleryService.uploadView2(flower.flowerId, updateData)
+        : await GalleryService.updateImage(flower.id, updateData);
+
+      setFormState((prev) => ({
+        ...prev,
+        touched: false,
+        isSaving: false,
+        isSaved: true,
+        isView2Upload: false,
+      }));
+
+      onUpdate?.(updatedFlower);
+    } catch (_) {
+      toast.error("Error updating flower details");
+      setFormState((prev) => ({
+        ...prev,
+        isSaving: false,
+        isSaved: false,
+      }));
+    }
+  }, [formState, flower, onUpdate]);
 
   useEffect(() => {
-    setTouched(false);
-    setName(flower.name);
-    setColor(flower.color);
-    setImage(flower.image);
-    setIsSaved(false);
+    setFormState({
+      name: flower.name,
+      color: flower.color,
+      image: flower.image,
+      touched: false,
+      isSaved: false,
+      isSaving: false,
+      isView2Upload: false,
+    });
   }, [flower.id]);
 
-  useEffect(() => {
-    if (touched) setIsSaved(false);
-  }, [touched]);
+  const getButtonText = useMemo(() => {
+    if (formState.isSaving) return "Saving...";
+    if (formState.isSaved) return "Saved";
+    return formState.isView2Upload ? "Save View 2" : "Save";
+  }, [formState.isSaving, formState.isSaved, formState.isView2Upload]);
 
   return (
-    <div className="h-full flex items-center">
+    <div className="fixed right-0 top-[32px] h-full flex items-center">
       <div className="w-[350px] bg-[#e3e6d3] rounded-tl-2xl rounded-bl-2xl p-6 flex flex-col items-center">
         <h2 className="text-xl font-bold mb-6">Flower Details</h2>
+
         {/* Name */}
         <div className="w-full mb-4">
           <label className="text-xs font-semibold mb-1 block">Name</label>
           <input
             className="w-full border border-gray-200 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-200 text-base bg-[#f8faf3] disabled:opacity-65 disabled:text-gray-500 disabled:text-base"
-            value={name}
-            onChange={handleNameChange}
+            value={formState.name}
+            onChange={(e) => handleInputChange("name", e.target.value)}
             disabled={isEditDisabled}
           />
         </div>
+
         {/* Color */}
         <div className="w-full mb-4">
           <label className="text-xs font-semibold mb-1 block">Color</label>
           <Dropdown
-            value={color}
+            value={formState.color}
             options={colors}
-            onChange={handleColorChange}
+            onChange={(val) => handleInputChange("color", val)}
             isDisabled={isEditDisabled}
           />
         </div>
+
         {/* View */}
         <div className="w-full mb-4">
           <label className="text-xs font-semibold mb-1 block">View</label>
@@ -120,26 +145,50 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
             disabled
           />
         </div>
+
         {/* Re-upload Flower */}
         <button
           className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition text-base font-semibold"
-          onClick={handleReupload}
+          onClick={() => fileInputRef.current.click()}
           type="button"
         >
           Re-upload Flower
         </button>
+
+        {/* Upload View 2 Button */}
+        {flower.dirtyMessage && (
+          <button
+            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition text-base font-semibold mt-2"
+            onClick={() => view2InputRef.current.click()}
+            type="button"
+          >
+            Upload View 2 of Flower
+          </button>
+        )}
+
         <input
           type="file"
           accept="image/*"
           className="hidden"
           ref={fileInputRef}
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e, false)}
         />
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          ref={view2InputRef}
+          onChange={(e) => handleFileChange(e, true)}
+        />
+
         <hr className="w-[calc(100%+3rem)] -mx-6 my-6 border-t-2 border-[#cdd1bc]" />
+
         <button
           className="w-full bg-green-500 text-white py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-600 transition text-base font-semibold"
           onClick={handleSave}
-          disabled={!touched || isSaving || isSaved}
+          disabled={
+            !formState.touched || formState.isSaving || formState.isSaved
+          }
         >
           {getButtonText}
         </button>

@@ -48,6 +48,36 @@ const GalleryService = {
       throw error;
     }
   },
+  uploadView2: async (flowerId, data) => {
+    console.log(data, flowerId);
+    try {
+      let imageData = data.image;
+      if (data.image.startsWith("data:image")) {
+        const response = await fetch(data.image);
+        imageData = await response.blob();
+      }
+
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("color", data.color);
+      formData.append("view", "view_2");
+      formData.append("image", imageData);
+      formData.append("flowerId", flowerId);
+
+      const response = await axios.post(
+        `${API_BASE_URL}flowers/upload/view2/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
   deleteOrganization: async (organizationId) => {
     try {
       const response = await axios.delete(

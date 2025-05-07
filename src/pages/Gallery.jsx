@@ -20,11 +20,17 @@ function Gallery() {
 
   const handleFlowerUpdate = (updatedFlower) => {
     setSelectedFlower(updatedFlower);
-    setImages((prevImages) =>
-      prevImages.map((flower) =>
-        flower.id === updatedFlower.id ? updatedFlower : flower
-      )
-    );
+    setImages((prevImages) => {
+      const newImages = [...prevImages];
+      const index = newImages.findIndex(
+        (flower) => flower.id === updatedFlower.id
+      );
+
+      if (index !== -1) newImages[index] = updatedFlower;
+      else newImages.splice(index + 1, 0, updatedFlower);
+
+      return newImages;
+    });
   };
 
   useEffect(() => {
@@ -38,8 +44,8 @@ function Gallery() {
   return (
     <div className="flex h-full">
       {/* Left Panel */}
-      <div className="h-full flex items-center">
-        <div className="w-[242px] bg-[#e3e6d3] flex flex-col items-start pt-6 pb-6 px-6 rounded-tr-2xl rounded-br-2xl box-border mt-2 mb-2 h-[95%]">
+      <div className="fixed left-[20px] top-0 h-full flex items-center">
+        <div className="w-[242px] bg-[#e3e6d3] flex flex-col items-start pt-4 pb-4 px-4 rounded-2xl rounded-br-2xl box-border mt-2 mb-2 h-[95%]">
           <div className="w-full">
             <CategoryDropdown
               options={categories}
@@ -47,7 +53,7 @@ function Gallery() {
               onChange={handleCategoryChange}
             />
           </div>
-          <hr className="w-[calc(100%+3rem)] -mx-6 my-6 border-t-2 border-[#cdd1bc]" />
+          <hr className="w-[calc(100%+2rem)] -mx-4 my-4 border-t-2 border-[#cdd1bc]" />
           <FlowerList
             images={images}
             loading={loading}
@@ -56,7 +62,6 @@ function Gallery() {
           />
         </div>
       </div>
-      {/* Right Panel */}
       {selectedFlower && (
         <RightPanel
           selectedFlower={selectedFlower}
