@@ -16,6 +16,7 @@ import { ROUTES } from "./config/constants";
 import { authService } from "./services/authService";
 
 import "react-toastify/dist/ReactToastify.css";
+import Upload from "./pages/Upload";
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -42,6 +43,7 @@ function App() {
           }
         >
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/upload" element={<Upload />} />
           <Route path="/organisations" element={<Dashboard />} />
         </Route>
 

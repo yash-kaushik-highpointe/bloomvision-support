@@ -13,7 +13,7 @@ const Layout = () => {
   return (
     <div className="flex flex-col h-screen items-center overflow-hidden bg-gray-100">
       {/* Navigation Bar */}
-      <nav className="bg-[#acb3846b] border-b border-gray-200 px-4 sm:px-6 py-3 w-full max-w-md mx-auto rounded-b-[15px]">
+      <nav className="bg-[#e3e6d3] border-b border-gray-200 px-4 sm:px-6 py-3 w-full max-w-md mx-auto rounded-b-[15px]">
         <div className="flex justify-center items-center gap-x-8">
           <Link
             to="/organisations"

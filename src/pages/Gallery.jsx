@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import FlowerList from "../components/FlowerList";
 import categories from "../data/flowerCategories.json";
@@ -8,6 +9,7 @@ import RightPanel from "../components/GalleryRightPanel";
 import CategoryDropdown from "../components/Dropdown";
 
 function Gallery() {
+  const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedFlower, setSelectedFlower] = useState(null);
@@ -54,6 +56,12 @@ function Gallery() {
 
   return (
     <div className="flex h-full">
+      <button
+        onClick={() => navigate("/upload")}
+        className="fixed top-4 right-4 bg-[#827a3a] hover:bg-[#827a3a] text-white px-4 py-2 rounded-lg shadow-md transition-colors"
+      >
+        Add New Images
+      </button>
       {/* Left Panel */}
       <div className="fixed left-[20px] top-0 h-full flex items-center">
         <div className="w-[242px] bg-[#e3e6d3] flex flex-col items-start pt-4 pb-4 px-4 rounded-2xl rounded-br-2xl box-border mt-2 mb-2 h-[95%]">

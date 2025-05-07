@@ -21,7 +21,7 @@ const DrappingImage = ({ image, name }) => (
 );
 
 const LateralImage = ({ image, name }) => (
-  <div className="w-[500px] h-[250px] flex items-center justify-center bg-[#e3e6d3] rounded-2xl shadow-md">
+  <div className="w-[200px] h-[600px] flex items-center justify-center bg-[#e3e6d3] rounded-2xl shadow-md">
     <img
       src={image}
       alt={name}
@@ -32,6 +32,16 @@ const LateralImage = ({ image, name }) => (
 
 const DancingImage = ({ image, name }) => (
   <div className="w-[200px] h-[600px] flex items-center justify-center bg-[#e3e6d3] rounded-2xl shadow-md">
+    <img
+      src={image}
+      alt={name}
+      className="max-w-full max-h-full object-contain rounded-xl"
+    />
+  </div>
+);
+
+const NoCategoryImage = ({ image, name }) => (
+  <div className="w-[500px] h-[500px] flex items-center justify-center">
     <img
       src={image}
       alt={name}
@@ -55,7 +65,7 @@ const ImageComponents = {
 };
 
 function ImageRenderer({ selectedCategory, ...rest }) {
-  const ImageComponent = ImageComponents[selectedCategory];
+  const ImageComponent = ImageComponents[selectedCategory] ?? NoCategoryImage;
   return (
     <div className="flex-1 flex items-center justify-center">
       <ImageComponent {...rest} />
