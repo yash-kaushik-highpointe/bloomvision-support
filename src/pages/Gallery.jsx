@@ -18,16 +18,27 @@ function Gallery() {
     setSelectedFlower(null);
   };
 
-  const handleFlowerUpdate = (updatedFlower) => {
+  const handleFlowerUpdate = (updatedFlower, isNewView2) => {
+    const searchKey = isNewView2 ? "flowerId" : "id";
+    const searchValue = isNewView2 ? updatedFlower.flowerId : updatedFlower.id;
+
     setSelectedFlower(updatedFlower);
+
     setImages((prevImages) => {
       const newImages = [...prevImages];
       const index = newImages.findIndex(
-        (flower) => flower.id === updatedFlower.id
+        (flower) => flower[searchKey] === searchValue
       );
 
-      if (index !== -1) newImages[index] = updatedFlower;
-      else newImages.splice(index + 1, 0, updatedFlower);
+      if (index === -1) return prevImages;
+
+      if (isNewView2) {
+        newImages[index].dirtyMessage = "";
+        updatedFlower.dirtyMessage = "";
+        newImages.splice(index + 1, 0, updatedFlower);
+      } else {
+        newImages[index] = updatedFlower;
+      }
 
       return newImages;
     });

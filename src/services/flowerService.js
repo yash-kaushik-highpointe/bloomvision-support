@@ -49,7 +49,6 @@ const GalleryService = {
     }
   },
   uploadView2: async (flowerId, data) => {
-    console.log(data, flowerId);
     try {
       let imageData = data.image;
       if (data.image.startsWith("data:image")) {
@@ -62,10 +61,10 @@ const GalleryService = {
       formData.append("color", data.color);
       formData.append("view", "view_2");
       formData.append("image", imageData);
-      formData.append("flowerId", flowerId);
+      formData.append("flower_id", flowerId);
 
       const response = await axios.post(
-        `${API_BASE_URL}flowers/upload/view2/`,
+        `${API_BASE_URL}flowers/views/create/`,
         formData,
         {
           headers: {

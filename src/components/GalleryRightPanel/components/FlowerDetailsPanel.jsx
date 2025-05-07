@@ -62,10 +62,10 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
       setFormState((prev) => ({ ...prev, isSaving: true }));
 
       const updateData = {
-        name: formState.name,
-        color: formState.color,
         image: formState.image,
         view: formState.isView2Upload ? "view_2" : flower.view,
+        name: formState.isView2Upload ? flower.name : formState.name,
+        color: formState.isView2Upload ? flower.color : formState.color,
       };
 
       const updatedFlower = formState.isView2Upload
@@ -80,7 +80,7 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
         isView2Upload: false,
       }));
 
-      onUpdate?.(updatedFlower);
+      onUpdate?.(updatedFlower, formState.isView2Upload);
     } catch (_) {
       toast.error("Error updating flower details");
       setFormState((prev) => ({
