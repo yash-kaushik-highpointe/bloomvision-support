@@ -1,3 +1,5 @@
+import colorMatch from "../data/colorMatch.json";
+
 export function transformFlowerData(apiResponse) {
   if (!apiResponse) return;
 
@@ -32,4 +34,36 @@ export function transformFlowerData(apiResponse) {
       view: detail.view_angle,
     }));
   });
+}
+
+export function parseFileName(fileName) {
+  // Split the filename by underscore
+  const parts = fileName.split("_");
+
+  // Check if the filename follows the expected structure
+  if (parts.length !== 4) {
+    return { name: "", color: "", category: "" };
+  }
+
+  const [name, color, category, view] = parts;
+
+  // Check if it's view2, if so return null
+  if (view.includes("view2")) {
+    return null;
+  }
+
+  // Transform name: replace '+' with space
+  const transformedName = name.replace(/\+/g, " ");
+
+  // Transform category: handle round categories
+  let transformedCategory = category;
+  if (category === "large+round") transformedCategory = "largeRound";
+  else if (category === "medium+round") transformedCategory = "mediumRound";
+  else if (category === "small+round") transformedCategory = "smallRound";
+
+  return {
+    name: transformedName,
+    color: colorMatch[color] ?? "",
+    category: transformedCategory,
+  };
 }

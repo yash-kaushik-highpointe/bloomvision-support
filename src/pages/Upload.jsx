@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 
 import colors from "../data/colors.json";
 import TabList from "../components/Tabs/TabList";
@@ -9,6 +9,8 @@ import GalleryService from "../services/flowerService";
 import UploadArea from "../components/Upload/UploadArea";
 import FilePreview from "../components/Upload/FilePreview";
 import FlowerDetails from "../components/Upload/FlowerDetails";
+
+import { parseFileName } from "../utils/helper";
 
 const BackIcon = () => (
   <svg
@@ -26,9 +28,12 @@ const BackIcon = () => (
 );
 
 function Upload() {
+  const activeTabRef = useRef();
+
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("upload");
+
   const [files, setFiles] = useState([]);
+  const [activeTab, setActiveTab] = useState("upload");
   const [isDragging, setIsDragging] = useState(false);
 
   const generateFileId = (file) => {
@@ -46,15 +51,14 @@ function Upload() {
 
       return [
         ...prevFiles,
-        ...newFiles.map((file) => ({
-          file,
-          formData: {
-            name: "",
-            category: "",
-            color: "",
-          },
-          isSaving: false,
-        })),
+        ...newFiles.reduce((acc, file) => {
+          // Parse the filename to extract metadata
+          const metadata = parseFileName(file.name);
+
+          if (metadata)
+            return [...acc, { file, formData: metadata, isSaving: false }];
+          else return acc;
+        }, []),
       ];
     });
   };
@@ -106,6 +110,10 @@ function Upload() {
     );
   };
 
+  function isStillActive(fileId) {
+    if (activeTabRef.current === fileId) setActiveTab("upload");
+  }
+
   const handleSave = async (fileId) => {
     const fileData = files.find(
       (fileData) => generateFileId(fileData.file) === fileId
@@ -140,8 +148,15 @@ function Upload() {
 
         await GalleryService.uploadImage(flowerData);
 
-        toast.success("Image uploaded successfully");
-        navigate("/gallery");
+        toast.success(`${fileData.formData.name} is uploaded successfully`);
+
+        // Remove the file from the list after successful upload
+        setFiles((prevFiles) =>
+          prevFiles.filter((fd) => generateFileId(fd.file) !== fileId)
+        );
+
+        // If this was the active tab, switch to upload tab
+        isStillActive(fileId);
       };
     } catch (error) {
       toast.error("Failed to upload image");
@@ -165,6 +180,10 @@ function Upload() {
     })),
   ];
 
+  useEffect(() => {
+    activeTabRef.current = activeTab;
+  }, [activeTab]);
+
   return (
     <div className="flex flex-col h-full">
       <button
@@ -176,13 +195,16 @@ function Upload() {
       </button>
 
       <div className="flex flex-col h-full mt-4 p-4">
-        <TabList
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          onTabClose={removeFile}
-          className="flex-shrink-0"
-        />
+        {tabs.length > 1 && (
+          <TabList
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            onTabClose={removeFile}
+            className="flex-shrink-0"
+            files={files}
+          />
+        )}
 
         <TabContent activeTab={activeTab} tabs={tabs} className="mt-4">
           {(tab) => {
@@ -206,7 +228,10 @@ function Upload() {
             return (
               <div className="h-[calc(100vh-14rem)] flex">
                 <div className="flex-1">
-                  <FilePreview file={fileData.file} />
+                  <FilePreview
+                    file={fileData.file}
+                    category={fileData.formData.category}
+                  />
                 </div>
                 <FlowerDetails
                   formData={fileData.formData}
@@ -222,6 +247,15 @@ function Upload() {
           }}
         </TabContent>
       </div>
+
+      {activeTab !== "upload" && (
+        <button
+          onClick={() => setActiveTab("upload")}
+          className="fixed top-4 right-4 bg-[#827a3a] hover:bg-[#827a3a] text-white px-4 py-2 rounded-lg shadow-md transition-colors"
+        >
+          Upload
+        </button>
+      )}
     </div>
   );
 }

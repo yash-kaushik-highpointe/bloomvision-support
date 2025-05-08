@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ImageRenderer from "../GalleryRightPanel/components/ImageRender";
 
-const FilePreview = ({ file }) => {
+const FilePreview = ({ file, category }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const FilePreview = ({ file }) => {
       <ImageRenderer
         image={previewUrl}
         name={file.name}
-        selectedCategory={undefined}
+        selectedCategory={category}
       />
     </div>
   );

@@ -77,30 +77,36 @@ const GalleryService = {
       throw error;
     }
   },
-  deleteOrganization: async (organizationId) => {
+  uploadImage: async (flowerData) => {
     try {
-      const response = await axios.delete(
-        `${API_BASE_URL}organisations/${organizationId}/`
+      let imageData = flowerData.image;
+      if (flowerData.image.startsWith("data:image")) {
+        const response = await fetch(flowerData.image);
+        imageData = await response.blob();
+      }
+
+      const formData = new FormData();
+      formData.append("name", flowerData.name);
+      formData.append("color", flowerData.color);
+      formData.append("category", flowerData.category);
+      formData.append("description", flowerData.name);
+      formData.append("image", imageData);
+
+      const response = await axios.post(
+        `${API_BASE_URL}flowers/create/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       return response.data;
     } catch (error) {
-      console.error("Error deleting organization:", error);
       throw error;
     }
   },
-  updateTemplateAccess: async (ownerId, skeletons, trial_ends) => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}users/update/trial/`, {
-        skeletons,
-        trial_ends,
-        owner_id: ownerId,
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Error updating trial end date:", error);
-      throw error;
-    }
-  },
+  deleteImage: async () => {},
 };
 
 export default GalleryService;
