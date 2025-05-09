@@ -53,7 +53,9 @@ export function parseFileName(fileName) {
   }
 
   // Transform name: replace '+' with space
-  const transformedName = name.replace(/\+/g, " ");
+  const transformedName = name
+    .replace(/\+/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 
   // Transform category: handle round categories
   let transformedCategory = category;

@@ -12,9 +12,9 @@ function Gallery() {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [selectedFlower, setSelectedFlower] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleCategoryChange = (...args) => {
     setSelectedCategory(...args);
