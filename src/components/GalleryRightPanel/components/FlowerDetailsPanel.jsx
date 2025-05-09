@@ -21,7 +21,7 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
     touched: false,
     isSaved: false,
     isSaving: false,
-    isView2Upload: false,
+    isDirtyUpload: false,
   });
 
   const isEditDisabled = useMemo(() => flower?.view === "view_2", [flower]);
@@ -36,7 +36,7 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
   }, []);
 
   const handleFileChange = useCallback(
-    (e, isView2 = false) => {
+    (e, isDirty = false) => {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
@@ -46,7 +46,7 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
             image: ev.target.result,
             touched: true,
             isSaved: false,
-            isView2Upload: isView2,
+            isDirtyUpload: isDirty,
           }));
           if (onImageChange) onImageChange(ev.target.result);
         };
@@ -63,13 +63,17 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
 
       const updateData = {
         image: formState.image,
-        view: formState.isView2Upload ? "view_2" : flower.view,
-        name: formState.isView2Upload ? flower.name : formState.name,
-        color: formState.isView2Upload ? flower.color : formState.color,
+        view: formState.isDirtyUpload
+          ? flower.dirtyMessage === "View 1 missing"
+            ? "view_1"
+            : "view_2"
+          : flower.view,
+        name: formState.isDirtyUpload ? flower.name : formState.name,
+        color: formState.isDirtyUpload ? flower.color : formState.color,
       };
 
-      const updatedFlower = formState.isView2Upload
-        ? await GalleryService.uploadView2(flower.flowerId, updateData)
+      const updatedFlower = formState.isDirtyUpload
+        ? await GalleryService.uploadDirtyView(flower.flowerId, updateData)
         : await GalleryService.updateImage(flower.id, updateData);
 
       setFormState((prev) => ({
@@ -77,10 +81,10 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
         touched: false,
         isSaving: false,
         isSaved: true,
-        isView2Upload: false,
+        isDirtyUpload: false,
       }));
 
-      onUpdate?.(updatedFlower, formState.isView2Upload);
+      onUpdate?.(updatedFlower, formState.isDirtyUpload);
     } catch (_) {
       toast.error("Error updating flower details");
       setFormState((prev) => ({
@@ -99,15 +103,19 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
       touched: false,
       isSaved: false,
       isSaving: false,
-      isView2Upload: false,
+      isDirtyUpload: false,
     });
   }, [flower.id]);
 
   const getButtonText = useMemo(() => {
     if (formState.isSaving) return "Saving...";
     if (formState.isSaved) return "Saved";
-    return formState.isView2Upload ? "Save View 2" : "Save";
-  }, [formState.isSaving, formState.isSaved, formState.isView2Upload]);
+    return formState.isDirtyUpload
+      ? flower.dirtyMessage === "View 1 missing"
+        ? "Save View 1"
+        : "Save View 2"
+      : "Save";
+  }, [formState.isSaving, formState.isSaved, formState.isDirtyUpload]);
 
   return (
     <div className="fixed right-0 top-[32px] h-full flex items-center">
@@ -162,7 +170,9 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
             onClick={() => view2InputRef.current.click()}
             type="button"
           >
-            Upload View 2 of Flower
+            {flower.dirtyMessage === "View 1 missing"
+              ? "Upload View 1 of Flower"
+              : "Upload View 2 of Flower"}
           </button>
         )}
 

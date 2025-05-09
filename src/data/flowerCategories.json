@@ -42,5 +42,25 @@
   {
     "id": "frame",
     "label": "Frame"
+  },
+  {
+    "id": "ribbon",
+    "label": "Ribbon"
+  },
+  {
+    "id": "largeLateral",
+    "label": "Large Lateral"
+  },
+  {
+    "id": "largeDrapping",
+    "label": "Large Draping"
+  },
+  {
+    "id": "pedestal",
+    "label": "Pedestal"
+  },
+  {
+    "id": "urn",
+    "label": "Urn"
   }
 ]

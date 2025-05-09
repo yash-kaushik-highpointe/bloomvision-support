@@ -48,7 +48,7 @@ const GalleryService = {
       throw error;
     }
   },
-  uploadView2: async (flowerId, data) => {
+  uploadDirtyView: async (flowerId, data) => {
     try {
       let imageData = data.image;
       if (data.image.startsWith("data:image")) {
@@ -59,7 +59,7 @@ const GalleryService = {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("color", data.color);
-      formData.append("view", "view_2");
+      formData.append("view", data.view);
       formData.append("image", imageData);
       formData.append("flower_id", flowerId);
 
@@ -106,7 +106,16 @@ const GalleryService = {
       throw error;
     }
   },
-  deleteImage: async () => {},
+  deleteImage: async (flowerId) => {
+    try {
+      const response = await axios.delete(
+        `${API_BASE_URL}flowers/delete/${flowerId}/`
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default GalleryService;

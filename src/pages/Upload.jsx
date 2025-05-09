@@ -56,7 +56,15 @@ function Upload() {
           const metadata = parseFileName(file.name);
 
           if (metadata)
-            return [...acc, { file, formData: metadata, isSaving: false }];
+            return [
+              ...acc,
+              {
+                file,
+                isSaving: false,
+                formData: metadata,
+                id: generateFileId(file),
+              },
+            ];
           else return acc;
         }, []),
       ];
@@ -115,27 +123,25 @@ function Upload() {
   }
 
   const handleSave = async (fileId) => {
-    const fileData = files.find(
-      (fileData) => generateFileId(fileData.file) === fileId
-    );
+    const fileData = files.find((fileData) => fileData.id === fileId);
     if (!fileData) return;
 
-    try {
-      // Update saving state for this specific file
-      setFiles((prevFiles) =>
-        prevFiles.map((fd) => {
-          if (generateFileId(fd.file) === fileId) {
-            return { ...fd, isSaving: true };
-          }
-          return fd;
-        })
-      );
+    // Update saving state for this specific file
+    setFiles((prevFiles) =>
+      prevFiles.map((fd) => {
+        if (fd.id === fileId) {
+          return { ...fd, isSaving: true };
+        }
+        return fd;
+      })
+    );
 
-      // Convert file to base64
-      const reader = new FileReader();
-      reader.readAsDataURL(fileData.file);
+    // Convert file to base64
+    const reader = new FileReader();
+    reader.readAsDataURL(fileData.file);
 
-      reader.onload = async () => {
+    reader.onload = async () => {
+      try {
         const base64Image = reader.result;
 
         const flowerData = {
@@ -157,19 +163,19 @@ function Upload() {
 
         // If this was the active tab, switch to upload tab
         isStillActive(fileId);
-      };
-    } catch (error) {
-      toast.error("Failed to upload image");
-      // Reset saving state on error
-      setFiles((prevFiles) =>
-        prevFiles.map((fd) => {
-          if (generateFileId(fd.file) === fileId) {
-            return { ...fd, isSaving: false };
-          }
-          return fd;
-        })
-      );
-    }
+      } catch (error) {
+        toast.error(`Failed to upload ${fileData.formData.name}`);
+        // Reset saving state on error
+        setFiles((prevFiles) =>
+          prevFiles.map((fd) => {
+            if (fd.id === fileId) {
+              return { ...fd, isSaving: false };
+            }
+            return fd;
+          })
+        );
+      }
+    };
   };
 
   const tabs = [
@@ -221,9 +227,7 @@ function Upload() {
               );
             }
 
-            const fileData = files.find(
-              (fd) => generateFileId(fd.file) === tab.id
-            );
+            const fileData = files.find((fd) => fd.id === tab.id);
 
             return (
               <div className="h-[calc(100vh-14rem)] flex">

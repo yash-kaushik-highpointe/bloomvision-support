@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import deleteIcon from "../assets/delete.svg";
+import GalleryService from "../services/flowerService";
+import { toast } from "react-toastify";
 
 const ErrorSVG = () => (
   <svg
@@ -29,12 +32,37 @@ const ErrorSVG = () => (
   </svg>
 );
 
-function FlowerList({ images, loading, onSelect, selectedId }) {
+function FlowerList({
+  images,
+  loading,
+  onSelect,
+  selectedId,
+  onDelete,
+  setIsDeleting,
+}) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [deletingId, setDeletingId] = useState(null);
 
   const filteredImages = images.filter((img) =>
     img.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleDelete = async (e, img) => {
+    e.stopPropagation(); // Prevent triggering the flower selection
+    if (window.confirm("Are you sure you want to delete this image?")) {
+      setIsDeleting(true);
+      setDeletingId(img.id);
+      try {
+        await GalleryService.deleteImage(img.id);
+        onDelete(img);
+        toast.success("Image deleted successfully");
+      } catch (error) {
+        toast.error("Failed to delete image");
+      } finally {
+        setDeletingId(null);
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col w-full h-[calc(100%-75px)]">
@@ -57,11 +85,18 @@ function FlowerList({ images, loading, onSelect, selectedId }) {
             {filteredImages.map((img) => (
               <div
                 key={img.id}
-                className={`bg-white rounded-2xl shadow-md w-[208px] flex flex-col items-center p-0 cursor-pointer ${
+                className={`bg-white rounded-2xl shadow-md w-[208px] flex flex-col items-center p-0 cursor-pointer relative ${
                   selectedId === img.id ? "border-2 border-blue-400" : ""
                 }`}
                 onClick={() => onSelect && onSelect(img)}
               >
+                <button
+                  onClick={(e) => handleDelete(e, img)}
+                  className="absolute top-1 right-1 z-[9] p-1.5 bg-white rounded-full"
+                  disabled={deletingId === img.id}
+                >
+                  <img src={deleteIcon} alt="Delete" className="w-4 h-4" />
+                </button>
                 <div className="flex justify-center relative w-full">
                   <img
                     src={img.image}
@@ -71,7 +106,7 @@ function FlowerList({ images, loading, onSelect, selectedId }) {
                     }`}
                   />
                   {!!img.dirtyMessage && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center z-1">
                       <ErrorSVG />
                       <span className="text-xs text-red-600 text-center bg-white/80 px-2 py-1 rounded font-medium">
                         {img.dirtyMessage}
@@ -98,7 +133,6 @@ function FlowerList({ images, loading, onSelect, selectedId }) {
       </div>
     </div>
   );
-  o;
 }
 
 export default FlowerList;
