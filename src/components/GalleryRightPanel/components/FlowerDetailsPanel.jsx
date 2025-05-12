@@ -118,7 +118,7 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
   }, [formState.isSaving, formState.isSaved, formState.isDirtyUpload]);
 
   return (
-    <div className="fixed right-0 top-[32px] h-full flex items-center">
+    <div className="h-full flex items-center">
       <div className="w-[350px] bg-[#e3e6d3] rounded-tl-2xl rounded-bl-2xl p-6 flex flex-col items-center">
         <h2 className="text-xl font-bold mb-6">Flower Details</h2>
 

@@ -125,6 +125,7 @@ function Gallery() {
           />
         </div>
       </div>
+      <div className="h-full w-[242px]" />
       {selectedFlower && (
         <RightPanel
           selectedFlower={selectedFlower}

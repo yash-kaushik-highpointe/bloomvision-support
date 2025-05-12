@@ -145,16 +145,17 @@ function FlowerList({
         )}
       </div>
 
-      <DeleteConfirmationModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => {
-          setIsDeleteModalOpen(false);
-          setSelectedFlowerToDelete(null);
-        }}
-        onConfirm={handleConfirmDelete}
-        images={images}
-        selectedFlower={selectedFlowerToDelete}
-      />
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          onClose={() => {
+            setIsDeleteModalOpen(false);
+            setSelectedFlowerToDelete(null);
+          }}
+          onConfirm={handleConfirmDelete}
+          images={images}
+          selectedFlower={selectedFlowerToDelete}
+        />
+      )}
     </div>
   );
 }
