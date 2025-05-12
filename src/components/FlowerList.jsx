@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import deleteIcon from "../assets/delete.svg";
 import GalleryService from "../services/flowerService";
 import { toast } from "react-toastify";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 const ErrorSVG = () => (
   <svg
@@ -42,6 +43,8 @@ function FlowerList({
 }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [deletingId, setDeletingId] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedFlowerToDelete, setSelectedFlowerToDelete] = useState(null);
 
   const filteredImages = images.filter((img) =>
     img.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -49,18 +52,28 @@ function FlowerList({
 
   const handleDelete = async (e, img) => {
     e.stopPropagation(); // Prevent triggering the flower selection
-    if (window.confirm("Are you sure you want to delete this image?")) {
-      setIsDeleting(true);
-      setDeletingId(img.id);
-      try {
-        await GalleryService.deleteImage(img.id);
-        onDelete(img);
-        toast.success("Image deleted successfully");
-      } catch (error) {
-        toast.error("Failed to delete image");
-      } finally {
-        setDeletingId(null);
-      }
+    setSelectedFlowerToDelete(img);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async (substituteFlowerId) => {
+    if (!selectedFlowerToDelete) return;
+
+    setIsDeleting(true);
+    setDeletingId(selectedFlowerToDelete.id);
+    try {
+      await GalleryService.deleteImage(
+        selectedFlowerToDelete.id,
+        substituteFlowerId
+      );
+      onDelete(selectedFlowerToDelete);
+      toast.success("Image deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete image");
+    } finally {
+      setDeletingId(null);
+      setIsDeleteModalOpen(false);
+      setSelectedFlowerToDelete(null);
     }
   };
 
@@ -131,6 +144,17 @@ function FlowerList({
           </div>
         )}
       </div>
+
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSelectedFlowerToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        images={images}
+        selectedFlower={selectedFlowerToDelete}
+      />
     </div>
   );
 }

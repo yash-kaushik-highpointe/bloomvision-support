@@ -106,10 +106,10 @@ const GalleryService = {
       throw error;
     }
   },
-  deleteImage: async (flowerId) => {
+  deleteImage: async (flowerId, substituteFlowerId) => {
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}flowers/delete/${flowerId}/`
+        `${API_BASE_URL}flowers/delete/${flowerId}/?substitute_flower=${substituteFlowerId}`
       );
       return response.data;
     } catch (error) {
