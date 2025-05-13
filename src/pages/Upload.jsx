@@ -82,15 +82,34 @@ function Upload() {
   }, []);
 
   const handleDrop = useCallback((e) => {
-    console.log(e.dataTransfer.files);
-    e.preventDefault();
-    setIsDragging(false);
+    try {
+      e.preventDefault();
+      setIsDragging(false);
 
-    const droppedFiles = Array.from(e?.dataTransfer?.files);
-    handleFilesSelect(droppedFiles);
+      if (!e?.dataTransfer) {
+        console.warn("No dataTransfer object found in drop event");
+        return;
+      }
 
-    // Clear the data transfer object
-    e.dataTransfer.clearData();
+      const { files } = e.dataTransfer;
+      if (!files?.length) {
+        console.warn("No files found in drop event");
+        return;
+      }
+
+      const droppedFiles = Array.from(files);
+      handleFilesSelect(droppedFiles);
+
+      // Clear the data transfer object
+      try {
+        e.dataTransfer.clearData();
+      } catch (clearError) {
+        console.warn("Failed to clear dataTransfer:", clearError);
+      }
+    } catch (error) {
+      console.error("Error handling file drop:", error);
+      setIsDragging(false);
+    }
   }, []);
 
   const removeFile = (fileId) => {
