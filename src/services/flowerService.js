@@ -10,7 +10,7 @@ const GalleryService = {
         params: {
           category,
           page: 1,
-          page_size: 100,
+          page_size: 200,
         },
       });
       return transformFlowerData(response?.data?.results) ?? [];
