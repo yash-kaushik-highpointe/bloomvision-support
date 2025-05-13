@@ -86,7 +86,7 @@ function Upload() {
     e.preventDefault();
     setIsDragging(false);
 
-    const droppedFiles = Array.from(e.dataTransfer.files);
+    const droppedFiles = Array.from(e?.dataTransfer?.files);
     handleFilesSelect(droppedFiles);
 
     // Clear the data transfer object
