@@ -7,8 +7,10 @@ import {
 import { ToastContainer } from "react-toastify";
 
 import Login from "./pages/Login";
+import Upload from "./pages/Upload";
 import Gallery from "./pages/Gallery";
 import Redirect from "./pages/Redirect";
+import Skeleton from "./pages/Skeleton";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 
@@ -16,7 +18,6 @@ import { ROUTES } from "./config/constants";
 import { authService } from "./services/authService";
 
 import "react-toastify/dist/ReactToastify.css";
-import Upload from "./pages/Upload";
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -45,6 +46,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="/organisations" element={<Dashboard />} />
+          <Route path="/skeleton" element={<Skeleton />} />
         </Route>
 
         <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />

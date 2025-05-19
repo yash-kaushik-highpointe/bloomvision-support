@@ -11,6 +11,8 @@ import FilePreview from "../components/Upload/FilePreview";
 import FlowerDetails from "../components/Upload/FlowerDetails";
 
 import { parseFileName } from "../utils/helper";
+import { addFlower } from "../store/slices/flowersSlice";
+import { useDispatch } from "react-redux";
 
 const BackIcon = () => (
   <svg
@@ -31,7 +33,7 @@ function Upload() {
   const activeTabRef = useRef();
 
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
   const [activeTab, setActiveTab] = useState("upload");
   const [isDragging, setIsDragging] = useState(false);
@@ -171,7 +173,9 @@ function Upload() {
           image: base64Image,
         };
 
-        await GalleryService.uploadImage(flowerData);
+        let data = await GalleryService.uploadImage(flowerData);
+
+        dispatch(addFlower({ ...data, dirtyMessage: "" }));
 
         toast.success(`${fileData.formData.name} is uploaded successfully`);
 
@@ -183,6 +187,7 @@ function Upload() {
         // If this was the active tab, switch to upload tab
         isStillActive(fileId);
       } catch (error) {
+        console.error("Error uploading image:", error);
         toast.error(`Failed to upload ${fileData.formData.name}`);
         // Reset saving state on error
         setFiles((prevFiles) =>
