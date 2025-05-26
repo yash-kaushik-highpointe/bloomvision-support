@@ -20,4 +20,5 @@
 .polotno-panel-container {
   margin-left: 15px;
   border-radius: 1rem;
+  overflow: auto;
 }
