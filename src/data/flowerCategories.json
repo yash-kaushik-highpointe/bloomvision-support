@@ -1,27 +1,16 @@
 [
-  {
-    "id": "largeRound",
-    "label": "Large Round"
-  },
-  {
-    "id": "smallRound",
-    "label": "Small Round"
-  },
-  {
-    "id": "mediumRound",
-    "label": "Medium Round"
-  },
+  { "id": "bouquetCollar", "label": "Bouquet Collar" },
   {
     "id": "bulk",
     "label": "Bulk"
   },
   {
-    "id": "dancing",
-    "label": "Dancing"
+    "id": "container",
+    "label": "Container"
   },
   {
-    "id": "lateral",
-    "label": "Lateral"
+    "id": "dancing",
+    "label": "Dancing"
   },
   {
     "id": "drapping",
@@ -32,39 +21,53 @@
     "label": "Filler"
   },
   {
-    "id": "stem",
-    "label": "Stem"
-  },
-  {
-    "id": "vase",
-    "label": "Vase"
-  },
-  {
     "id": "frame",
     "label": "Frame"
   },
+  { "id": "largeContainer", "label": "Large Container" },
   {
-    "id": "ribbon",
-    "label": "Ribbon"
+    "id": "largeDrapping",
+    "label": "Large Draping"
   },
   {
     "id": "largeLateral",
     "label": "Large Lateral"
   },
   {
-    "id": "largeDrapping",
-    "label": "Large Draping"
+    "id": "largeRound",
+    "label": "Large Round"
+  },
+  {
+    "id": "lateral",
+    "label": "Lateral"
+  },
+  {
+    "id": "mediumRound",
+    "label": "Medium Round"
   },
   {
     "id": "pedestal",
     "label": "Pedestal"
   },
   {
+    "id": "ribbon",
+    "label": "Ribbon"
+  },
+  { "id": "smallDancing", "label": "Small Dancing" },
+  {
+    "id": "smallRound",
+    "label": "Small Round"
+  },
+  {
+    "id": "stem",
+    "label": "Stem"
+  },
+  {
     "id": "urn",
     "label": "Urn"
   },
   {
-    "id": "container",
-    "label": "Container"
+    "id": "vase",
+    "label": "Vase"
   }
 ]

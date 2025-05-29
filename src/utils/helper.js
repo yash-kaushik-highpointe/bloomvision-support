@@ -40,8 +40,10 @@ export function parseFileName(fileName) {
   // Split the filename by underscore
   const parts = fileName.split("_");
 
+  console.log(parts);
+
   // Check if the filename follows the expected structure
-  if (parts.length !== 4) {
+  if (parts.length < 4) {
     return { name: "", color: "", category: "" };
   }
 
@@ -57,6 +59,10 @@ export function parseFileName(fileName) {
     .replace(/\+/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
+  const transformColor = color
+    .replace(/\-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
   // Transform category: handle round categories
   let transformedCategory = category;
   if (category === "large+round") transformedCategory = "largeRound";
@@ -65,7 +71,7 @@ export function parseFileName(fileName) {
 
   return {
     name: transformedName,
-    color: colorMatch[color] ?? "",
+    color: colorMatch[transformColor] ?? "",
     category: transformedCategory,
   };
 }
