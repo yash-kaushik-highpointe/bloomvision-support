@@ -134,10 +134,12 @@ function FlowerList({
                   >
                     {img.name}
                   </span>
-                  <span
-                    className="w-[20px] h-[20px] rounded-full border border-gray-200 flex-shrink-0"
-                    style={{ backgroundColor: img.color }}
-                  />
+                  {img.color !== "#zzzzzz" && (
+                    <span
+                      className="w-[20px] h-[20px] rounded-full border border-gray-200 flex-shrink-0"
+                      style={{ backgroundColor: img.color }}
+                    />
+                  )}
                 </div>
               </div>
             ))}

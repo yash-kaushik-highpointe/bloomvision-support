@@ -1,4 +1,5 @@
 [
+  { "label": "Show All", "id": "#zzzzzz" },
   { "label": "Navy", "id": "#000080" },
   { "label": "Dusty Blue", "id": "#0077be" },
   { "label": "Blue Green", "id": "#00b4d8" },

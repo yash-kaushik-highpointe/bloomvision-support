@@ -3,7 +3,12 @@ import colorMatch from "../data/colorMatch.json";
 export function transformFlowerData(apiResponse) {
   if (!apiResponse) return;
 
-  const roundCategories = ["largeRound", "mediumRound", "smallRound"];
+  const roundCategories = [
+    "largeRound",
+    "mediumRound",
+    "smallRound",
+    "bouquetCollar",
+  ];
 
   return apiResponse.flatMap((flower) => {
     const { category, name, color, image_detail, id } = flower;
