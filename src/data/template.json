@@ -4,28 +4,12 @@
     "label": "Bouquet",
     "skeletons": [
       {
-        "id": "6004fd63-f353-4f69-a7a8-c0b203431b6c",
-        "label": "Large Bouquet"
-      },
-      {
-        "id": "cae4d955-a091-4057-97c2-94cacf8b3d52",
-        "label": "Large Mono Floral"
-      },
-      {
-        "id": "5a6c5992-3c9c-4c1a-a6c5-5530a117a011",
-        "label": "Medium Mono Floral"
-      },
-      {
         "id": "5cf62703-0fd6-4e58-b689-f3e304e8087d",
         "label": "Poppy Bouquet"
       },
       {
         "id": "f5a09e08-0d3e-4e69-9361-b8052161b009",
         "label": "Garden Bouquet"
-      },
-      {
-        "id": "open-garden-commingsoon",
-        "label": "Open Garden"
       },
       {
         "id": "0d587e97-aee8-4331-ac46-68844513f73b",
@@ -44,18 +28,6 @@
       {
         "id": "04c70558-d317-4def-b1fe-e24a892df2b4",
         "label": "Low Poppy"
-      },
-      {
-        "id": "8272c47c-23bf-436e-ae25-3286ca7d5fa0",
-        "label": "Centerpiece Bouquet"
-      },
-      {
-        "id": "compote-centerpiece-commingsoon",
-        "label": "Compote Centerpiece"
-      },
-      {
-        "id": "open-compote-commingsoon",
-        "label": "Open Compote"
       },
       {
         "id": "375b9b06-fa65-482e-9808-a4995c32c62c",
