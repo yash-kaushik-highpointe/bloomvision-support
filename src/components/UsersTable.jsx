@@ -172,7 +172,7 @@ const UsersTable = ({
                   {org.owner.email}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {formatDate(org.owner.trial_ends)}
+                  {formatDate(org.trial_ends)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
@@ -211,7 +211,7 @@ const UsersTable = ({
                         className="w-5 h-5"
                       />
                     </button>
-                    {org.owner.trial_ends && (
+                    {org.trial_ends && (
                       <button
                         onClick={() => handleOpenModal(org)}
                         className="rounded-full hover:bg-gray-100 transition-colors duration-200 w-8 h-8 flex items-center justify-center"
