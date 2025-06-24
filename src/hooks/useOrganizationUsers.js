@@ -63,7 +63,6 @@ export const useOrganizationUsers = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedOwner(null);
     setNewTrialDate("");
   };
 
