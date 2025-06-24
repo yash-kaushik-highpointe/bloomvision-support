@@ -53,8 +53,8 @@ export const useOrganizationUsers = () => {
 
   const handleOpenModal = (org) => {
     setSelectedOrganization(org);
-    const formattedDate = org.owner.trial_ends
-      ? new Date(org.owner.trial_ends).toISOString().split("T")[0]
+    const formattedDate = org.trial_ends
+      ? new Date(org.trial_ends).toISOString().split("T")[0]
       : new Date().toISOString().split("T")[0];
     setNewTrialDate(formattedDate);
     setIsModalOpen(true);
@@ -83,10 +83,7 @@ export const useOrganizationUsers = () => {
           if (org.owner.id === selectedOrganization.owner.id) {
             return {
               ...org,
-              owner: {
-                ...org.owner,
-                trial_ends: newTrialDate,
-              },
+              trial_ends: newTrialDate,
             };
           }
           return org;
@@ -137,7 +134,7 @@ export const useOrganizationUsers = () => {
       await organizationService.updateTemplateAccess(
         ownerId,
         selectedTemplateIds,
-        org.owner.trial_ends
+        org.trial_ends
       );
 
       setUsers(
