@@ -1,12 +1,10 @@
 import axios from "axios";
 import { transformFlowerData } from "../utils/helper";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-const GalleryService = {
+const GalleryService = (baseURL) => ({
   getImagesByCategory: async (category) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}flowers/all/`, {
+      const response = await axios.get(`${baseURL}flowers/all/`, {
         params: {
           category,
           page: 1,
@@ -35,7 +33,7 @@ const GalleryService = {
       formData.append("image", imageData);
 
       const response = await axios.put(
-        `${API_BASE_URL}flowers/update/${flowerId}/`,
+        `${baseURL}flowers/update/${flowerId}/`,
         formData,
         {
           headers: {
@@ -64,7 +62,7 @@ const GalleryService = {
       formData.append("flower_id", flowerId);
 
       const response = await axios.post(
-        `${API_BASE_URL}flowers/views/create/`,
+        `${baseURL}flowers/views/create/`,
         formData,
         {
           headers: {
@@ -92,15 +90,11 @@ const GalleryService = {
       formData.append("description", flowerData.name);
       formData.append("image", imageData);
 
-      const response = await axios.post(
-        `${API_BASE_URL}flowers/create/`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(`${baseURL}flowers/create/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return response.data;
     } catch (error) {
       throw error;
@@ -109,13 +103,13 @@ const GalleryService = {
   deleteImage: async (flowerId, substituteFlowerId) => {
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}flowers/delete/${flowerId}/?substitute_flower=${substituteFlowerId}`
+        `${baseURL}flowers/delete/${flowerId}/?substitute_flower=${substituteFlowerId}`
       );
       return response.data;
     } catch (error) {
       throw error;
     }
   },
-};
+});
 
 export default GalleryService;

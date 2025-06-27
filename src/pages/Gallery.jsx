@@ -8,7 +8,9 @@ import GalleryService from "../services/flowerService";
 import RightPanel from "../components/GalleryRightPanel";
 import CategoryDropdown from "../components/Dropdown";
 
-function Gallery() {
+import { CONFIG } from "../App";
+
+function Gallery({ env }) {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -84,11 +86,12 @@ function Gallery() {
 
   useEffect(() => {
     setLoading(true);
-    GalleryService.getImagesByCategory(selectedCategory)
+    GalleryService(CONFIG[env])
+      .getImagesByCategory(selectedCategory)
       .then((imgs) => setImages(imgs))
       .catch((_) => toast.error("Failed to fetch Images"))
       .finally(() => setLoading(false));
-  }, [selectedCategory]);
+  }, [selectedCategory, env]);
 
   return (
     <div className="flex h-full">
@@ -100,7 +103,7 @@ function Gallery() {
       )}
       <button
         onClick={() => navigate("/upload")}
-        className="fixed top-4 right-4 bg-[#827a3a] hover:bg-[#827a3a] text-white px-4 py-2 rounded-lg shadow-md transition-colors z-10"
+        className="fixed top-4 right-[7rem] bg-[#827a3a] hover:bg-[#827a3a] text-white px-4 py-2 rounded-lg shadow-md transition-colors z-10"
       >
         Add New Images
       </button>

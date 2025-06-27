@@ -45,8 +45,6 @@ export function parseFileName(fileName) {
   // Split the filename by underscore
   const parts = fileName.split("_");
 
-  console.log(parts);
-
   // Check if the filename follows the expected structure
   if (parts.length < 4) {
     return { name: "", color: "", category: "" };

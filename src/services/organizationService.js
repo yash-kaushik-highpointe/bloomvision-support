@@ -1,11 +1,9 @@
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-const organizationService = {
+const OrganizationService = (baseURL) => ({
   getOrganizationUsers: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}organisations/owners/`);
+      const response = await axios.get(`${baseURL}organisations/owners/`);
       return response.data;
     } catch (error) {
       console.error("Error fetching organization users:", error);
@@ -14,7 +12,7 @@ const organizationService = {
   },
   updateTrialEndDate: async (ownerId, newDate, skeletons) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}users/update/trial/`, {
+      const response = await axios.post(`${baseURL}users/update/trial/`, {
         skeletons,
         trial_ends: newDate,
         owner_id: ownerId,
@@ -28,7 +26,7 @@ const organizationService = {
   deleteOrganization: async (organizationId) => {
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}organisations/${organizationId}/`
+        `${baseURL}organisations/${organizationId}/`
       );
       return response.data;
     } catch (error) {
@@ -38,7 +36,7 @@ const organizationService = {
   },
   updateTemplateAccess: async (ownerId, skeletons, trial_ends) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}users/update/trial/`, {
+      const response = await axios.post(`${baseURL}users/update/trial/`, {
         skeletons,
         trial_ends,
         owner_id: ownerId,
@@ -49,6 +47,6 @@ const organizationService = {
       throw error;
     }
   },
-};
+});
 
-export default organizationService;
+export default OrganizationService;

@@ -1,17 +1,64 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import teamIcon from "../assets/team.svg";
 import galleryIcon from "../assets/gallery.svg";
 
-const Layout = () => {
+// Toggle Switch Component
+const ToggleSwitch = ({ isOn, onToggle }) => {
+  return (
+    <button
+      onClick={onToggle}
+      className={`relative inline-flex h-6 w-16 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#7a7a3a] focus:ring-offset-2 ${
+        isOn ? "bg-[#7a7a3a]" : "bg-gray-300"
+      }`}
+      role="switch"
+      aria-checked={isOn}
+    >
+      {/* Dev Text - visible when toggle is OFF */}
+      <span
+        className={`absolute right-3 text-xs font-medium transition-opacity ${
+          isOn ? "opacity-0" : "opacity-100"
+        } ${isOn ? "text-transparent" : "text-gray-600"}`}
+      >
+        Dev
+      </span>
+
+      {/* Prod Text - visible when toggle is ON */}
+      <span
+        className={`absolute left-2 text-xs font-medium transition-opacity ${
+          isOn ? "opacity-100" : "opacity-0"
+        } ${isOn ? "text-white" : "text-transparent"}`}
+      >
+        Prod
+      </span>
+
+      {/* Toggle Circle */}
+      <span
+        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+          isOn ? "translate-x-10" : "translate-x-1"
+        }`}
+      />
+    </button>
+  );
+};
+
+const Layout = ({ handleEnvChange }) => {
   const location = useLocation();
+  const [isToggleOn, setIsToggleOn] = useState(false);
+
   const isOrgActive =
     location.pathname === "/organisations" ||
     location.pathname === "/organization";
   const isGalleryActive = location.pathname === "/gallery";
 
+  const handleToggle = () => {
+    setIsToggleOn((prev) => !prev);
+    handleEnvChange(!isToggleOn ? "prod" : "dev");
+  };
+
   return (
-    <div className="flex flex-col h-screen items-center overflow-hidden bg-gray-100">
+    <div className="relative flex flex-col h-screen items-center overflow-hidden bg-gray-100">
       {/* Navigation Bar */}
       <nav className="bg-[#e3e6d3] border-b border-gray-200 px-4 sm:px-6 py-3 w-full max-w-md mx-auto rounded-b-[15px]">
         <div className="flex justify-center items-center gap-x-8">
@@ -40,6 +87,9 @@ const Layout = () => {
         </div>
       </nav>
 
+      <div className="absolute right-10 top-[1.5rem] ">
+        <ToggleSwitch isOn={isToggleOn} onToggle={handleToggle} />
+      </div>
       {/* Main Content */}
       <main className="flex-1 w-full overflow-auto">
         <Outlet />

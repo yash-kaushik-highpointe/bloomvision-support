@@ -7,7 +7,7 @@ import FullScreenLoader from "../components/FullScreenLoader";
 
 import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
 
-const Dashboard = () => {
+const Dashboard = ({ env }) => {
   const {
     users,
     error,
@@ -27,7 +27,7 @@ const Dashboard = () => {
     handleOpenTemplateModal,
     handleCloseTemplateModal,
     handleUpdateTemplateAccess,
-  } = useOrganizationUsers();
+  } = useOrganizationUsers(env);
 
   return (
     <div className="h-full">

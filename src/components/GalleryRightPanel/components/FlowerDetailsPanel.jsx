@@ -10,7 +10,9 @@ import React, {
 import Dropdown from "../../Dropdown";
 import GalleryService from "../../../services/flowerService";
 
-function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
+import { CONFIG } from "../../../App";
+
+function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate, env }) {
   const fileInputRef = useRef();
   const view2InputRef = useRef();
 
@@ -73,8 +75,11 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate }) {
       };
 
       const updatedFlower = formState.isDirtyUpload
-        ? await GalleryService.uploadDirtyView(flower.flowerId, updateData)
-        : await GalleryService.updateImage(flower.id, updateData);
+        ? await GalleryService(CONFIG[env]).uploadDirtyView(
+            flower.flowerId,
+            updateData
+          )
+        : await GalleryService(CONFIG[env]).updateImage(flower.id, updateData);
 
       setFormState((prev) => ({
         ...prev,

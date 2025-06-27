@@ -2,12 +2,13 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import organizationService from "../services/organizationService";
+import OrganizationService from "../services/organizationService";
 
+import { CONFIG } from "../App";
 import { ROUTES } from "../config/constants";
 import { authService } from "../services/authService";
 
-export const useOrganizationUsers = () => {
+export const useOrganizationUsers = (env) => {
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
@@ -27,11 +28,14 @@ export const useOrganizationUsers = () => {
     }
 
     fetchUsers();
-  }, [navigate]);
+  }, [navigate, env]);
 
   const fetchUsers = async () => {
     try {
-      const data = await organizationService.getOrganizationUsers();
+      setLoading(true);
+      const data = await OrganizationService(
+        CONFIG[env]
+      ).getOrganizationUsers();
       setUsers(data);
     } catch (err) {
       setError("Failed to fetch organization users");
@@ -71,7 +75,7 @@ export const useOrganizationUsers = () => {
 
     setIsUpdating(true);
     try {
-      await organizationService.updateTrialEndDate(
+      await OrganizationService(CONFIG[env]).updateTrialEndDate(
         selectedOrganization.owner.id,
         newTrialDate,
         selectedOrganization.skeletons
@@ -102,7 +106,7 @@ export const useOrganizationUsers = () => {
   const handleDelete = async (organizationId) => {
     setIsDeleting(true);
     try {
-      await organizationService.deleteOrganization(organizationId);
+      await OrganizationService(CONFIG[env]).deleteOrganization(organizationId);
       setUsers(users.filter((org) => org.id !== organizationId));
       toast.success("Organization deleted successfully");
     } catch (err) {
@@ -130,7 +134,7 @@ export const useOrganizationUsers = () => {
     selectedTemplateIds
   ) => {
     try {
-      await organizationService.updateTemplateAccess(
+      await OrganizationService(CONFIG[env]).updateTemplateAccess(
         ownerId,
         selectedTemplateIds,
         org.trial_ends

@@ -10,6 +10,7 @@ import UploadArea from "../components/Upload/UploadArea";
 import FilePreview from "../components/Upload/FilePreview";
 import FlowerDetails from "../components/Upload/FlowerDetails";
 
+import { CONFIG } from "../App";
 import { parseFileName } from "../utils/helper";
 
 const BackIcon = () => (
@@ -27,7 +28,7 @@ const BackIcon = () => (
   </svg>
 );
 
-function Upload() {
+function Upload({ env }) {
   const activeTabRef = useRef();
 
   const navigate = useNavigate();
@@ -171,7 +172,7 @@ function Upload() {
           image: base64Image,
         };
 
-        await GalleryService.uploadImage(flowerData);
+        await GalleryService(CONFIG[env]).uploadImage(flowerData);
 
         toast.success(`${fileData.formData.name} is uploaded successfully`);
 

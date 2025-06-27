@@ -4,8 +4,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { setToken } from "../utils/auth";
 import { authenticateWithCode } from "../api/auth";
+import { CONFIG } from "../App";
 
-const Redirect = () => {
+const Redirect = ({ env }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
@@ -19,7 +20,7 @@ const Redirect = () => {
           return;
         }
 
-        const { access_token } = await authenticateWithCode(code);
+        const { access_token } = await authenticateWithCode(CONFIG[env], code);
         setToken(access_token);
         navigate("/organisations");
       } catch (error) {

@@ -4,6 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 import Login from "./pages/Login";
@@ -27,24 +28,35 @@ const ProtectedRoute = ({ children }) => {
   );
 };
 
+export const CONFIG = {
+  prod: import.meta.env.VITE_API_PROD_BASE_URL,
+  dev: import.meta.env.VITE_API_BASE_URL,
+};
+
 function App() {
+  const [env, setEnv] = useState("dev");
+
+  const handleEnvChange = (e) => {
+    setEnv((prev) => (prev === "dev" ? "prod" : "dev"));
+  };
+
   return (
     <Router>
       <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/redirect" element={<Redirect />} />
+        <Route path="/redirect" element={<Redirect env={env} />} />
 
         <Route
           element={
             <ProtectedRoute>
-              <Layout />
+              <Layout env={env} handleEnvChange={handleEnvChange} />
             </ProtectedRoute>
           }
         >
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/upload" element={<Upload />} />
-          <Route path="/organisations" element={<Dashboard />} />
+          <Route path="/gallery" element={<Gallery env={env} />} />
+          <Route path="/upload" element={<Upload env={env} />} />
+          <Route path="/organisations" element={<Dashboard env={env} />} />
         </Route>
 
         <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
