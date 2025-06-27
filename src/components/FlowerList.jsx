@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+
 import deleteIcon from "../assets/delete.svg";
 import GalleryService from "../services/flowerService";
-import { toast } from "react-toastify";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+
+import { CONFIG } from "../App";
 
 const ErrorSVG = () => (
   <svg
@@ -34,6 +37,7 @@ const ErrorSVG = () => (
 );
 
 function FlowerList({
+  env,
   images,
   loading,
   onSelect,
@@ -62,7 +66,7 @@ function FlowerList({
     setIsDeleting(true);
     setDeletingId(selectedFlowerToDelete.id);
     try {
-      await GalleryService.deleteImage(
+      await GalleryService(CONFIG[env]).deleteImage(
         selectedFlowerToDelete.id,
         substituteFlowerId
       );

@@ -119,6 +119,7 @@ function Gallery({ env }) {
           </div>
           <hr className="w-[calc(100%+2rem)] -mx-4 my-4 border-t-2 border-[#cdd1bc]" />
           <FlowerList
+            env={env}
             images={images}
             loading={loading}
             onSelect={setSelectedFlower}
@@ -131,6 +132,7 @@ function Gallery({ env }) {
       <div className="h-full w-[242px]" />
       {selectedFlower && (
         <RightPanel
+          env={env}
           selectedFlower={selectedFlower}
           selectedCategory={selectedCategory}
           onUpdate={handleFlowerUpdate}

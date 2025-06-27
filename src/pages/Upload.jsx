@@ -275,7 +275,7 @@ function Upload({ env }) {
       {activeTab !== "upload" && (
         <button
           onClick={() => setActiveTab("upload")}
-          className="fixed top-4 right-4 bg-[#827a3a] hover:bg-[#827a3a] text-white px-4 py-2 rounded-lg shadow-md transition-colors"
+          className="fixed top-4 right-[7rem] bg-[#827a3a] hover:bg-[#827a3a] text-white px-4 py-2 rounded-lg shadow-md transition-colors"
         >
           Upload
         </button>

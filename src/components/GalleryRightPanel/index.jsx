@@ -4,7 +4,7 @@ import colors from "../../data/colors.json";
 import ImageRenderer from "./components/ImageRender";
 import FlowerDetailsPanel from "./components/FlowerDetailsPanel";
 
-function RightPanel({ selectedFlower, selectedCategory, onUpdate }) {
+function RightPanel({ selectedFlower, selectedCategory, onUpdate, env }) {
   const [image, setImage] = useState(selectedFlower?.image);
 
   React.useEffect(() => {
@@ -19,6 +19,7 @@ function RightPanel({ selectedFlower, selectedCategory, onUpdate }) {
         selectedCategory={selectedCategory}
       />
       <FlowerDetailsPanel
+        env={env}
         colors={colors}
         onUpdate={onUpdate}
         onImageChange={setImage}

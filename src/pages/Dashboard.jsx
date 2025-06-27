@@ -1,13 +1,17 @@
 import { Tooltip } from "react-tooltip";
+import { useState } from "react";
 
 import UsersTable from "../components/UsersTable";
 import TrialDateModal from "../components/TrialDateModal";
 import TemplateAccessModal from "../components/TemplateAccessModal";
+import BetaTestUsersModal from "../components/BetaTestUsersModal";
 import FullScreenLoader from "../components/FullScreenLoader";
 
 import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
 
 const Dashboard = ({ env }) => {
+  const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
+
   const {
     users,
     error,
@@ -29,14 +33,32 @@ const Dashboard = ({ env }) => {
     handleUpdateTemplateAccess,
   } = useOrganizationUsers(env);
 
+  const handleOpenBetaModal = () => {
+    setIsBetaModalOpen(true);
+  };
+
+  const handleCloseBetaModal = () => {
+    setIsBetaModalOpen(false);
+  };
+
   return (
     <div className="h-full">
       {isDeleting && <FullScreenLoader />}
       <div className="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg p-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">
-            Organization Users
-          </h1>
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Organization Users
+            </h1>
+            {env === "prod" && (
+              <button
+                onClick={handleOpenBetaModal}
+                className="px-4 py-2 text-sm font-medium text-[#7a7a3a] bg-[#e3e6d3] rounded-md hover:bg-[#e3e6d3] transition-colors focus:outline-none focus:ring-2 focus:bg-[#e3e6d3] focus:ring-offset-2"
+              >
+                Beta Test Users
+              </button>
+            )}
+          </div>
 
           {loading ? (
             <div className="flex justify-center items-center h-64">
@@ -73,6 +95,12 @@ const Dashboard = ({ env }) => {
         onSave={handleUpdateTemplateAccess}
         ownerId={selectedOrganization?.owner.id}
         currentTemplates={selectedOrganization?.skeletons}
+      />
+
+      <BetaTestUsersModal
+        env={env}
+        isOpen={isBetaModalOpen}
+        onClose={handleCloseBetaModal}
       />
 
       <Tooltip
