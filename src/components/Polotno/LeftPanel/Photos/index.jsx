@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,7 +10,7 @@ import categories from "../../../../data/flowerCategories.json";
 import { CONFIG } from "../../../../App";
 import { fetchFlowersByCategory } from "../../../../store/slices/flowersSlice";
 
-function Photos({ store, env }) {
+const Photos = observer(({ store, env }) => {
   const dispatch = useDispatch();
 
   const { flowersByCategory, loading } = useSelector((state) => state.flowers);
@@ -51,6 +52,6 @@ function Photos({ store, env }) {
       />
     </div>
   );
-}
+});
 
 export default Photos;

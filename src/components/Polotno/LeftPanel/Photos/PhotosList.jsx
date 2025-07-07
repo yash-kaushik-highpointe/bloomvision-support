@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
 
 import { getPhotoStyles } from "../../utils";
 
-function PhotosList({ store, loading, images, selectedCategory }) {
+const PhotosList = observer(({ store, loading, images, selectedCategory }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredImages = images?.filter((img) =>
@@ -13,7 +14,7 @@ function PhotosList({ store, loading, images, selectedCategory }) {
     if (!store) return;
 
     // Get the current page
-    const currentPage = store.selectedPage;
+    const currentPage = store.activePage;
     if (!currentPage) return;
 
     // Calculate center position for the image
@@ -143,6 +144,6 @@ function PhotosList({ store, loading, images, selectedCategory }) {
       </div>
     </div>
   );
-}
+});
 
 export default PhotosList;
