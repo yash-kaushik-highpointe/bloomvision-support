@@ -1,97 +1,85 @@
 import { toast } from "react-toastify";
-import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import FlowerList from "../components/FlowerList";
+import CategoryDropdown from "../components/Dropdown";
 import categories from "../data/flowerCategories.json";
 import GalleryService from "../services/flowerService";
 import RightPanel from "../components/GalleryRightPanel";
-import CategoryDropdown from "../components/Dropdown";
+
+import {
+  deleteFlower,
+  updateFlower,
+  fetchFlowersByCategory,
+} from "../store/slices/flowersSlice";
 
 import { CONFIG } from "../App";
 
+const isOnceFetched = categories.reduce((acc, { id }) => {
+  acc[id] = false;
+  return acc;
+}, {});
+
 function Gallery({ env }) {
   const navigate = useNavigate();
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedFlower, setSelectedFlower] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
+
+  const { flowersByCategory, loading } = useSelector((state) => state.flowers);
+
+  const images = flowersByCategory[selectedCategory] || [];
 
   const handleCategoryChange = (...args) => {
     setSelectedCategory(...args);
     setSelectedFlower(null);
   };
 
-  const handleFlowerUpdate = (updatedFlower, isNewView2) => {
-    const searchKey = isNewView2 ? "flowerId" : "id";
-    const searchValue = isNewView2 ? updatedFlower.flowerId : updatedFlower.id;
-
-    setSelectedFlower(updatedFlower);
-
-    setImages((prevImages) => {
-      const newImages = [...prevImages];
-      const index = newImages.findIndex(
-        (flower) => flower[searchKey] === searchValue
+  const handleFlowerUpdate = async (updatedFlower, isNewView) => {
+    try {
+      dispatch(
+        updateFlower({
+          ...updatedFlower,
+          category: selectedCategory,
+          isNewView,
+        })
       );
-
-      if (index === -1) return prevImages;
-
-      if (isNewView2) {
-        newImages[index].dirtyMessage = "";
-        updatedFlower.dirtyMessage = "";
-
-        // Insert before or after based on view
-        if (updatedFlower.view === "view_1")
-          newImages.splice(index, 0, updatedFlower);
-        else if (updatedFlower.view === "view_2")
-          newImages.splice(index + 1, 0, updatedFlower);
-      } else {
-        newImages[index] = updatedFlower;
-      }
-
-      return newImages;
-    });
+      setSelectedFlower(updatedFlower);
+    } catch (error) {
+      toast.error("Failed to update flower");
+    }
   };
 
-  const handleFlowerDelete = (deletedFlower) => {
-    setImages((prevImages) => {
-      const newImages = [...prevImages];
-      const index = newImages.findIndex(
-        (flower) => flower.id === deletedFlower.id
-      );
-
-      if (index === -1) return prevImages;
-
-      // Remove the deleted flower
-      newImages.splice(index, 1);
-
-      // Update dirtyMessage for related flowers
-      newImages.forEach((flower) => {
-        if (flower.flowerId === deletedFlower.flowerId) {
-          if (deletedFlower.view === "view_1") {
-            flower.dirtyMessage = "View 1 missing";
-          } else if (deletedFlower.view === "view_2") {
-            flower.dirtyMessage = "View 2 missing";
-          }
-        }
-      });
-
-      return newImages;
-    });
-
-    setIsDeleting(false);
-    setSelectedFlower(null);
+  const handleFlowerDelete = async (deletedFlower) => {
+    try {
+      dispatch(deleteFlower({ ...deletedFlower, category: selectedCategory }));
+      setIsDeleting(false);
+      setSelectedFlower(null);
+    } catch (error) {
+      toast.error("Failed to delete flower");
+    }
   };
 
   useEffect(() => {
-    setLoading(true);
-    GalleryService(CONFIG[env])
-      .getImagesByCategory(selectedCategory)
-      .then((imgs) => setImages(imgs))
-      .catch((_) => toast.error("Failed to fetch Images"))
-      .finally(() => setLoading(false));
-  }, [selectedCategory, env]);
+    if (
+      !flowersByCategory[selectedCategory] ||
+      !isOnceFetched[selectedCategory]
+    ) {
+      isOnceFetched[selectedCategory] = true;
+      dispatch(
+        fetchFlowersByCategory({
+          category: selectedCategory,
+          baseUrl: CONFIG[env],
+        })
+      )
+        .unwrap()
+        .catch((_) => toast.error("Failed to fetch Images"));
+    }
+  }, [selectedCategory, dispatch, flowersByCategory, env]);
 
   return (
     <div className="flex h-full">

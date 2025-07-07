@@ -1,0 +1,24 @@
+.polotno-side-panel {
+  border-radius: 1rem;
+  background-color: #f3f4f6 !important;
+}
+
+.polotno-side-tabs-container {
+  border-radius: 1rem;
+  background-color: #e3e6d3;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.polotno-side-panel-tab.active {
+  background-color: white !important;
+}
+
+.polotno-side-panel-tab:hover {
+  background-color: white !important;
+}
+
+.polotno-panel-container {
+  margin-left: 15px;
+  border-radius: 1rem;
+  overflow: auto;
+}

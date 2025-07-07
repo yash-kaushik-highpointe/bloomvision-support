@@ -1,10 +1,10 @@
 import React from "react";
 import Select from "react-select";
 
-const customStyles = {
+const customStyles = (bgColor) => ({
   control: (provided) => ({
     ...provided,
-    background: "#f8faf3",
+    background: bgColor ?? "#f8faf3",
     minHeight: 40,
     boxShadow: "none",
     fontSize: 16,
@@ -25,9 +25,9 @@ const customStyles = {
     ...provided,
     zIndex: 10,
   }),
-};
+});
 
-function Dropdown({ options, value, onChange, ...rest }) {
+function Dropdown({ options, value, onChange, bgColor, ...rest }) {
   const selectOptions = options.map((cat) => ({
     value: cat.id,
     label: cat.label,
@@ -39,7 +39,7 @@ function Dropdown({ options, value, onChange, ...rest }) {
       options={selectOptions}
       value={selected}
       onChange={(opt) => onChange(opt.value)}
-      styles={customStyles}
+      styles={customStyles(bgColor)}
       isSearchable={false}
       menuPlacement="auto"
       {...rest}

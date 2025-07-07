@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useCallback, useRef, useEffect } from "react";
 
@@ -12,6 +13,7 @@ import FlowerDetails from "../components/Upload/FlowerDetails";
 
 import { CONFIG } from "../App";
 import { parseFileName } from "../utils/helper";
+import { addFlower } from "../store/slices/flowersSlice";
 
 const BackIcon = () => (
   <svg
@@ -32,6 +34,7 @@ function Upload({ env }) {
   const activeTabRef = useRef();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [files, setFiles] = useState([]);
   const [activeTab, setActiveTab] = useState("upload");
@@ -172,7 +175,9 @@ function Upload({ env }) {
           image: base64Image,
         };
 
-        await GalleryService(CONFIG[env]).uploadImage(flowerData);
+        let data = await GalleryService(CONFIG[env]).uploadImage(flowerData);
+
+        dispatch(addFlower({ ...data, dirtyMessage: "" }));
 
         toast.success(`${fileData.formData.name} is uploaded successfully`);
 

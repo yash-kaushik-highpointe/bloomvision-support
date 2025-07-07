@@ -153,13 +153,13 @@ function FlowerList({
 
       {isDeleteModalOpen && (
         <DeleteConfirmationModal
+          images={images}
+          onConfirm={handleConfirmDelete}
+          selectedFlower={selectedFlowerToDelete}
           onClose={() => {
             setIsDeleteModalOpen(false);
             setSelectedFlowerToDelete(null);
           }}
-          onConfirm={handleConfirmDelete}
-          images={images}
-          selectedFlower={selectedFlowerToDelete}
         />
       )}
     </div>

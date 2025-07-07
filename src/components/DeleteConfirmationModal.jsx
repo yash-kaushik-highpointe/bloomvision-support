@@ -29,10 +29,18 @@ const customStyles = {
   }),
 };
 
-const DeleteConfirmationModal = ({ onClose, onConfirm, images }) => {
+const DeleteConfirmationModal = ({
+  images,
+  onClose,
+  onConfirm,
+  selectedFlower,
+}) => {
   // Filter view_1 images and create options for the dropdown
   const view1Images = images.filter(
-    (img) => img.view === "view_1" && !img.dirtyMessage
+    (img) =>
+      img.view === "view_1" &&
+      !img.dirtyMessage &&
+      img.flowerId !== selectedFlower.flowerId
   );
 
   const options = view1Images.map((img) => {
