@@ -8,7 +8,8 @@ import { DownloadButton } from "polotno/toolbar/download-button";
 import { PolotnoContainer, WorkspaceWrap } from "polotno";
 
 import saveIcon from "../assets/save.svg";
-import RightPanel from "../components/Polotno/RightPanel";
+import LeftPanel from "../components/Polotno/LeftPanel";
+import { getAllImagesWithMetadata } from "../components/Polotno/utils";
 
 import "../assets/polotno.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
@@ -22,28 +23,20 @@ store.addPage();
 
 const ActionControls = ({ store }) => {
   const handleSave = () => {
-    const imageElements = store.pages.flatMap((page) =>
-      page.children.filter((el) => el.type === "image")
-    );
+    const imageData = getAllImagesWithMetadata(store);
 
-    // Extract relevant properties
-    const imageData = imageElements.map((image) => ({
-      name: image.name,
-      id: image.id,
-      src: image.src, // image source URL
-      x: image.x, // x position
-      y: image.y, // y position
-      width: image.width,
-      height: image.height,
-      rotation: image.rotation,
-      scaleX: image.scaleX,
-      scaleY: image.scaleY,
-      opacity: image.opacity,
-      pageId: image.page?.id, // if you want to track which page
-    }));
+    const imagesByCategory = imageData.reduce((acc, image) => {
+      const category = image.metadata.category || "unknown";
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(image);
+      return acc;
+    }, {});
 
-    console.log(imageData);
+    console.log("Images grouped by category:", imagesByCategory);
   };
+
   return (
     <div className="flex gap-2">
       <button className="flex items-center gap-2" onClick={handleSave}>
@@ -55,10 +48,10 @@ const ActionControls = ({ store }) => {
   );
 };
 
-const Editor = () => {
+const Editor = ({ env }) => {
   return (
     <PolotnoContainer className="p-5">
-      <RightPanel store={store} />
+      <LeftPanel store={store} env={env} />
       <WorkspaceWrap>
         <Toolbar store={store} components={{ ActionControls }} />
         <Workspace store={store} />

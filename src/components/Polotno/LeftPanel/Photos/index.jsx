@@ -6,9 +6,10 @@ import PhotosList from "./PhotosList";
 import CategoryDropdown from "../../../Dropdown";
 import categories from "../../../../data/flowerCategories.json";
 
+import { CONFIG } from "../../../../App";
 import { fetchFlowersByCategory } from "../../../../store/slices/flowersSlice";
 
-function Photos() {
+function Photos({ store, env }) {
   const dispatch = useDispatch();
 
   const { flowersByCategory, loading } = useSelector((state) => state.flowers);
@@ -21,7 +22,12 @@ function Photos() {
 
   useEffect(() => {
     if (!flowersByCategory[selectedCategory]) {
-      dispatch(fetchFlowersByCategory(selectedCategory))
+      dispatch(
+        fetchFlowersByCategory({
+          category: selectedCategory,
+          baseUrl: CONFIG[env],
+        })
+      )
         .unwrap()
         .catch((_) => toast.error("Failed to fetch Photos"));
     }
@@ -38,6 +44,7 @@ function Photos() {
       />
       <hr className="w-[calc(100%+1rem)] -mx-2 my-3 border-t-2 border-[#cdd1bc]" />
       <PhotosList
+        store={store}
         loading={loading}
         selectedCategory={selectedCategory}
         images={flowersByCategory[selectedCategory]}

@@ -6,15 +6,23 @@ import Photos from "./Photos";
 
 import { filterRightPanel } from "../utils";
 
-function RightPanel({ store }) {
+function LeftPanel({ store, env }) {
   const filteredSections = filterRightPanel(DEFAULT_SECTIONS);
 
   const photosSectionIndex = filteredSections.findIndex(
     ({ name }) => name === "photos"
   );
 
-  if (photosSectionIndex !== -1)
-    filteredSections[photosSectionIndex].Panel = Photos;
+  if (photosSectionIndex !== -1) {
+    const PhotosWrapper = React.useMemo(
+      (props) => {
+        return () => <Photos {...props} store={store} env={env} />;
+      },
+      [store, env]
+    );
+
+    filteredSections[photosSectionIndex].Panel = PhotosWrapper;
+  }
 
   return (
     <SidePanelWrap className="rounded-lg mr-5">
@@ -23,4 +31,4 @@ function RightPanel({ store }) {
   );
 }
 
-export default RightPanel;
+export default LeftPanel;
