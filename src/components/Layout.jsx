@@ -54,6 +54,8 @@ const Layout = ({ handleEnvChange }) => {
   const isGalleryActive = location.pathname === "/gallery";
   const isTemplateActive = location.pathname === "/template";
 
+  const disableEnvToggle = location.pathname.includes("/template/");
+
   const handleToggle = () => {
     setIsToggleOn((prev) => !prev);
     handleEnvChange(!isToggleOn ? "prod" : "dev");
@@ -89,7 +91,7 @@ const Layout = ({ handleEnvChange }) => {
           <Link
             to="/template"
             className={`flex items-center gap-x-2 px-3 py-2 rounded-lg transition-colors font-medium no-underline hover:no-underline focus:outline-none focus:ring-0 ${
-              isTemplateActive
+              isTemplateActive || disableEnvToggle
                 ? "bg-white text-[#7a7a3a] shadow font-semibold"
                 : "hover:bg-gray-100 text-gray-700"
             }`}
@@ -100,9 +102,11 @@ const Layout = ({ handleEnvChange }) => {
         </div>
       </nav>
 
-      <div className="absolute right-10 top-[1.5rem] ">
-        <ToggleSwitch isOn={isToggleOn} onToggle={handleToggle} />
-      </div>
+      {!disableEnvToggle && (
+        <div className="absolute right-10 top-[1.5rem] ">
+          <ToggleSwitch isOn={isToggleOn} onToggle={handleToggle} />
+        </div>
+      )}
       {/* Main Content */}
       <main className="flex-1 w-full overflow-auto">
         <Outlet />

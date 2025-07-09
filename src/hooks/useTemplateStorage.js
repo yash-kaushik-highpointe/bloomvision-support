@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import TemplateService from "../services/template";
 
@@ -19,6 +20,7 @@ export const useTemplateStorage = (env) => {
     } catch (error) {
       setError(error.message);
       toast.error("Unable to load templates");
+      setTemplates([]);
     } finally {
       setLoading(false);
     }
@@ -53,7 +55,7 @@ export const useTemplateStorage = (env) => {
 
   useEffect(() => {
     loadTemplates();
-  }, []);
+  }, [env]);
 
   return {
     templates,

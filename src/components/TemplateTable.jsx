@@ -1,5 +1,6 @@
 import React from "react";
 import { Edit, Trash, Copy, Pencil } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import { formatDate } from "../utils/helper";
 
@@ -9,6 +10,12 @@ const TemplateTable = ({
   onDeleteRecord,
   onDuplicateRecord,
 }) => {
+  const navigate = useNavigate();
+
+  const handleEditTemplate = ({ id }) => {
+    navigate(`/template/${id}`);
+  };
+
   return (
     <div className="overflow-x-auto max-h-[calc(100vh-328px)] mt-10">
       {templates.length === 0 ? (
@@ -88,6 +95,7 @@ const TemplateTable = ({
                       <Pencil className="w-4 h-4" />
                     </button>
                     <button
+                      onClick={() => handleEditTemplate(template)}
                       className="rounded-md p-0 hover:bg-accent hover:text-accent-foreground"
                       data-tooltip-id="edit-template-tooltip"
                       data-tooltip-content="Edit Template"

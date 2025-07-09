@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
 import Upload from "./pages/Upload";
 import Gallery from "./pages/Gallery";
+import Polotno from "./pages/Polotno";
 import Redirect from "./pages/Redirect";
 import Template from "./pages/Template";
 import Layout from "./components/Layout";
@@ -59,6 +60,7 @@ function App() {
           <Route path="/upload" element={<Upload env={env} />} />
           <Route path="/organisations" element={<Dashboard env={env} />} />
           <Route path="/template" element={<Template env={env} />} />
+          <Route path="/template/:id" element={<Polotno env={env} />} />
         </Route>
 
         <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />

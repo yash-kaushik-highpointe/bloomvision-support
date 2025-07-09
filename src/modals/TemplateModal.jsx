@@ -69,7 +69,7 @@ const TemplateModal = ({ isOpen, onClose, data, env, onSaveSuccess }) => {
       }
       setIsLoading(false);
       onSaveSuccess(response, mode);
-      onClose();
+      handleClose();
     }
   };
 
