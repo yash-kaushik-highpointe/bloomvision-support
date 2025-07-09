@@ -10,6 +10,24 @@ const TemplateService = (baseURL) => ({
       throw error;
     }
   },
+  createTemplate: async (data) => {
+    try {
+      const response = await axios.post(`${baseURL}items/drafts/`, data);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating template:", error);
+      throw error;
+    }
+  },
+  updateTemplate: async (id, data) => {
+    try {
+      const response = await axios.put(`${baseURL}items/drafts/${id}/`, data);
+      return response.data;
+    } catch (error) {
+      console.error("Error updating template:", error);
+      throw error;
+    }
+  },
 });
 
 export default TemplateService;

@@ -99,14 +99,14 @@ const TemplateAccessModal = ({
           <button
             onClick={onClose}
             disabled={isSaving}
-            className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded disabled:opacity-50"
+            className="px-4 py-2 text-gray-700 hover:bg-gray-100 border border-gray-300 rounded disabled:opacity-50"
           >
             Close
           </button>
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
+            className="px-4 py-2 bg-[#7a7a3a] text-white rounded hover:bg-[#7a7a3a] disabled:opacity-50 flex items-center gap-2"
           >
             {isSaving ? (
               <>

@@ -28,53 +28,17 @@ export const useTemplateStorage = (env) => {
     loadTemplates();
   };
 
-  const createTemplate = (name = "Untitled Template", category = "Bouquet") => {
-    const newTemplate = {
-      id: `template-${Date.now()}`,
-      name,
-      status: "In Progress",
-      category,
-      createdAt: new Date().toISOString(),
-      modifiedAt: new Date().toISOString(),
-      canvas: {
-        width: 800,
-        height: 800,
-        elements: [],
-      },
-    };
-
+  const createTemplate = (newTemplate) => {
     const updatedTemplates = [...templates, newTemplate];
     setTemplates(updatedTemplates);
-    return newTemplate;
   };
 
-  const updateTemplate = async (templateId, updates) => {
-    return new Promise((resolve, reject) => {
-      try {
-        const templateIndex = templates.findIndex((t) => t.id === templateId);
-
-        if (templateIndex === -1) {
-          const error = `Template not found: ${templateId}`;
-          reject(new Error(error));
-          return;
-        }
-
-        const existingTemplate = templates[templateIndex];
-        const updatedTemplate = {
-          ...existingTemplate,
-          ...updates,
-          modifiedAt: new Date().toISOString(),
-        };
-
-        const updatedTemplates = [...templates];
-        updatedTemplates[templateIndex] = updatedTemplate;
-        setTemplates(updatedTemplates);
-
-        resolve(updatedTemplate);
-      } catch (error) {
-        reject(error);
-      }
-    });
+  const updateTemplate = (updatedTemplate) => {
+    setTemplates((prevTemplates) =>
+      prevTemplates.map((t) =>
+        t.id === updatedTemplate.id ? updatedTemplate : t
+      )
+    );
   };
 
   const deleteTemplate = (templateId) => {

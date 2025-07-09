@@ -1,14 +1,26 @@
 import { useMemo } from "react";
+import { Tooltip } from "react-tooltip";
 import { Plus, Search } from "lucide-react";
 
 import Dropdown from "../components/Dropdown";
+import TemplateTable from "../components/TemplateTable";
+import TemplateModal from "../components/TemplateModal";
 
+import { useModal } from "../hooks/useModal";
 import { useSearchFilter } from "../hooks/useSearchFilter";
-import { STATUS_OPTIONS, CATEGORY_OPTIONS } from "../config/constants";
 import { useTemplateStorage } from "../hooks/useTemplateStorage";
+import { STATUS_OPTIONS, CATEGORY_OPTIONS } from "../config/constants";
 
 const Template = ({ env }) => {
-  const { templates, loading } = useTemplateStorage(env);
+  const { templates, loading, createTemplate, updateTemplate } =
+    useTemplateStorage(env);
+
+  const {
+    isOpen: isTemplateModalOpen,
+    data: templateModalData,
+    closeModal: closeTemplateModal,
+    openModal: openTemplateModal,
+  } = useModal();
 
   const {
     searchTerm,
@@ -32,6 +44,17 @@ const Template = ({ env }) => {
     },
   });
 
+  const handleSaveSuccess = (response, mode) => {
+    switch (mode) {
+      case "create":
+        createTemplate(response);
+        break;
+      case "update":
+        updateTemplate(response);
+        break;
+    }
+  };
+
   const { categoryOptions, statusOptions } = useMemo(() => {
     return {
       categoryOptions: CATEGORY_OPTIONS.map((opt) => ({
@@ -53,7 +76,10 @@ const Template = ({ env }) => {
             <h1 className="text-3xl font-bold text-gray-900">
               Flower Templates
             </h1>
-            <button className="px-4 py-2 text-sm font-medium text-[#7a7a3a] bg-[#e3e6d3] rounded-md hover:bg-[#e3e6d3] flex items-center transition-colors focus:outline-none focus:ring-2 focus:bg-[#e3e6d3] focus:ring-offset-2">
+            <button
+              className="px-4 py-2 text-sm font-medium text-[#7a7a3a] bg-[#e3e6d3] rounded-md hover:bg-[#e3e6d3] flex items-center transition-colors"
+              onClick={() => openTemplateModal()}
+            >
               <Plus className="w-4 h-4 mr-2" />
               Create New Template
             </button>
@@ -91,10 +117,70 @@ const Template = ({ env }) => {
               <p className="text-gray-600">Loading Templates...</p>
             </div>
           ) : (
-            <></>
+            <TemplateTable
+              templates={filteredTemplates}
+              onEditRecord={openTemplateModal}
+            />
           )}
+
+          <TemplateModal
+            env={env}
+            data={templateModalData}
+            isOpen={isTemplateModalOpen}
+            onClose={closeTemplateModal}
+            onSaveSuccess={handleSaveSuccess}
+          />
         </div>
       </div>
+
+      <Tooltip
+        id="edit-record-tooltip"
+        place="top"
+        style={{
+          backgroundColor: "#1F2937",
+          color: "white",
+          borderRadius: "4px",
+          padding: "4px 8px",
+          fontSize: "12px",
+          zIndex: 200,
+        }}
+      />
+      <Tooltip
+        id="edit-template-tooltip"
+        place="top"
+        style={{
+          backgroundColor: "#1F2937",
+          color: "white",
+          borderRadius: "4px",
+          padding: "4px 8px",
+          fontSize: "12px",
+          zIndex: 200,
+        }}
+      />
+      <Tooltip
+        id="duplicate-template-tooltip"
+        place="top"
+        style={{
+          backgroundColor: "#1F2937",
+          color: "white",
+          borderRadius: "4px",
+          padding: "4px 8px",
+          fontSize: "12px",
+          zIndex: 200,
+        }}
+      />
+      <Tooltip
+        id="delete-template-tooltip"
+        place="top"
+        style={{
+          backgroundColor: "#1F2937",
+          color: "white",
+          borderRadius: "4px",
+          padding: "4px 8px",
+          fontSize: "12px",
+          zIndex: 200,
+        }}
+      />
     </div>
   );
 };
