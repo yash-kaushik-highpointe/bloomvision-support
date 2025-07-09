@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 
-import { getPhotoStyles } from "../../utils";
+import { getElementDetails, getPhotoStyles } from "../../utils";
 
 const PhotosList = observer(({ store, loading, images, selectedCategory }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,69 +17,27 @@ const PhotosList = observer(({ store, loading, images, selectedCategory }) => {
     const currentPage = store.activePage;
     if (!currentPage) return;
 
-    // Calculate center position for the image
-    const pageWidth = currentPage.width;
-    const pageHeight = currentPage.height;
-
-    // Default image dimensions
-    let imageWidth = 200;
-    let imageHeight = 200;
-
-    // Adjust dimensions based on category
-    const SquareComponents = {
-      frame: true,
-      bulk: true,
-      filler: true,
-      container: true,
-      largeRound: true,
-      smallRound: true,
-      mediumRound: true,
-      bouquetCollar: true,
-      largeContainer: true,
-      urn: false,
-      stem: false,
-      vase: false,
-      ribbon: false,
-      lateral: false,
-      dancing: false,
-      drapping: false,
-      pedestal: false,
-      largeLateral: false,
-      smallDancing: false,
-      largeDrapping: false,
-    };
-
-    if (SquareComponents[selectedCategory]) {
-      imageWidth = 200;
-      imageHeight = 200;
-    } else {
-      imageWidth = 150;
-      imageHeight = 400;
-    }
-
-    // Calculate center position
-    const x = (pageWidth - imageWidth) / 2;
-    const y = (pageHeight - imageHeight) / 2;
+    let { x, y, width, height, metadata } = getElementDetails(
+      img,
+      store,
+      selectedCategory
+    );
 
     // Add the image element to the current page with metadata
     const element = currentPage.addElement({
+      x,
+      y,
+      width,
+      height,
       type: "image",
       src: img.image,
-      x: x,
-      y: y,
-      width: imageWidth,
-      height: imageHeight,
       name: img.name,
+      keepRatio: true,
+      metadata,
     });
 
     // Select the newly added element
-    store.selectElements([element]);
-
-    // Optional: Show a success message
-    console.log(
-      `Added ${img.name} to workspace with metadata:`,
-      element.metadata
-    );
+    store.selectElements([element.id]);
   };
 
   return (

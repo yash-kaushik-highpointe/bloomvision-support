@@ -36,6 +36,15 @@ const TemplateService = (baseURL) => ({
       throw error;
     }
   },
+  getTemplateDetails: async (id) => {
+    try {
+      const response = await axios.get(`${baseURL}items/drafts/${id}/`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching template details:", error);
+      throw error;
+    }
+  },
 });
 
 export default TemplateService;

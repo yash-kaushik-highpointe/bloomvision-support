@@ -24,3 +24,53 @@ export const CATEGORY_OPTIONS = [
   { value: "Centerpiece", label: "Centerpiece" },
   { value: "Ceremony", label: "Ceremony" },
 ];
+
+export const None = () => null;
+
+export const TOOLBAR_COMPONENTS = {
+  // Hide all text controls
+  TextFontFamily: None,
+  TextFontSize: None,
+  TextFontVariant: None,
+  TextFilters: None,
+  TextFill: None,
+  TextSpacing: None,
+  TextAnimations: None,
+  TextAiWrite: None,
+
+  // Hide most image controls, keep only flip
+  ImageFilters: None,
+  ImageCrop: None,
+  ImageClip: None,
+  ImageRemoveBackground: None,
+  ImageAnimations: None,
+
+  // Hide SVG controls except flip
+  SvgFilters: None,
+  SvgColors: None,
+  SvgAnimations: None,
+
+  // Hide line controls
+  LineSettings: None,
+  LineColor: None,
+  LineHeads: None,
+  LineAnimations: None,
+
+  // Hide figure controls
+  FigureFill: None,
+  FigureStroke: None,
+  FigureSettings: None,
+  FigureFilters: None,
+  FigureAnimations: None,
+
+  // Hide video controls
+  VideoTrim: None,
+  VideoAnimations: None,
+
+  // Hide other controls
+  ManyAnimations: None,
+  PageDuration: None,
+  PageBackground: None,
+  Opacity: None,
+  CopyStyle: None,
+};

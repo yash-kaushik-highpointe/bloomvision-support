@@ -47,7 +47,6 @@ export const getPhotoStyles = (selectedCategory) => {
     };
 };
 
-// Utility functions for working with image metadata
 export const getImageMetadata = (element) => {
   return element?.metadata || {};
 };
@@ -82,4 +81,27 @@ export const getImagesByCategory = (store, category) => {
 export const getImagesByFlowerId = (store, flowerId) => {
   const allImages = getAllImagesWithMetadata(store);
   return allImages.filter((image) => image.metadata.flowerId === flowerId);
+};
+
+export const getElementDetails = (imageData, store, category) => {
+  let { color, flowerId, id, view, name, image } = imageData;
+  // Calculate page dimensions
+  const pageWidth = +store.width;
+  const pageHeight = +store.height;
+
+  // Default image dimensions
+  let imageWidth = SquareComponents[category] ? 300 : 150;
+  let imageHeight = SquareComponents[category] ? 300 : 400;
+
+  // Calculate center position
+  const x = (pageWidth - imageWidth) / 2;
+  const y = (pageHeight - imageHeight) / 2;
+
+  return {
+    x,
+    y,
+    width: imageWidth,
+    height: imageHeight,
+    metadata: { color, flowerId, id, view, name, image },
+  };
 };
