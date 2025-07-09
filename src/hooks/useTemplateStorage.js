@@ -41,33 +41,14 @@ export const useTemplateStorage = (env) => {
     );
   };
 
-  const deleteTemplate = (templateId) => {
-    const updatedTemplates = templates.filter(
-      (template) => template.id !== templateId
-    );
+  const deleteTemplate = ({ id }) => {
+    const updatedTemplates = templates.filter((template) => template.id !== id);
     setTemplates(updatedTemplates);
   };
 
   const getTemplate = (templateId) => {
     const template = templates.find((template) => template.id === templateId);
     return template;
-  };
-
-  const duplicateTemplate = (templateId) => {
-    const template = getTemplate(templateId);
-    if (template) {
-      const duplicate = {
-        ...template,
-        id: `template-${Date.now()}`,
-        name: `${template.name} (Copy)`,
-        createdAt: new Date().toISOString(),
-        modifiedAt: new Date().toISOString(),
-      };
-
-      const updatedTemplates = [...templates, duplicate];
-      setTemplates(updatedTemplates);
-      return duplicate;
-    }
   };
 
   useEffect(() => {
@@ -78,11 +59,10 @@ export const useTemplateStorage = (env) => {
     templates,
     loading,
     error,
+    getTemplate,
     createTemplate,
     updateTemplate,
     deleteTemplate,
-    getTemplate,
-    duplicateTemplate,
     refreshTemplates,
   };
 };

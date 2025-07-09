@@ -4,7 +4,9 @@ import { Plus, Search } from "lucide-react";
 
 import Dropdown from "../components/Dropdown";
 import TemplateTable from "../components/TemplateTable";
-import TemplateModal from "../components/TemplateModal";
+import TemplateModal from "../modals/TemplateModal";
+import TemplateCloneModal from "../modals/TemplateCloneModal";
+import TemplateDeleteModal from "../modals/TemplateDeleteModal";
 
 import { useModal } from "../hooks/useModal";
 import { useSearchFilter } from "../hooks/useSearchFilter";
@@ -12,7 +14,7 @@ import { useTemplateStorage } from "../hooks/useTemplateStorage";
 import { STATUS_OPTIONS, CATEGORY_OPTIONS } from "../config/constants";
 
 const Template = ({ env }) => {
-  const { templates, loading, createTemplate, updateTemplate } =
+  const { templates, loading, createTemplate, updateTemplate, deleteTemplate } =
     useTemplateStorage(env);
 
   const {
@@ -20,6 +22,20 @@ const Template = ({ env }) => {
     data: templateModalData,
     closeModal: closeTemplateModal,
     openModal: openTemplateModal,
+  } = useModal();
+
+  const {
+    isOpen: isDuplicateModalOpen,
+    data: duplicateModalData,
+    closeModal: closeDuplicateModal,
+    openModal: openDuplicateModal,
+  } = useModal();
+
+  const {
+    isOpen: isDeleteModalOpen,
+    data: deleteModalData,
+    closeModal: closeDeleteModal,
+    openModal: openDeleteModal,
   } = useModal();
 
   const {
@@ -51,6 +67,9 @@ const Template = ({ env }) => {
         break;
       case "update":
         updateTemplate(response);
+        break;
+      case "delete":
+        deleteTemplate(response);
         break;
     }
   };
@@ -120,6 +139,8 @@ const Template = ({ env }) => {
             <TemplateTable
               templates={filteredTemplates}
               onEditRecord={openTemplateModal}
+              onDeleteRecord={openDeleteModal}
+              onDuplicateRecord={openDuplicateModal}
             />
           )}
 
@@ -128,6 +149,22 @@ const Template = ({ env }) => {
             data={templateModalData}
             isOpen={isTemplateModalOpen}
             onClose={closeTemplateModal}
+            onSaveSuccess={handleSaveSuccess}
+          />
+
+          <TemplateCloneModal
+            env={env}
+            data={duplicateModalData}
+            isOpen={isDuplicateModalOpen}
+            onClose={closeDuplicateModal}
+            onSaveSuccess={handleSaveSuccess}
+          />
+
+          <TemplateDeleteModal
+            env={env}
+            data={deleteModalData}
+            isOpen={isDeleteModalOpen}
+            onClose={closeDeleteModal}
             onSaveSuccess={handleSaveSuccess}
           />
         </div>

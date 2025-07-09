@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react";
 
-import Dropdown from "./Dropdown";
+import Dropdown from "../components/Dropdown";
 import TemplateService from "../services/template";
 
 import { CONFIG } from "../App";
 import { CATEGORY_OPTIONS, STATUS_OPTIONS } from "../config/constants";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./Dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "../components/Dialog";
 
 const Saving = () => (
   <>

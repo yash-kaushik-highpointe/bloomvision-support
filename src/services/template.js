@@ -28,6 +28,14 @@ const TemplateService = (baseURL) => ({
       throw error;
     }
   },
+  deleteTemplate: async (id) => {
+    try {
+      await axios.delete(`${baseURL}items/drafts/${id}/`);
+    } catch (error) {
+      console.error("Error deleting template:", error);
+      throw error;
+    }
+  },
 });
 
 export default TemplateService;

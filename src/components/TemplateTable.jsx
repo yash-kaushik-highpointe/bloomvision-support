@@ -5,10 +5,9 @@ import { formatDate } from "../utils/helper";
 
 const TemplateTable = ({
   templates,
-  onDelete,
-  onEdit,
   onEditRecord,
-  onDuplicate,
+  onDeleteRecord,
+  onDuplicateRecord,
 }) => {
   return (
     <div className="overflow-x-auto max-h-[calc(100vh-328px)] mt-10">
@@ -89,7 +88,6 @@ const TemplateTable = ({
                       <Pencil className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => onEdit(template.id)}
                       className="rounded-md p-0 hover:bg-accent hover:text-accent-foreground"
                       data-tooltip-id="edit-template-tooltip"
                       data-tooltip-content="Edit Template"
@@ -97,7 +95,7 @@ const TemplateTable = ({
                       <Edit className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => onDuplicate(template.id)}
+                      onClick={() => onDuplicateRecord(template)}
                       className="rounded-md p-0 hover:bg-accent hover:text-accent-foreground"
                       data-tooltip-id="duplicate-template-tooltip"
                       data-tooltip-content="Duplicate Template"
@@ -105,7 +103,7 @@ const TemplateTable = ({
                       <Copy className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => onDelete(template.id)}
+                      onClick={() => onDeleteRecord(template)}
                       className="rounded-md p-0 text-red-600 hover:text-red-700 hover:bg-accent hover:text-accent-foreground"
                       data-tooltip-id="delete-template-tooltip"
                       data-tooltip-content="Delete Template"
