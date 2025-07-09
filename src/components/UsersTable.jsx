@@ -17,8 +17,9 @@ import templateData from "../data/template.json";
 const UsersTable = ({
   users,
   formatDate,
-  handleOpenModal,
   handleDelete,
+  isAnyModalOpen,
+  handleOpenModal,
   selectedOrganization,
   handleOpenTemplateModal,
 }) => {
@@ -87,7 +88,7 @@ const UsersTable = ({
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto max-h-[calc(100vh-245px)]">
       {users.length === 0 ? (
         <div className="flex items-center justify-center h-64">
           <p className="text-gray-500 text-lg">No Organization</p>
@@ -95,52 +96,55 @@ const UsersTable = ({
       ) : (
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
-            <tr>
+            <tr
+              className="sticky top-0 h-[63px]"
+              style={isAnyModalOpen ? {} : { zIndex: 100 }}
+            >
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-[#f9fafb]"
               >
                 Profile
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[180px]"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[180px] bg-[#f9fafb]"
               >
                 Business Name
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px]"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px] bg-[#f9fafb]"
               >
                 Owner Name
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px]"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[300px] bg-[#f9fafb]"
               >
                 Email
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px] bg-[#f9fafb]"
               >
                 Trial Ends
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]"
-              >
-                Status
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px] bg-[#f9fafb]"
               >
                 Allowed Templates
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px] sticky right-0 bg-white z-10"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px] bg-[#f9fafb]"
+              >
+                Status
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px] sticky bg-[#f9fafb] right-0 z-10"
               >
                 Actions
               </th>
@@ -174,6 +178,12 @@ const UsersTable = ({
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {formatDate(org.trial_ends)}
                 </td>
+                <td
+                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                  onMouseLeave={() => setHoveredTemplate(null)}
+                >
+                  {getTemplateLabels(org.skeletons, org)}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
@@ -184,12 +194,6 @@ const UsersTable = ({
                   >
                     {org.owner.is_profile_complete ? "Complete" : "Incomplete"}
                   </span>
-                </td>
-                <td
-                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                  onMouseLeave={() => setHoveredTemplate(null)}
-                >
-                  {getTemplateLabels(org.skeletons, org)}
                 </td>
                 <td
                   className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 min-w-[150px] sticky right-0 bg-white ${

@@ -1,5 +1,5 @@
 import { Tooltip } from "react-tooltip";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import UsersTable from "../components/UsersTable";
 import TrialDateModal from "../components/TrialDateModal";
@@ -41,10 +41,14 @@ const Dashboard = ({ env }) => {
     setIsBetaModalOpen(false);
   };
 
+  const isAnyModalOpen = useMemo(() => {
+    return isModalOpen || isTemplateModalOpen || isBetaModalOpen;
+  }, [isModalOpen, isTemplateModalOpen, isBetaModalOpen]);
+
   return (
     <div className="h-full">
       {isDeleting && <FullScreenLoader />}
-      <div className="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-8xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg p-6">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900">
@@ -71,6 +75,7 @@ const Dashboard = ({ env }) => {
               users={users}
               formatDate={formatDate}
               handleDelete={handleDelete}
+              isAnyModalOpen={isAnyModalOpen}
               handleOpenModal={handleOpenModal}
               selectedOrganization={selectedOrganization}
               handleOpenTemplateModal={handleOpenTemplateModal}
@@ -106,37 +111,37 @@ const Dashboard = ({ env }) => {
       <Tooltip
         id="change-trial-tooltip"
         place="top"
-        className="z-50"
         style={{
           backgroundColor: "#1F2937",
           color: "white",
           borderRadius: "4px",
           padding: "4px 8px",
           fontSize: "12px",
+          zIndex: 200,
         }}
       />
       <Tooltip
         id="delete-tooltip"
         place="top"
-        className="z-50"
         style={{
           backgroundColor: "#1F2937",
           color: "white",
           borderRadius: "4px",
           padding: "4px 8px",
           fontSize: "12px",
+          zIndex: 200,
         }}
       />
       <Tooltip
         id="bouquet-tooltip"
         place="top"
-        className="z-50"
         style={{
           backgroundColor: "#1F2937",
           color: "white",
           borderRadius: "4px",
           padding: "4px 8px",
           fontSize: "12px",
+          zIndex: 200,
         }}
       />
     </div>
