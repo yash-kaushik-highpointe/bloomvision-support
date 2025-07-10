@@ -1,3 +1,26 @@
+const POSITION_PREFIX = {
+  frame: "fm",
+  bulk: "b",
+  filler: "f",
+  container: "c",
+  largeRound: "lr",
+  smallRound: "sr",
+  mediumRound: "mr",
+  bouquetCollar: "bc",
+  largeContainer: "lc",
+  urn: "u",
+  stem: "s",
+  vase: "v",
+  ribbon: "r",
+  lateral: "l",
+  dancing: "d",
+  drapping: "dp",
+  pedestal: "p",
+  largeLateral: "ll",
+  smallDancing: "sd",
+  largeDrapping: "ld",
+};
+
 export const filterRightPanel = (sections) => {
   let filteredSections = sections.filter(
     ({ name }) =>
@@ -51,26 +74,86 @@ export const getImageMetadata = (element) => {
   return element?.metadata || {};
 };
 
-export const getAllImagesWithMetadata = (store) => {
-  const imageElements = store.pages.flatMap((page) =>
-    page.children.filter((el) => el.type === "image")
-  );
+let positionCounter = {};
 
-  return imageElements.map((image) => ({
-    id: image.id,
-    name: image.name,
-    src: image.src,
-    x: image.x,
-    y: image.y,
-    width: image.width,
-    height: image.height,
-    rotation: image.rotation,
-    scaleX: image.scaleX,
-    scaleY: image.scaleY,
-    opacity: image.opacity,
-    pageId: image.page?.id,
-    metadata: getImageMetadata(image),
-  }));
+const getElementStack = (category, index) => {
+  return {
+    id: `${POSITION_PREFIX[category]}-${positionCounter[category]}`,
+    zIndex: index + 1,
+  };
+};
+
+const getElementDimensionsInPercentage = (
+  width,
+  height,
+  containerWidth,
+  containerHeight
+) => {
+  return {
+    width: +((width / containerWidth) * 100).toFixed(2),
+    height: +((height / containerHeight) * 100).toFixed(2),
+  };
+};
+
+const getElementPosition = (
+  child,
+  elementX,
+  elementY,
+  containerWidth,
+  containerHeight
+) => {
+  return {
+    flipX: child.flipX,
+    flipY: child.flipY,
+    rotate: child.rotation,
+    top: +((elementY / containerHeight) * 100).toFixed(2),
+    left: +((elementX / containerWidth) * 100).toFixed(2),
+  };
+};
+
+export const getTemplatePayload = (store, templateMetaData) => {
+  const canvasData = store.toJSON();
+  let tempTemplateMetaData = { ...templateMetaData };
+
+  const {
+    pages: [activePage],
+    width: containerWidth,
+    height: containerHeight,
+  } = canvasData;
+
+  const activeChildren = activePage.children;
+
+  activeChildren.forEach((child, index) => {
+    const { x, y, width, height, id } = child;
+
+    let metadata = { ...tempTemplateMetaData[id] };
+
+    if (positionCounter[metadata.category])
+      positionCounter[metadata.category]++;
+    else positionCounter[metadata.category] = 1;
+
+    metadata.dimensions = getElementDimensionsInPercentage(
+      width,
+      height,
+      containerWidth,
+      containerHeight
+    );
+
+    metadata.stack = getElementStack(metadata.category, index);
+
+    metadata.position = getElementPosition(
+      child,
+      x,
+      y,
+      containerWidth,
+      containerHeight
+    );
+
+    tempTemplateMetaData[id] = metadata;
+  });
+
+  positionCounter = {};
+  return { data: canvasData, metadata: tempTemplateMetaData };
 };
 
 export const getImagesByCategory = (store, category) => {
@@ -102,6 +185,6 @@ export const getElementDetails = (imageData, store, category) => {
     y,
     width: imageWidth,
     height: imageHeight,
-    metadata: { color, flowerId, id, view, name, image },
+    metadata: { color, flowerId, id, view, name, image, category },
   };
 };

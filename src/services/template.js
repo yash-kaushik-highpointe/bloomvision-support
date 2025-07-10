@@ -45,6 +45,18 @@ const TemplateService = (baseURL) => ({
       throw error;
     }
   },
+  saveTemplateDetails: async (id, data) => {
+    try {
+      const response = await axios.put(
+        `${baseURL}items/drafts/metadata/${id}/`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error saving template details:", error);
+      throw error;
+    }
+  },
 });
 
 export default TemplateService;
