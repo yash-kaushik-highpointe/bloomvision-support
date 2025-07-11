@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { observer } from "mobx-react-lite";
 
 import { getElementDetails, getPhotoStyles } from "../../utils";
-import { addMetadataEntry } from "../../../../store/slices/polotnoSlice";
 
 const PhotosList = observer(
   ({ store, loading, images, selectedCategory, templateId }) => {
-    const dispatch = useDispatch();
-
     const [searchQuery, setSearchQuery] = useState("");
 
     const filteredImages = images?.filter((img) =>
@@ -38,15 +34,8 @@ const PhotosList = observer(
         src: img.image,
         name: img.name,
         keepRatio: true,
+        custom: metadata,
       });
-
-      dispatch(
-        addMetadataEntry({
-          metadata,
-          templateId,
-          elementId: element.id,
-        })
-      );
 
       // Select the newly added element
       store.selectElements([element.id]);

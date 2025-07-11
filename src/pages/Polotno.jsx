@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Toolbar } from "polotno/toolbar/toolbar";
 import { Workspace } from "polotno/canvas/workspace";
 import { PolotnoContainer, WorkspaceWrap } from "polotno";
@@ -26,17 +26,13 @@ function Polotno({ env }) {
     saveTemplateDetails,
   } = usePolotnoStorage(env);
 
-  const { store, storeReady } = usePolotnoEditor(
-    templateId,
-    storeChanged,
-    templateData
-  );
+  const { store, storeReady } = usePolotnoEditor(storeChanged, templateData);
 
   if (loading || !storeReady) return <Loading />;
 
   return (
     <PolotnoContainer className="p-5">
-      <LeftPanel store={store} env={env} templateId={templateId} />
+      <LeftPanel env={env} store={store} templateId={templateId} />
       <WorkspaceWrap>
         <Toolbar
           store={store}
@@ -46,10 +42,10 @@ function Polotno({ env }) {
               isSaving,
               isStoreChanged,
               saveTemplateDetails,
-              templateMetaData: templateData.metadata,
             }),
           }}
         />
+
         <Workspace
           store={store}
           pageControlsEnabled={false}
@@ -59,6 +55,9 @@ function Polotno({ env }) {
         />
         <ZoomButtons store={store} />
       </WorkspaceWrap>
+      {isSaving && (
+        <div className="absolute inset-0 z-50 bg-white/40 pointer-events-auto flex items-center justify-center" />
+      )}
     </PolotnoContainer>
   );
 }

@@ -111,9 +111,21 @@ const getElementPosition = (
   };
 };
 
-export const getTemplatePayload = (store, templateMetaData) => {
+// Helper to recursively flatten all children (including nested groups)
+const flattenChildren = (children) => {
+  let result = [];
+  for (const child of children) {
+    if (child.type === "group" && Array.isArray(child.children)) {
+      result = result.concat(flattenChildren(child.children));
+    } else {
+      result.push(child);
+    }
+  }
+  return result;
+};
+
+export const getTemplatePayload = (store) => {
   const canvasData = store.toJSON();
-  let tempTemplateMetaData = { ...templateMetaData };
 
   const {
     pages: [activePage],
@@ -121,27 +133,29 @@ export const getTemplatePayload = (store, templateMetaData) => {
     height: containerHeight,
   } = canvasData;
 
-  const activeChildren = activePage.children;
+  const allChildren = flattenChildren(activePage.children);
 
-  activeChildren.forEach((child, index) => {
+  let indexCounter = 0;
+  let metadata = {};
+
+  for (const child of allChildren) {
     const { x, y, width, height, id } = child;
+    let tempMetadata = { ...child.custom };
 
-    let metadata = { ...tempTemplateMetaData[id] };
+    if (positionCounter[tempMetadata.category])
+      positionCounter[tempMetadata.category]++;
+    else positionCounter[tempMetadata.category] = 1;
 
-    if (positionCounter[metadata.category])
-      positionCounter[metadata.category]++;
-    else positionCounter[metadata.category] = 1;
-
-    metadata.dimensions = getElementDimensionsInPercentage(
+    tempMetadata.dimensions = getElementDimensionsInPercentage(
       width,
       height,
       containerWidth,
       containerHeight
     );
 
-    metadata.stack = getElementStack(metadata.category, index);
+    tempMetadata.stack = getElementStack(tempMetadata.category, indexCounter);
 
-    metadata.position = getElementPosition(
+    tempMetadata.position = getElementPosition(
       child,
       x,
       y,
@@ -149,11 +163,13 @@ export const getTemplatePayload = (store, templateMetaData) => {
       containerHeight
     );
 
-    tempTemplateMetaData[id] = metadata;
-  });
+    metadata[id] = tempMetadata;
+    indexCounter++;
+  }
 
   positionCounter = {};
-  return { data: canvasData, metadata: tempTemplateMetaData };
+
+  return { data: canvasData, metadata };
 };
 
 export const getImagesByCategory = (store, category) => {

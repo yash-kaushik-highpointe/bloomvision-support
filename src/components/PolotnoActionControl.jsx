@@ -1,10 +1,12 @@
 import SaveButton from "./SaveButton";
 
+import { getTemplatePayload } from "./Polotno/utils";
+
 const ActionControls =
-  ({ templateMetaData, saveTemplateDetails, isSaving, isStoreChanged }) =>
+  ({ saveTemplateDetails, isSaving, isStoreChanged }) =>
   ({ store }) => {
     const handleSave = async () => {
-      const payload = getTemplatePayload(store, templateMetaData);
+      const payload = getTemplatePayload(store);
       await saveTemplateDetails(payload);
     };
 

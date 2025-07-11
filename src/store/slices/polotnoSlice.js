@@ -29,31 +29,6 @@ const polotnoSlice = createSlice({
     clearAllTemplates: (state) => {
       state.templates = {};
     },
-    updateTemplateData: (state, action) => {
-      const { templateId, data } = action.payload;
-      if (state.templates[templateId]) {
-        state.templates[templateId] = {
-          ...state.templates[templateId],
-          ...data,
-        };
-      }
-    },
-    addMetadataEntry: (state, action) => {
-      const { templateId, elementId, metadata } = action.payload;
-      if (!state.templates[templateId]) {
-        state.templates[templateId] = { data: {}, metadata: {} };
-      }
-      if (!state.templates[templateId].metadata) {
-        state.templates[templateId].metadata = {};
-      }
-      state.templates[templateId].metadata[elementId] = metadata;
-    },
-    deleteMetadataEntry: (state, action) => {
-      const { templateId, elementId } = action.payload;
-      if (state.templates[templateId]?.metadata?.[elementId]) {
-        delete state.templates[templateId].metadata[elementId];
-      }
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -74,12 +49,6 @@ const polotnoSlice = createSlice({
   },
 });
 
-export const {
-  clearTemplate,
-  clearAllTemplates,
-  updateTemplateData,
-  addMetadataEntry,
-  deleteMetadataEntry,
-} = polotnoSlice.actions;
+export const { clearTemplate, clearAllTemplates } = polotnoSlice.actions;
 
 export default polotnoSlice.reducer;

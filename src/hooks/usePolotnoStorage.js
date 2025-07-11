@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import TemplateService from "../services/template";
@@ -42,9 +42,9 @@ export const usePolotnoStorage = (env) => {
     }
   };
 
-  const storeChanged = () => {
+  const storeChanged = useCallback(() => {
     setIsStoreChanged(true);
-  };
+  }, []);
 
   // Fetch template data if not already in store
   useEffect(() => {
