@@ -1,3 +1,6 @@
+import * as svg from "polotno/utils/svg";
+import GridSection from "./LeftPanel/GridSection";
+
 const POSITION_PREFIX = {
   frame: "fm",
   bulk: "b",
@@ -31,7 +34,7 @@ export const filterRightPanel = (sections) => {
       name !== "background"
   );
 
-  return filteredSections;
+  return [...filteredSections, GridSection];
 };
 
 const SquareComponents = {
@@ -111,13 +114,12 @@ const getElementPosition = (
   };
 };
 
-// Helper to recursively flatten all children (including nested groups)
 const flattenChildren = (children) => {
   let result = [];
   for (const child of children) {
     if (child.type === "group" && Array.isArray(child.children)) {
       result = result.concat(flattenChildren(child.children));
-    } else {
+    } else if (child.type !== "svg") {
       result.push(child);
     }
   }
@@ -169,7 +171,20 @@ export const getTemplatePayload = (store) => {
 
   positionCounter = {};
 
-  return { data: canvasData, metadata };
+  return {
+    metadata,
+    data: {
+      ...canvasData,
+      pages: [
+        {
+          ...canvasData.pages[0],
+          children: canvasData.pages[0].children.filter(
+            ({ type }) => type !== "svg"
+          ),
+        },
+      ],
+    },
+  };
 };
 
 export const getImagesByCategory = (store, category) => {
@@ -204,3 +219,52 @@ export const getElementDetails = (imageData, store, category) => {
     metadata: { color, flowerId, id, view, name, image, category },
   };
 };
+
+export function clearGrid(store) {
+  const gridElements = store.activePage.children.filter(
+    (child) => child.name === "grid"
+  );
+  const ids = gridElements.map((el) => el.id);
+  store.deleteElements(ids);
+}
+
+export function generateGrid(store, rows, cols) {
+  clearGrid(store);
+  const { width, height } = store;
+  const dx = width / cols;
+  const dy = height / rows;
+
+  // generate svg data for grid image
+  const template = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">
+    ${[...Array(cols - 1)]
+      .map(
+        (_, index) =>
+          `<line x1="${dx * (index + 1)}" y1="0" x2="${
+            dx * (index + 1)
+          }" y2="${height}" stroke="blue" stroke-width="2"/>`
+      )
+      .join("")}
+      ${[...Array(rows - 1)]
+        .map(
+          (_, index) =>
+            `<line x1="0" y1="${dy * (index + 1)}" x2="${width}" y2="${
+              dy * (index + 1)
+            }" stroke="blue" stroke-width="2"/>`
+        )
+        .join("")}
+  </svg>`;
+
+  // add grid image into the page
+  const url = svg.svgToURL(template);
+  store.activePage.addElement({
+    type: "svg",
+    width,
+    height,
+    src: url,
+    name: "grid",
+    selectable: false,
+    opacity: 0.2,
+    alwaysOnTop: true,
+  });
+}
