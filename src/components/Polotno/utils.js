@@ -1,6 +1,8 @@
 import * as svg from "polotno/utils/svg";
 import GridSection from "./LeftPanel/GridSection";
 
+import { FLOWER_DIMENSIONS } from "../../config/constants";
+
 const POSITION_PREFIX = {
   frame: "fm",
   bulk: "b",
@@ -197,15 +199,23 @@ export const getImagesByFlowerId = (store, flowerId) => {
   return allImages.filter((image) => image.metadata.flowerId === flowerId);
 };
 
-export const getElementDetails = (imageData, store, category) => {
+export const getElementDetails = (imageData, store, templateData, category) => {
+  const { dimension } = templateData;
+
   let { color, flowerId, id, view, name, image } = imageData;
   // Calculate page dimensions
   const pageWidth = +store.width;
   const pageHeight = +store.height;
 
+  let isSquareImage = SquareComponents[category];
+
   // Default image dimensions
-  let imageWidth = SquareComponents[category] ? 300 : 150;
-  let imageHeight = SquareComponents[category] ? 300 : 400;
+
+  let tempDimension = Math.min(dimension, FLOWER_DIMENSIONS[category]);
+
+  let imageWidth = (store.width * tempDimension) / dimension;
+  let imageHeight =
+    (store.height * tempDimension * (isSquareImage ? 1 : 3)) / dimension;
 
   // Calculate center position
   const x = (pageWidth - imageWidth) / 2;

@@ -7,7 +7,7 @@ import Photos from "./Photos";
 
 import { filterRightPanel } from "../utils";
 
-const LeftPanel = observer(({ store, env, templateId }) => {
+const LeftPanel = observer(({ store, env, templateData }) => {
   const filteredSections = filterRightPanel(DEFAULT_SECTIONS);
 
   const photosSectionIndex = filteredSections.findIndex(
@@ -16,8 +16,10 @@ const LeftPanel = observer(({ store, env, templateId }) => {
 
   if (photosSectionIndex !== -1) {
     const PhotosWrapper = React.useMemo(() => {
-      return () => <Photos store={store} env={env} templateId={templateId} />;
-    }, [store, env, templateId]);
+      return () => (
+        <Photos store={store} env={env} templateData={templateData} />
+      );
+    }, [store, env, templateData]);
 
     filteredSections[photosSectionIndex].Panel = PhotosWrapper;
   }

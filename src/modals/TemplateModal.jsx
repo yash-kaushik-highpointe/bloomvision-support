@@ -3,14 +3,15 @@ import React, { useState, useEffect, useMemo } from "react";
 import Dropdown from "../components/Dropdown";
 import TemplateService from "../services/template";
 
-import { CONFIG } from "../App";
-import { CATEGORY_OPTIONS, STATUS_OPTIONS } from "../config/constants";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "../components/Dialog";
+import { CONFIG } from "../App";
+import { getTotalInches } from "../utils/helper";
+import { CATEGORY_OPTIONS, STATUS_OPTIONS } from "../config/constants";
 
 const Saving = () => (
   <>
@@ -40,7 +41,9 @@ const Saving = () => (
 
 const TemplateModal = ({ isOpen, onClose, data, env, onSaveSuccess }) => {
   const [isDirty, setIsDirty] = useState(false);
+  const [heightFeet, setHeightFeet] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [heightInches, setHeightInches] = useState(6);
   const [templateName, setTemplateName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Bouquet");
   const [selectedStatus, setSelectedStatus] = useState("In Progress");
@@ -52,9 +55,11 @@ const TemplateModal = ({ isOpen, onClose, data, env, onSaveSuccess }) => {
 
     if (templateName.trim()) {
       setIsLoading(true);
+      const dimension = getTotalInches(heightFeet, heightInches);
       if (data) {
         mode = "update";
         response = await TemplateService(CONFIG[env]).updateTemplate(data.id, {
+          dimension,
           name: templateName,
           category: selectedCategory,
           status: selectedStatus,
@@ -62,6 +67,7 @@ const TemplateModal = ({ isOpen, onClose, data, env, onSaveSuccess }) => {
       } else {
         mode = "create";
         response = await TemplateService(CONFIG[env]).createTemplate({
+          dimension,
           name: templateName,
           category: selectedCategory,
           status: selectedStatus,
@@ -77,12 +83,30 @@ const TemplateModal = ({ isOpen, onClose, data, env, onSaveSuccess }) => {
     setTemplateName("");
     setSelectedCategory("Bouquet");
     setSelectedStatus("In Progress");
+    setHeightFeet(1);
+    setHeightInches(6);
     onClose();
   };
 
   const handleChange = (func, value) => {
     func(value);
     setIsDirty(true);
+  };
+
+  const handleFeetChange = (event) => {
+    let value = Number(event.target.value);
+    setHeightFeet(value);
+
+    if (value === 1) setHeightInches(6);
+    else if (value === 30) setHeightInches(0);
+  };
+
+  const handleInchesChange = (event) => {
+    let value = Number(event.target.value);
+
+    if (heightFeet === 1 && value === 5) return;
+
+    setHeightInches(value);
   };
 
   const { categoryOptions, statusOptions } = useMemo(() => {
@@ -103,6 +127,10 @@ const TemplateModal = ({ isOpen, onClose, data, env, onSaveSuccess }) => {
       setTemplateName(data.name);
       setSelectedCategory(data.category);
       setSelectedStatus(data.status);
+      if (data.dimension) {
+        setHeightFeet(Math.floor(data.dimension / 12));
+        setHeightInches(data.dimension % 12);
+      }
     }
   }, [data]);
 
@@ -115,7 +143,7 @@ const TemplateModal = ({ isOpen, onClose, data, env, onSaveSuccess }) => {
           </DialogTitle>
         </DialogHeader>
         <form className="space-y-4 mt-3">
-          <div>
+          <div className="mb-[1.5rem]">
             <label
               htmlFor="template-name"
               className="block text-l font-medium text-stone-700 mb-2"
@@ -132,7 +160,7 @@ const TemplateModal = ({ isOpen, onClose, data, env, onSaveSuccess }) => {
               required
             />
           </div>
-          <div>
+          <div className="mb-[1.5rem]">
             <label
               htmlFor="template-category"
               className="block text-l font-medium text-stone-700 mb-2"
@@ -147,7 +175,46 @@ const TemplateModal = ({ isOpen, onClose, data, env, onSaveSuccess }) => {
               className="w-100 border border-stone-200 rounded-lg"
             />
           </div>
-          <div>
+          {!data && (
+            <div className="mb-[1.5rem]">
+              <label className="block text-l font-medium text-stone-700 mb-2">
+                Template Dimensions
+              </label>
+              <div className="flex gap-4 items-end">
+                <div className="flex-1">
+                  <label className="block text-xs text-stone-500 mb-1">
+                    Feet
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={30}
+                    value={heightFeet}
+                    onChange={handleFeetChange}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base placeholder:text-muted-foreground"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs text-stone-500 mb-1">
+                    Inches
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={11}
+                    value={heightInches}
+                    disabled={heightFeet === 30}
+                    onChange={handleInchesChange}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base placeholder:text-muted-foreground"
+                  />
+                </div>
+              </div>
+              <div className="text-xs text-stone-500 mt-1">
+                Range: 1'6" - 30'0" (18" - 360")
+              </div>
+            </div>
+          )}
+          <div className="mb-[1.5rem]">
             <label
               htmlFor="template-status"
               className="block text-l font-medium text-stone-700 mb-2"

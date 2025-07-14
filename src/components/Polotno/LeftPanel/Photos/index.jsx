@@ -10,7 +10,7 @@ import categories from "../../../../data/flowerCategories.json";
 import { CONFIG } from "../../../../App";
 import { fetchFlowersByCategory } from "../../../../store/slices/flowersSlice";
 
-const Photos = observer(({ store, env, templateId }) => {
+const Photos = observer(({ store, env, templateData }) => {
   const dispatch = useDispatch();
 
   const { flowersByCategory, loading } = useSelector((state) => state.flowers);
@@ -47,7 +47,7 @@ const Photos = observer(({ store, env, templateId }) => {
       <PhotosList
         store={store}
         loading={loading}
-        templateId={templateId}
+        templateData={templateData}
         selectedCategory={selectedCategory}
         images={flowersByCategory[selectedCategory]}
       />

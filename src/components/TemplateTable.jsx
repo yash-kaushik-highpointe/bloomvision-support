@@ -2,7 +2,7 @@ import React from "react";
 import { Edit, Trash, Copy, Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { formatDate } from "../utils/helper";
+import { formatDate, getDimension } from "../utils/helper";
 
 const TemplateTable = ({
   templates,
@@ -48,6 +48,12 @@ const TemplateTable = ({
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px] bg-[#f9fafb]"
               >
+                Dimension
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px] bg-[#f9fafb]"
+              >
                 Created At
               </th>
               <th
@@ -77,6 +83,9 @@ const TemplateTable = ({
                   <span className="px-4 py-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                     {template.status}
                   </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {getDimension(template.dimension)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {formatDate(template.created_at)}

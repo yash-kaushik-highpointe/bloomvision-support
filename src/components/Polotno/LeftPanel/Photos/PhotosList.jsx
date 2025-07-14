@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { getElementDetails, getPhotoStyles } from "../../utils";
 
 const PhotosList = observer(
-  ({ store, loading, images, selectedCategory, templateId }) => {
+  ({ store, loading, images, selectedCategory, templateData }) => {
     const [searchQuery, setSearchQuery] = useState("");
 
     const filteredImages = images?.filter((img) =>
@@ -21,6 +21,7 @@ const PhotosList = observer(
       let { x, y, width, height, metadata } = getElementDetails(
         img,
         store,
+        templateData,
         selectedCategory
       );
 

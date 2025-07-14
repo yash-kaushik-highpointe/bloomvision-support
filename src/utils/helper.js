@@ -88,3 +88,11 @@ export const formatDate = (dateString) => {
     year: "numeric",
   });
 };
+
+export const getTotalInches = (feet, inches) => feet * 12 + inches;
+
+export const getDimension = (dimension) => {
+  const feet = Math.floor(dimension / 12);
+  const inches = dimension % 12;
+  return `${feet}'${inches}"`;
+};

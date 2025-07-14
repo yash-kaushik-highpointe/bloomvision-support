@@ -74,3 +74,26 @@ export const TOOLBAR_COMPONENTS = {
   Opacity: None,
   CopyStyle: None,
 };
+
+export const FLOWER_DIMENSIONS = {
+  bouquetCollar: 24,
+  bulk: 5,
+  container: 12,
+  dancing: 3,
+  drapping: 3,
+  filler: 3.5,
+  frame: 96,
+  largeContainer: 36,
+  largeDrapping: 6,
+  largeLateral: 12,
+  largeRound: 5,
+  lateral: 3,
+  mediumRound: 3.5,
+  pedestal: 15,
+  ribbon: 6,
+  smallDancing: 1,
+  smallRound: 2.5,
+  stem: 6,
+  urn: 15,
+  vase: 15,
+};

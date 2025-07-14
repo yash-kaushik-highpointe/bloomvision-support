@@ -32,7 +32,7 @@ function Polotno({ env }) {
 
   return (
     <PolotnoContainer className="p-5">
-      <LeftPanel env={env} store={store} templateId={templateId} />
+      <LeftPanel env={env} store={store} templateData={templateData} />
       <WorkspaceWrap>
         <Toolbar
           store={store}
