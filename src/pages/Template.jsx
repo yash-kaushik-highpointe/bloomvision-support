@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Tooltip } from "react-tooltip";
 import { Plus, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import Dropdown from "../components/Dropdown";
 import TemplateTable from "../components/TemplateTable";
@@ -14,6 +15,8 @@ import { useTemplateStorage } from "../hooks/useTemplateStorage";
 import { STATUS_OPTIONS, CATEGORY_OPTIONS } from "../config/constants";
 
 const Template = ({ env }) => {
+  const navigate = useNavigate();
+
   const { templates, loading, createTemplate, updateTemplate, deleteTemplate } =
     useTemplateStorage(env);
 
@@ -44,7 +47,6 @@ const Template = ({ env }) => {
     selectedFilters,
     setFilter,
     filteredItems: filteredTemplates,
-    hasActiveFilters,
   } = useSearchFilter({
     items: templates,
     searchFields: ["name", "category"],
@@ -62,9 +64,11 @@ const Template = ({ env }) => {
 
   const handleSaveSuccess = (response, mode) => {
     switch (mode) {
-      case "create":
+      case "create": {
         createTemplate(response);
+        navigate(`/template/${response.id}`);
         break;
+      }
       case "update":
         updateTemplate(response);
         break;
