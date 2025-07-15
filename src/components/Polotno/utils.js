@@ -116,12 +116,12 @@ const getElementPosition = (
   };
 };
 
-const flattenChildren = (children) => {
+const flattenAndFilterChildren = (children) => {
   let result = [];
   for (const child of children) {
     if (child.type === "group" && Array.isArray(child.children)) {
-      result = result.concat(flattenChildren(child.children));
-    } else if (child.type !== "svg") {
+      result = result.concat(flattenAndFilterChildren(child.children));
+    } else if (child.type !== "svg" && child.name) {
       result.push(child);
     }
   }
@@ -137,7 +137,7 @@ export const getTemplatePayload = (store) => {
     height: containerHeight,
   } = canvasData;
 
-  const allChildren = flattenChildren(activePage.children);
+  const allChildren = flattenAndFilterChildren(activePage.children);
 
   let indexCounter = 0;
   let metadata = {};
@@ -181,7 +181,7 @@ export const getTemplatePayload = (store) => {
         {
           ...canvasData.pages[0],
           children: canvasData.pages[0].children.filter(
-            ({ type }) => type !== "svg"
+            ({ type, name }) => type !== "svg" && name
           ),
         },
       ],
