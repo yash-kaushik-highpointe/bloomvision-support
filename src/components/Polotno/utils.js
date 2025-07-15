@@ -211,7 +211,7 @@ export const getElementDetails = (imageData, store, templateData, category) => {
 
   // Default image dimensions
 
-  let tempDimension = Math.min(dimension, FLOWER_DIMENSIONS[category]);
+  let tempDimension = FLOWER_DIMENSIONS[category];
 
   let imageWidth = (store.width * tempDimension) / dimension;
   let imageHeight =

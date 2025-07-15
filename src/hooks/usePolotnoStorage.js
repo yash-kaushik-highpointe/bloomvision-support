@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import TemplateService from "../services/template";
 
 import { CONFIG } from "../App";
-import { fetchTemplateDetails } from "../store/slices/polotnoSlice";
+import {
+  fetchTemplateDetails,
+  clearAllTemplates,
+} from "../store/slices/polotnoSlice";
 
 export const usePolotnoStorage = (env) => {
   const dispatch = useDispatch();
@@ -51,6 +54,9 @@ export const usePolotnoStorage = (env) => {
     if (shouldFetch && templateId && env) {
       dispatch(fetchTemplateDetails({ templateId, baseURL: CONFIG[env] }));
     }
+    return () => {
+      dispatch(clearAllTemplates());
+    };
   }, [shouldFetch, templateId, env, dispatch]);
 
   return {

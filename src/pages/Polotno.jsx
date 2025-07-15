@@ -19,7 +19,6 @@ function Polotno({ env }) {
   const {
     loading,
     isSaving,
-    templateId,
     templateData,
     storeChanged,
     isStoreChanged,

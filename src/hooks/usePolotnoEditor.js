@@ -24,6 +24,10 @@ export const usePolotnoEditor = (storeChanged, templateData) => {
       if (storeInitialSetupDone.current) storeChanged();
       else storeInitialSetupDone.current = true;
     });
+
+    return () => {
+      store.clear();
+    };
   }, [storeChanged, store]);
 
   useEffect(() => {
