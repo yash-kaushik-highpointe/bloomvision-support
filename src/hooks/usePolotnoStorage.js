@@ -16,15 +16,12 @@ export const usePolotnoStorage = (env) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isStoreChanged, setIsStoreChanged] = useState(false);
 
-  // Get template data from Redux store
   const { templates, loading, error } = useSelector((state) => state.polotno);
 
-  // Get the specific template data for current templateId
   const templateData = useMemo(() => {
     return templates[templateId] || null;
   }, [templates, templateId]);
 
-  // Check if we need to fetch the template data
   const shouldFetch = useMemo(() => {
     return templateId && !loading && !isDataFetchedOnce.current;
   }, [templateId, loading]);
@@ -49,7 +46,6 @@ export const usePolotnoStorage = (env) => {
     setIsStoreChanged(true);
   }, []);
 
-  // Fetch template data if not already in store
   useEffect(() => {
     if (shouldFetch && templateId && env) {
       isDataFetchedOnce.current = true;

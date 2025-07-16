@@ -33,7 +33,7 @@ export const usePolotnoEditor = (storeChanged, templateData) => {
       else store.addPage();
       setTimeout(() => {
         setStoreReady(true);
-      }, 500);
+      }, 100);
     }
   }, [templateData?.data]);
 

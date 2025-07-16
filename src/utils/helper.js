@@ -96,3 +96,41 @@ export const getDimension = (dimension) => {
   const inches = dimension % 12;
   return `${feet}'${inches}"`;
 };
+
+export const getDisplayListAndMultiplier = (templateData) => {
+  let { metadata, multiplier } = templateData;
+  let dataArray = Object.values(metadata);
+  let multiplierObject = {};
+  let displayDataObject = dataArray.reduce((result, item) => {
+    let tempMultiplier = multiplier?.[item.category] || 1;
+    multiplierObject[item.category] = tempMultiplier;
+
+    let flowerQuantity =
+      result?.[item.category]?.flowers?.[item.flowerId]?.quantity + 1 || 1;
+
+    return {
+      ...result,
+      [item.category]: {
+        category: item.category,
+        flowers: {
+          ...result?.[item.category]?.flowers,
+          [item.flowerId]: {
+            color: item.color,
+            flowerName: item.name,
+            flowerId: item.flowerId,
+            flowerImage: item.image,
+            quantity: flowerQuantity,
+          },
+        },
+      },
+    };
+  }, {});
+
+  return {
+    multiplierData: multiplierObject,
+    displayData: Object.values(displayDataObject).map((item) => ({
+      category: item.category,
+      flowers: Object.values(item.flowers),
+    })),
+  };
+};

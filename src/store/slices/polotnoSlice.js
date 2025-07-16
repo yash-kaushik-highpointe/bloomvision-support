@@ -53,6 +53,7 @@ const polotnoSlice = createSlice({
   },
 });
 
-export const { clearTemplate, clearAllTemplates } = polotnoSlice.actions;
+export const { clearTemplate, clearAllTemplates, saveTemplateDetails } =
+  polotnoSlice.actions;
 
 export default polotnoSlice.reducer;
