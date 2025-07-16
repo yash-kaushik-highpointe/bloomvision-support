@@ -1,18 +1,17 @@
 import { useParams } from "react-router-dom";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import TemplateService from "../services/template";
 
 import { CONFIG } from "../App";
-import {
-  fetchTemplateDetails,
-  clearAllTemplates,
-} from "../store/slices/polotnoSlice";
+import { fetchTemplateDetails } from "../store/slices/polotnoSlice";
 
 export const usePolotnoStorage = (env) => {
   const dispatch = useDispatch();
   const { id: templateId } = useParams();
+
+  const isDataFetchedOnce = useRef(false);
 
   const [isSaving, setIsSaving] = useState(false);
   const [isStoreChanged, setIsStoreChanged] = useState(false);
@@ -27,12 +26,13 @@ export const usePolotnoStorage = (env) => {
 
   // Check if we need to fetch the template data
   const shouldFetch = useMemo(() => {
-    return templateId && !templateData && !loading;
-  }, [templateId, templateData, loading]);
+    return templateId && !loading && !isDataFetchedOnce.current;
+  }, [templateId, loading]);
 
   const saveTemplateDetails = async (payload) => {
     try {
       setIsSaving(true);
+      dispatch(saveTemplateDetails({ templateId, data: payload }));
       await TemplateService(CONFIG[env]).saveTemplateDetails(
         templateId,
         payload
@@ -52,11 +52,9 @@ export const usePolotnoStorage = (env) => {
   // Fetch template data if not already in store
   useEffect(() => {
     if (shouldFetch && templateId && env) {
+      isDataFetchedOnce.current = true;
       dispatch(fetchTemplateDetails({ templateId, baseURL: CONFIG[env] }));
     }
-    return () => {
-      dispatch(clearAllTemplates());
-    };
   }, [shouldFetch, templateId, env, dispatch]);
 
   return {

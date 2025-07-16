@@ -4,9 +4,10 @@ import { Plus, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import Dropdown from "../components/Dropdown";
-import TemplateTable from "../components/TemplateTable";
 import TemplateModal from "../modals/TemplateModal";
+import TemplateTable from "../components/TemplateTable";
 import TemplateCloneModal from "../modals/TemplateCloneModal";
+import TemplateRecipeModal from "../modals/TemplateRecipeModal";
 import TemplateDeleteModal from "../modals/TemplateDeleteModal";
 
 import { useModal } from "../hooks/useModal";
@@ -39,6 +40,13 @@ const Template = ({ env }) => {
     data: deleteModalData,
     closeModal: closeDeleteModal,
     openModal: openDeleteModal,
+  } = useModal();
+
+  const {
+    isOpen: isViewRecipeModalOpen,
+    data: viewRecipeModalData,
+    closeModal: closeViewRecipeModal,
+    openModal: openViewRecipeModal,
   } = useModal();
 
   const {
@@ -144,6 +152,7 @@ const Template = ({ env }) => {
               templates={filteredTemplates}
               onEditRecord={openTemplateModal}
               onDeleteRecord={openDeleteModal}
+              onViewRecipe={openViewRecipeModal}
               onDuplicateRecord={openDuplicateModal}
             />
           )}
@@ -171,6 +180,13 @@ const Template = ({ env }) => {
             onClose={closeDeleteModal}
             onSaveSuccess={handleSaveSuccess}
           />
+
+          <TemplateRecipeModal
+            env={env}
+            data={viewRecipeModalData}
+            isOpen={isViewRecipeModalOpen}
+            onClose={closeViewRecipeModal}
+          />
         </div>
       </div>
 
@@ -188,6 +204,18 @@ const Template = ({ env }) => {
       />
       <Tooltip
         id="edit-template-tooltip"
+        place="top"
+        style={{
+          backgroundColor: "#1F2937",
+          color: "white",
+          borderRadius: "4px",
+          padding: "4px 8px",
+          fontSize: "12px",
+          zIndex: 200,
+        }}
+      />
+      <Tooltip
+        id="view-recipe-tooltip"
         place="top"
         style={{
           backgroundColor: "#1F2937",

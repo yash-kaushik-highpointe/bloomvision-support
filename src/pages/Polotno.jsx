@@ -8,8 +8,8 @@ import Loading from "../components/Loading";
 import LeftPanel from "../components/Polotno/LeftPanel";
 import ActionControls from "../components/PolotnoActionControl";
 
-import { None, TOOLBAR_COMPONENTS } from "../config/constants";
 import { usePolotnoEditor } from "../hooks/usePolotnoEditor";
+import { None, TOOLBAR_COMPONENTS } from "../config/constants";
 import { usePolotnoStorage } from "../hooks/usePolotnoStorage";
 
 import "../assets/polotno.css";

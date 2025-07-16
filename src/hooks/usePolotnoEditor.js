@@ -4,8 +4,6 @@ import { createStore } from "polotno/model/store";
 const POLOTNO_API_KEY = import.meta.env.VITE_POLOTNO_API_KEY;
 
 export const usePolotnoEditor = (storeChanged, templateData) => {
-  const storeInitialSetupDone = useRef(false);
-
   const storeRef = useRef(
     createStore({
       key: POLOTNO_API_KEY,
@@ -18,23 +16,24 @@ export const usePolotnoEditor = (storeChanged, templateData) => {
   const [storeReady, setStoreReady] = useState(false);
 
   useEffect(() => {
-    if (!store) return;
+    if (!store || !storeReady) return;
 
     store.on("change", () => {
-      if (storeInitialSetupDone.current) storeChanged();
-      else storeInitialSetupDone.current = true;
+      storeChanged();
     });
 
     return () => {
       store.clear();
     };
-  }, [storeChanged, store]);
+  }, [storeChanged, store, storeReady]);
 
   useEffect(() => {
     if (templateData) {
       if (templateData.data) store.loadJSON(templateData.data);
       else store.addPage();
-      setStoreReady(true);
+      setTimeout(() => {
+        setStoreReady(true);
+      }, 500);
     }
   }, [templateData?.data]);
 

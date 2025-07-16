@@ -27,7 +27,7 @@ const SaveButton = ({ isSaving }) => (
     ) : (
       <img src={saveIcon} className="w-5 h-5" />
     )}
-    {isSaving ? "Saving..." : "Save"}
+    {isSaving ? "Saving..." : "Save and Exit"}
   </Fragment>
 );
 

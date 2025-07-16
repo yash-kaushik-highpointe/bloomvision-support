@@ -29,6 +29,10 @@ const polotnoSlice = createSlice({
     clearAllTemplates: (state) => {
       state.templates = {};
     },
+    saveTemplateDetails: (state, action) => {
+      const { templateId, data } = action.payload;
+      state.templates[templateId] = data;
+    },
   },
   extraReducers: (builder) => {
     builder

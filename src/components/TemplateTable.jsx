@@ -1,5 +1,5 @@
 import React from "react";
-import { Edit, Trash, Copy, Pencil } from "lucide-react";
+import { Edit, Trash, Copy, Pencil, Scroll } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { formatDate, getDimension } from "../utils/helper";
@@ -7,6 +7,7 @@ import { formatDate, getDimension } from "../utils/helper";
 const TemplateTable = ({
   templates,
   onEditRecord,
+  onViewRecipe,
   onDeleteRecord,
   onDuplicateRecord,
 }) => {
@@ -110,6 +111,14 @@ const TemplateTable = ({
                       data-tooltip-content="Edit Template"
                     >
                       <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => onViewRecipe(template)}
+                      className="rounded-md p-0 hover:bg-accent hover:text-accent-foreground"
+                      data-tooltip-id="view-recipe-tooltip"
+                      data-tooltip-content="View Recipe"
+                    >
+                      <Scroll className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => onDuplicateRecord(template)}
