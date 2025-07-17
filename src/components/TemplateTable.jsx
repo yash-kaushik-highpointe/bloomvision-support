@@ -26,7 +26,7 @@ const TemplateTable = ({
       ) : (
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
-            <tr className="sticky top-0 h-[63px]">
+            <tr className="sticky top-0 h-[63px] z-10">
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[180px] bg-[#f9fafb]"
@@ -65,7 +65,7 @@ const TemplateTable = ({
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px] sticky bg-[#f9fafb] right-0 z-10"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px] sticky bg-[#f9fafb] right-0"
               >
                 Actions
               </th>
@@ -94,7 +94,7 @@ const TemplateTable = ({
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {formatDate(template.updated_at)}
                 </td>
-                <td className="px-6 py-4 text-sm min-w-[150px] sticky right-0">
+                <td className="px-6 py-4 text-sm min-w-[150px] sticky right-0 bg-white">
                   <div className="flex space-x-1 gap-6">
                     <button
                       onClick={() => onEditRecord(template)}

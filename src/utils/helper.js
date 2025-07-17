@@ -99,6 +99,14 @@ export const getDimension = (dimension) => {
 
 export const getDisplayListAndMultiplier = (templateData) => {
   let { metadata, multiplier } = templateData;
+
+  if (!metadata) {
+    return {
+      multiplierData: {},
+      displayData: [],
+    };
+  }
+
   let dataArray = Object.values(metadata);
   let multiplierObject = {};
   let displayDataObject = dataArray.reduce((result, item) => {

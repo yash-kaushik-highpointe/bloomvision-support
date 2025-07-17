@@ -78,7 +78,7 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
   const [isDirty, setIsDirty] = useState(false);
   const [multiplier, setMultiplier] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [displayDataList, setDisplayDataList] = useState([]);
+  const [displayDataList, setDisplayDataList] = useState();
 
   const templateData = useMemo(() => {
     return templates?.[data?.id];
@@ -151,8 +151,12 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
           <DialogTitle>{`${data?.name} Recipe`}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 mt-3">
-          {loading || displayDataList.length === 0 ? (
+          {loading || !displayDataList ? (
             <Loading />
+          ) : displayDataList.length === 0 ? (
+            <div className="flex justify-center items-center h-[200px]">
+              <p className="text-gray-500 text-lg">No Recipe Found</p>
+            </div>
           ) : (
             <TemplateRecipeUI
               displayDataList={displayDataList}

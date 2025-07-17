@@ -62,6 +62,7 @@
     "id": "stem",
     "label": "Stem"
   },
+  { "id": "smallContainer", "label": "Small Container" },
   {
     "id": "urn",
     "label": "Urn"
