@@ -96,4 +96,5 @@ export const FLOWER_DIMENSIONS = {
   stem: 6,
   urn: 15,
   vase: 15,
+  smallContainer: 5,
 };
