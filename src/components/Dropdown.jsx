@@ -23,7 +23,7 @@ const customStyles = (bgColor) => ({
   }),
   menu: (provided) => ({
     ...provided,
-    zIndex: 10,
+    zIndex: 1000,
   }),
 });
 

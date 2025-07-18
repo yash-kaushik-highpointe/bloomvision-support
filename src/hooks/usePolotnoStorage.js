@@ -1,11 +1,15 @@
+import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import TemplateService from "../services/template";
 
 import { CONFIG } from "../App";
-import { fetchTemplateDetails } from "../store/slices/polotnoSlice";
+import {
+  fetchTemplateDetails,
+  saveTemplateDetails as saveTemplateDetailsAction,
+} from "../store/slices/polotnoSlice";
 
 export const usePolotnoStorage = (env) => {
   const dispatch = useDispatch();
@@ -29,13 +33,14 @@ export const usePolotnoStorage = (env) => {
   const saveTemplateDetails = async (payload) => {
     try {
       setIsSaving(true);
-      dispatch(saveTemplateDetails({ templateId, data: payload }));
+      dispatch(saveTemplateDetailsAction({ templateId, data: payload }));
       await TemplateService(CONFIG[env]).saveTemplateDetails(
         templateId,
         payload
       );
       setIsStoreChanged(false);
     } catch (error) {
+      console.log(error);
       toast.error("Failed to save Template Details");
     } finally {
       setIsSaving(false);

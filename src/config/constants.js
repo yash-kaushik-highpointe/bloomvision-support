@@ -98,3 +98,10 @@ export const FLOWER_DIMENSIONS = {
   vase: 15,
   smallContainer: 5,
 };
+
+export const VIEW_2_CATEGORIES = [
+  "bouquetCollar",
+  "largeRound",
+  "mediumRound",
+  "smallRound",
+];

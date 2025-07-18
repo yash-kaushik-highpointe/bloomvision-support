@@ -14,6 +14,7 @@ import FlowerDetails from "../components/Upload/FlowerDetails";
 import { CONFIG } from "../App";
 import { parseFileName } from "../utils/helper";
 import { addFlower } from "../store/slices/flowersSlice";
+import { VIEW_2_CATEGORIES } from "../config/constants";
 
 const BackIcon = () => (
   <svg
@@ -177,7 +178,14 @@ function Upload({ env }) {
 
         let data = await GalleryService(CONFIG[env]).uploadImage(flowerData);
 
-        dispatch(addFlower({ ...data, dirtyMessage: "" }));
+        dispatch(
+          addFlower({
+            ...data,
+            dirtyMessage: VIEW_2_CATEGORIES.includes(flowerData.category)
+              ? "View 2 missing"
+              : "",
+          })
+        );
 
         toast.success(`${fileData.formData.name} is uploaded successfully`);
 
