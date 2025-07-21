@@ -68,7 +68,7 @@ const Layout = ({ handleEnvChange }) => {
         <div className="flex justify-center items-center gap-x-8">
           <Link
             to="/organisations"
-            className={`flex items-center gap-x-2 px-3 py-2 rounded-lg transition-colors font-medium no-underline hover:no-underline focus:outline-none focus:ring-0 ${
+            className={`flex items-center gap-x-2 px-3 py-2 rounded-lg transition-colors font-medium no-underline hover:no-underline hover:text-[#7a7a3a] focus:outline-none focus:ring-0 ${
               isOrgActive
                 ? "bg-white text-[#7a7a3a] shadow font-semibold"
                 : "hover:bg-gray-100 text-gray-700"
@@ -79,7 +79,7 @@ const Layout = ({ handleEnvChange }) => {
           </Link>
           <Link
             to="/gallery"
-            className={`flex items-center gap-x-2 px-3 py-2 rounded-lg transition-colors font-medium no-underline hover:no-underline focus:outline-none focus:ring-0  ${
+            className={`flex items-center gap-x-2 px-3 py-2 rounded-lg transition-colors font-medium no-underline hover:no-underline hover:text-[#7a7a3a] focus:outline-none focus:ring-0  ${
               isGalleryActive
                 ? "bg-white text-[#7a7a3a] shadow font-semibold"
                 : "hover:bg-gray-100 text-gray-700"
@@ -90,7 +90,7 @@ const Layout = ({ handleEnvChange }) => {
           </Link>
           <Link
             to="/template"
-            className={`flex items-center gap-x-2 px-3 py-2 rounded-lg transition-colors font-medium no-underline hover:no-underline focus:outline-none focus:ring-0 ${
+            className={`flex items-center gap-x-2 px-3 py-2 rounded-lg transition-colors font-medium no-underline hover:no-underline hover:text-[#7a7a3a] focus:outline-none focus:ring-0 ${
               isTemplateActive || disableEnvToggle
                 ? "bg-white text-[#7a7a3a] shadow font-semibold"
                 : "hover:bg-gray-100 text-gray-700"

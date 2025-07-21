@@ -6,14 +6,14 @@ class AuthService {
    * @param {string} token - The authentication token
    */
   login(token) {
-    setToken(token);
+    setToken(token, "support_access_token");
   }
 
   /**
    * Logout the user and remove the token
    */
   logout() {
-    removeToken();
+    removeToken("support_access_token");
   }
 
   /**
@@ -21,7 +21,7 @@ class AuthService {
    * @returns {boolean} - True if user is authenticated
    */
   isAuthenticated() {
-    return !!getToken();
+    return !!getToken("support_access_token");
   }
 
   /**
@@ -29,7 +29,7 @@ class AuthService {
    * @returns {string|null} - The authentication token
    */
   getCurrentToken() {
-    return getToken();
+    return getToken("support_access_token");
   }
 }
 

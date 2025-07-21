@@ -4,23 +4,23 @@ import { AUTH } from "../config/constants";
  * Stores the authentication token in localStorage
  * @param {string} token - The authentication token to store
  */
-export const setToken = (token) => {
-  localStorage.setItem(AUTH.TOKEN_KEY, token);
+export const setToken = (token, key) => {
+  localStorage.setItem(key ?? AUTH.TOKEN_KEY, token);
 };
 
 /**
  * Retrieves the authentication token from localStorage
  * @returns {string|null} - The stored token or null if not found
  */
-export const getToken = () => {
-  return localStorage.getItem(AUTH.TOKEN_KEY);
+export const getToken = (key) => {
+  return localStorage.getItem(key ?? AUTH.TOKEN_KEY);
 };
 
 /**
  * Removes the authentication token from localStorage
  */
-export const removeToken = () => {
-  localStorage.removeItem(AUTH.TOKEN_KEY);
+export const removeToken = (key) => {
+  localStorage.removeItem(key ?? AUTH.TOKEN_KEY);
 };
 
 /**

@@ -8,10 +8,11 @@ import axios from "axios";
  */
 export const authenticateWithCode = async (baseURL, code) => {
   try {
-    const api = axios.create({
-      baseURL: baseURL,
+    // For login requests, we don't want to include the token
+    // So we'll use axios directly for this specific endpoint
+    const response = await axios.post(`${baseURL}users/support/login/`, {
+      code,
     });
-    const response = await api.post("users/support/login/", { code });
     return response.data;
   } catch (error) {
     console.error("Authentication failed:", error);

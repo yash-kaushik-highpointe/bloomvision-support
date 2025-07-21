@@ -1,10 +1,10 @@
-import axios from "axios";
+import api from "./api";
 import { transformFlowerData } from "../utils/helper";
 
 const GalleryService = (baseURL) => ({
   getImagesByCategory: async (category) => {
     try {
-      const response = await axios.get(`${baseURL}flowers/all/`, {
+      const response = await api.get(`${baseURL}flowers/all/`, {
         params: {
           category,
           page: 1,
@@ -32,7 +32,7 @@ const GalleryService = (baseURL) => ({
       formData.append("view", data.view);
       formData.append("image", imageData);
 
-      const response = await axios.put(
+      const response = await api.put(
         `${baseURL}flowers/update/${flowerId}/`,
         formData,
         {
@@ -61,7 +61,7 @@ const GalleryService = (baseURL) => ({
       formData.append("image", imageData);
       formData.append("flower_id", flowerId);
 
-      const response = await axios.post(
+      const response = await api.post(
         `${baseURL}flowers/views/create/`,
         formData,
         {
@@ -90,7 +90,7 @@ const GalleryService = (baseURL) => ({
       formData.append("description", flowerData.name);
       formData.append("image", imageData);
 
-      const response = await axios.post(`${baseURL}flowers/create/`, formData, {
+      const response = await api.post(`${baseURL}flowers/create/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -102,7 +102,7 @@ const GalleryService = (baseURL) => ({
   },
   deleteImage: async (flowerId, substituteFlowerId) => {
     try {
-      const response = await axios.delete(
+      const response = await api.delete(
         `${baseURL}flowers/delete/${flowerId}/?substitute_flower=${substituteFlowerId}`
       );
       return response.data;

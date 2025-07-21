@@ -20,8 +20,11 @@ const Redirect = ({ env }) => {
           return;
         }
 
-        const { access_token } = await authenticateWithCode(CONFIG[env], code);
-        setToken(access_token);
+        const { access_token, refresh_token, role } =
+          await authenticateWithCode(CONFIG[env], code);
+        setToken(access_token, "support_access_token");
+        setToken(refresh_token, "support_refresh_token");
+        setToken(role, "support_role");
         navigate("/organisations");
       } catch (error) {
         error;

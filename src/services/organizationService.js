@@ -1,9 +1,9 @@
-import axios from "axios";
+import api from "./api";
 
 const OrganizationService = (baseURL) => ({
   getOrganizationUsers: async () => {
     try {
-      const response = await axios.get(`${baseURL}organisations/owners/`);
+      const response = await api.get(`${baseURL}organisations/owners/`);
       return response.data;
     } catch (error) {
       console.error("Error fetching organization users:", error);
@@ -12,7 +12,7 @@ const OrganizationService = (baseURL) => ({
   },
   updateTrialEndDate: async (ownerId, newDate, skeletons) => {
     try {
-      const response = await axios.post(`${baseURL}users/update/trial/`, {
+      const response = await api.post(`${baseURL}users/update/trial/`, {
         skeletons,
         trial_ends: newDate,
         owner_id: ownerId,
@@ -25,7 +25,7 @@ const OrganizationService = (baseURL) => ({
   },
   deleteOrganization: async (organizationId) => {
     try {
-      const response = await axios.delete(
+      const response = await api.delete(
         `${baseURL}organisations/${organizationId}/`
       );
       return response.data;
@@ -36,7 +36,7 @@ const OrganizationService = (baseURL) => ({
   },
   updateTemplateAccess: async (ownerId, skeletons, trial_ends) => {
     try {
-      const response = await axios.post(`${baseURL}users/update/trial/`, {
+      const response = await api.post(`${baseURL}users/update/trial/`, {
         skeletons,
         trial_ends,
         owner_id: ownerId,
