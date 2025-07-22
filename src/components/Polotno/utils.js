@@ -179,14 +179,7 @@ export const getTemplatePayload = (store) => {
     metadata,
     data: {
       ...canvasData,
-      pages: [
-        {
-          ...canvasData.pages[0],
-          children: canvasData.pages[0].children.filter(
-            ({ type, name }) => type !== "svg" && name
-          ),
-        },
-      ],
+      pages: allChildren,
     },
   };
 };
