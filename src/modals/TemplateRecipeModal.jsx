@@ -84,6 +84,8 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
     return templates?.[data?.id];
   }, [templates, data?.id]);
 
+  console.log(templateData);
+
   const shouldFetch = useMemo(() => {
     return data?.id && env && isOpen && !templateData;
   }, [data?.id, env, isOpen, templateData]);
@@ -100,23 +102,68 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
   };
 
   const handleConfirm = async () => {
-    try {
-      setIsLoading(true);
-      let response = await TemplateService(CONFIG[env]).saveTemplateDetails(
-        data.id,
-        {
-          multiplier,
-        }
-      );
-      dispatch(saveTemplateDetails({ templateId: data.id, data: response }));
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to save Template Recipe");
-    } finally {
-      setIsLoading(false);
-      clearState();
-      onClose();
-    }
+    let jsonData = Object.values(templateData.metadata).reduce((acc, data) => {
+      let { category, stack, view, name, id } = data;
+      if (acc[category]) {
+        acc[category].push({
+          name,
+          category,
+          viewAngle: view,
+          position: stack.id,
+          flowerViewId: id,
+        });
+      } else {
+        acc[category] = [
+          {
+            name,
+            category,
+            viewAngle: view,
+            position: stack.id,
+            flowerViewId: id,
+          },
+        ];
+      }
+      return acc;
+    }, {});
+
+    let cssData = Object.values(templateData.metadata).reduce((acc, data) => {
+      let { dimensions, stack, position } = data;
+      return {
+        ...acc,
+        [stack.id]: {
+          width: `${dimensions.width}%`,
+          height: `${dimensions.height}%`,
+          transform: `translate(${position.left}px, ${
+            position.top
+          }%) rotate(${position.rotate.toFixed(2)}deg) ${
+            position.flipX ? "scaleX(-1)" : ""
+          } ${position.flipY ? "scaleY(-1)" : ""}`,
+          zIndex: stack.zIndex,
+        },
+      };
+    }, {});
+
+    const jsonString = JSON.stringify(jsonData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const cssString = JSON.stringify(cssData, null, 2);
+    const cssBlob = new Blob([cssString], { type: "application/json" });
+    const cssUrl = URL.createObjectURL(cssBlob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${data?.name}-recipe.json`;
+    link.click();
+
+    const cssLink = document.createElement("a");
+    cssLink.href = cssUrl;
+    cssLink.download = `${data?.name}-css.json`;
+    cssLink.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(cssUrl);
   };
 
   const handleMultiplierChange = (newMultiplier) => {
@@ -174,7 +221,6 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
             <button
               className="px-4 py-2 bg-[#7a7a3a] text-white rounded hover:bg-[#7a7a3a] disabled:opacity-50 flex items-center gap-2"
               onClick={handleConfirm}
-              disabled={!isDirty || isLoading}
             >
               {isLoading ? <Saving /> : "Save Changes"}
             </button>
