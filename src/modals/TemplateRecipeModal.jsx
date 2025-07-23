@@ -111,6 +111,7 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
           viewAngle: view,
           position: stack.id,
           flowerViewId: id,
+          multiplier: multiplier[category],
         });
       } else {
         acc[category] = [
@@ -120,6 +121,7 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
             viewAngle: view,
             position: stack.id,
             flowerViewId: id,
+            multiplier: multiplier[category],
           },
         ];
       }
@@ -161,7 +163,6 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
     cssLink.download = `${data?.name}-css.json`;
     cssLink.click();
 
-    document.body.removeChild(link);
     URL.revokeObjectURL(url);
     URL.revokeObjectURL(cssUrl);
   };
@@ -189,7 +190,7 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
   }, [shouldFetch, dispatch]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleCancel}>
       <DialogContent
         className="sm:max-w-2xl bg-white"
         aria-describedby="recipe-modal"
