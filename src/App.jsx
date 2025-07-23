@@ -4,7 +4,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 
 import Login from "./pages/Login";
@@ -18,6 +19,8 @@ import Dashboard from "./pages/Dashboard";
 
 import { ROUTES } from "./config/constants";
 import { authService } from "./services/authService";
+import { clearFlowers } from "./store/slices/flowersSlice";
+import { clearAllTemplates } from "./store/slices/polotnoSlice";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -36,11 +39,17 @@ export const CONFIG = {
 };
 
 function App() {
+  const dispatch = useDispatch();
   const [env, setEnv] = useState("dev");
 
   const handleEnvChange = (e) => {
     setEnv((prev) => (prev === "dev" ? "prod" : "dev"));
   };
+
+  useEffect(() => {
+    dispatch(clearFlowers());
+    dispatch(clearAllTemplates());
+  }, [env]);
 
   return (
     <Router>
