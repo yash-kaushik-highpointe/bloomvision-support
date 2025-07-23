@@ -102,19 +102,39 @@ const getElementDimensionsInPercentage = (
   };
 };
 
-const getElementPosition = (
-  child,
-  elementX,
-  elementY,
-  containerWidth,
-  containerHeight
-) => {
+function unRotatedCords(image, angleDeg) {
+  let { width, height, x, y } = image;
+  let pivotX = width / 2;
+  let pivotY = height / 2;
+
+  const angleRad = (angleDeg * Math.PI) / 180;
+
+  // Translate origin to pivot-relative
+  const translatedX = -pivotX;
+  const translatedY = -pivotY;
+
+  // Apply rotation
+  const rotatedX =
+    translatedX * Math.cos(angleRad) - translatedY * Math.sin(angleRad);
+  const rotatedY =
+    translatedX * Math.sin(angleRad) + translatedY * Math.cos(angleRad);
+
+  // Translate back
+  const finalX = rotatedX + pivotX;
+  const finalY = rotatedY + pivotY;
+
+  return { unrotatedX: x - finalX, unrotatedY: y - finalY };
+}
+
+const getElementPosition = (child, containerWidth, containerHeight) => {
+  const { unrotatedX, unrotatedY } = unRotatedCords(child, child.rotation);
+
   return {
     flipX: child.flipX,
     flipY: child.flipY,
     rotate: child.rotation,
-    top: +((elementY / containerHeight) * 100).toFixed(2),
-    left: +((elementX / containerWidth) * 100).toFixed(2),
+    top: +((unrotatedY / containerHeight) * 100).toFixed(2),
+    left: +((unrotatedX / containerWidth) * 100).toFixed(2),
   };
 };
 
@@ -145,7 +165,7 @@ export const getTemplatePayload = (store) => {
   let metadata = {};
 
   for (const child of allChildren) {
-    const { x, y, width, height, id } = child;
+    const { width, height, id } = child;
     let tempMetadata = { ...child.custom };
 
     if (positionCounter[tempMetadata.category])
@@ -163,8 +183,6 @@ export const getTemplatePayload = (store) => {
 
     tempMetadata.position = getElementPosition(
       child,
-      x,
-      y,
       containerWidth,
       containerHeight
     );
