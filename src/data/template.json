@@ -5,7 +5,7 @@
     "skeletons": [
       {
         "id": "5cf62703-0fd6-4e58-b689-f3e304e8087d",
-        "label": "Poppy Bouquet"
+        "label": "Oval Bouquet"
       },
       {
         "id": "f5a09e08-0d3e-4e69-9361-b8052161b009",
@@ -27,7 +27,7 @@
     "skeletons": [
       {
         "id": "04c70558-d317-4def-b1fe-e24a892df2b4",
-        "label": "Low Poppy"
+        "label": "Low Mixed Arrangement"
       },
       {
         "id": "375b9b06-fa65-482e-9808-a4995c32c62c",
@@ -43,7 +43,11 @@
       },
       {
         "id": "82b44614-36f2-4f5b-aeb6-db5cb5cce0da",
-        "label": "Poppy Tall White Centerpiece"
+        "label": "Elevated Mixed Arrangement"
+      },
+      {
+        "id": "f705f93b-44aa-419c-ac8f-e6cb7261c7f8",
+        "label": "Movement Centerpiece"
       }
     ]
   },
