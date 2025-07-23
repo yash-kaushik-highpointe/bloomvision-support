@@ -179,7 +179,12 @@ export const getTemplatePayload = (store) => {
     metadata,
     data: {
       ...canvasData,
-      pages: allChildren,
+      pages: [
+        {
+          ...canvasData.pages[0],
+          children: allChildren,
+        },
+      ],
     },
   };
 };
