@@ -19,6 +19,15 @@ const TemplateService = (baseURL) => ({
       throw error;
     }
   },
+  cloneTemplate: async (id) => {
+    try {
+      const response = await api.post(`${baseURL}items/drafts/copy/${id}/`);
+      return response.data;
+    } catch (error) {
+      console.error("Error cloning template:", error);
+      throw error;
+    }
+  },
   updateTemplate: async (id, data) => {
     try {
       const response = await api.put(`${baseURL}items/drafts/${id}/`, data);

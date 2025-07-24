@@ -41,10 +41,9 @@ const TemplateCloneModal = ({ env, isOpen, onClose, data, onSaveSuccess }) => {
 
   const handleConfirm = async () => {
     setIsLoading(true);
-    let dataResponse = await TemplateService(CONFIG[env]).createTemplate({
-      ...data,
-      name: `${data.name} (Copy)`,
-    });
+    let dataResponse = await TemplateService(CONFIG[env]).cloneTemplate(
+      data.id
+    );
     onSaveSuccess(dataResponse, "create");
     setIsLoading(false);
     onClose();
