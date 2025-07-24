@@ -97,8 +97,8 @@ const getElementDimensionsInPercentage = (
   containerHeight
 ) => {
   return {
-    width: +((width / containerWidth) * 100).toFixed(2),
-    height: +((height / containerHeight) * 100).toFixed(2),
+    width: +((width / containerWidth) * 100).toFixed(4),
+    height: +((height / containerHeight) * 100).toFixed(4),
   };
 };
 
@@ -133,8 +133,8 @@ const getElementPosition = (child, containerWidth, containerHeight) => {
     flipX: child.flipX,
     flipY: child.flipY,
     rotate: child.rotation,
-    top: +((unrotatedY / containerHeight) * 100).toFixed(2),
-    left: +((unrotatedX / containerWidth) * 100).toFixed(2),
+    top: +((unrotatedY / containerHeight) * 100).toFixed(4),
+    left: +((unrotatedX / containerWidth) * 100).toFixed(4),
   };
 };
 
