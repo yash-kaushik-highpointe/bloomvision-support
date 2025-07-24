@@ -133,9 +133,9 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
         [stack.id]: {
           width: `${dimensions.width}%`,
           height: `${dimensions.height}%`,
-          transform: `translate(${position.left}%, ${
-            position.top
-          }%) rotate(${position.rotate.toFixed(2)}deg) ${
+          top: `${position.top}%`,
+          left: `${position.left}%`,
+          transform: `rotate(${position.rotate}deg) ${
             position.flipX ? "scaleX(-1)" : ""
           } ${position.flipY ? "scaleY(-1)" : ""}`,
           zIndex: stack.zIndex,
