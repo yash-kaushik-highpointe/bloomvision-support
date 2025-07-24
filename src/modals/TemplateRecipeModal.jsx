@@ -84,8 +84,6 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
     return templates?.[data?.id];
   }, [templates, data?.id]);
 
-  console.log(templateData);
-
   const shouldFetch = useMemo(() => {
     return data?.id && env && isOpen && !templateData;
   }, [data?.id, env, isOpen, templateData]);
@@ -135,7 +133,7 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
         [stack.id]: {
           width: `${dimensions.width}%`,
           height: `${dimensions.height}%`,
-          transform: `translate(${position.left}px, ${
+          transform: `translate(${position.left}%, ${
             position.top
           }%) rotate(${position.rotate.toFixed(2)}deg) ${
             position.flipX ? "scaleX(-1)" : ""
