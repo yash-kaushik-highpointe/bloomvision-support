@@ -48,6 +48,14 @@
       {
         "id": "f705f93b-44aa-419c-ac8f-e6cb7261c7f8",
         "label": "Movement Centerpiece"
+      },
+      {
+        "id": "14bbd5a7-7d24-4ae2-adf5-94b819dca193",
+        "label": "Petite Frog Arrangement"
+      },
+      {
+        "id": "f2399695-53db-49ac-bdac-1df44b6a3489",
+        "label": "8ft Table Garden Centerpiece"
       }
     ]
   },
@@ -66,6 +74,10 @@
       {
         "id": "5be1cf7d-887d-4cbf-b3d5-a8957aff0a26",
         "label": "Small Aisle Garden"
+      },
+      {
+        "id": "31e03f04-7a67-4134-a3bf-e056b99f6c26",
+        "label": "Structured Aisle Arrangement"
       }
     ]
   }
