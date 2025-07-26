@@ -1,74 +1,29 @@
 [
   { "id": "bouquetCollar", "label": "Bouquet Collar" },
-  {
-    "id": "bulk",
-    "label": "Bulk"
-  },
-  {
-    "id": "container",
-    "label": "Container"
-  },
-  {
-    "id": "dancing",
-    "label": "Dancing"
-  },
-  {
-    "id": "drapping",
-    "label": "Draping"
-  },
-  {
-    "id": "filler",
-    "label": "Filler"
-  },
-  {
-    "id": "frame",
-    "label": "Frame"
-  },
+  { "id": "bulk", "label": "Bulk" },
+  { "id": "chair", "label": "Chair" },
+  { "id": "chandelier", "label": "Chandelier" },
+  { "id": "chuppah", "label": "Chuppah" },
+  { "id": "container", "label": "Container" },
+  { "id": "dancing", "label": "Dancing" },
+  { "id": "drapping", "label": "Draping" },
+  { "id": "fabricDrape", "label": "Fabric Drape" },
+  { "id": "filler", "label": "Filler" },
+  { "id": "frame", "label": "Frame" },
   { "id": "largeContainer", "label": "Large Container" },
-  {
-    "id": "largeDrapping",
-    "label": "Large Draping"
-  },
-  {
-    "id": "largeLateral",
-    "label": "Large Lateral"
-  },
-  {
-    "id": "largeRound",
-    "label": "Large Round"
-  },
-  {
-    "id": "lateral",
-    "label": "Lateral"
-  },
-  {
-    "id": "mediumRound",
-    "label": "Medium Round"
-  },
-  {
-    "id": "pedestal",
-    "label": "Pedestal"
-  },
-  {
-    "id": "ribbon",
-    "label": "Ribbon / Stem"
-  },
-  { "id": "smallDancing", "label": "Small Dancing" },
-  {
-    "id": "smallRound",
-    "label": "Small Round"
-  },
-  {
-    "id": "stem",
-    "label": "Stem"
-  },
+  { "id": "largeDrapping", "label": "Large Draping" },
+  { "id": "largeLateral", "label": "Large Lateral" },
+  { "id": "largeRound", "label": "Large Round" },
+  { "id": "lateral", "label": "Lateral" },
+  { "id": "longLowContainer", "label": "Long Low Container" },
+  { "id": "mandap", "label": "Mandap" },
+  { "id": "mediumRound", "label": "Medium Round" },
+  { "id": "pedestal", "label": "Pedestal" },
+  { "id": "ribbon", "label": "Ribbon / Stem" },
   { "id": "smallContainer", "label": "Small Container" },
-  {
-    "id": "urn",
-    "label": "Urn"
-  },
-  {
-    "id": "vase",
-    "label": "Vase"
-  }
+  { "id": "smallDancing", "label": "Small Dancing" },
+  { "id": "smallRound", "label": "Small Round" },
+  { "id": "stem", "label": "Stem" },
+  { "id": "urn", "label": "Urn" },
+  { "id": "vase", "label": "Vase" }
 ]
