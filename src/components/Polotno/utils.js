@@ -25,6 +25,12 @@ const POSITION_PREFIX = {
   largeLateral: "ll",
   smallDancing: "sd",
   largeDrapping: "ld",
+  fabricDrape: "fd",
+  chandelier: "ch",
+  chair: "cr",
+  mandap: "mp",
+  chuppah: "cp",
+  longLowContainer: "llc",
 };
 
 export const filterRightPanel = (sections) => {
@@ -44,6 +50,9 @@ const SquareComponents = {
   frame: true,
   bulk: true,
   filler: true,
+  chair: true,
+  mandap: true,
+  chuppah: true,
   container: true,
   largeRound: true,
   smallRound: true,
@@ -62,6 +71,9 @@ const SquareComponents = {
   largeLateral: false,
   smallDancing: false,
   largeDrapping: false,
+  fabricDrape: false,
+  chandelier: false,
+  longLowContainer: false,
 };
 
 export const getPhotoStyles = (selectedCategory) => {

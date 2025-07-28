@@ -37,16 +37,28 @@ const ImageComponents = {
   largeRound: SquareImage,
   smallRound: SquareImage,
   mediumRound: SquareImage,
+  bouquetCollar: SquareImage,
+  container: SquareImage,
+  largeContainer: SquareImage,
+  smallContainer: SquareImage,
+  mandap: SquareImage,
+  chuppah: SquareImage,
+  chair: SquareImage,
 
   urn: RectangleImage,
   vase: RectangleImage,
   stem: RectangleImage,
   ribbon: RectangleImage,
+  pedestal: RectangleImage,
   lateral: RectangleImage,
   dancing: RectangleImage,
   drapping: RectangleImage,
+  fabricDrape: RectangleImage,
+  chandelier: RectangleImage,
+  smallDancing: RectangleImage,
   largeLateral: RectangleImage,
   LargeDrapping: RectangleImage,
+  longLowContainer: RectangleImage,
 };
 
 function ImageRenderer({ selectedCategory, ...rest }) {
