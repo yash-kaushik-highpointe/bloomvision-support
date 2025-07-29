@@ -30,6 +30,7 @@ const POSITION_PREFIX = {
   chair: "cr",
   mandap: "mp",
   chuppah: "cp",
+  largeDancing: "ldc",
   longLowContainer: "llc",
 };
 
@@ -73,6 +74,7 @@ const SquareComponents = {
   largeDrapping: false,
   fabricDrape: false,
   chandelier: false,
+  largeDancing: false,
   longLowContainer: false,
 };
 

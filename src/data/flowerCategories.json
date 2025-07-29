@@ -11,6 +11,7 @@
   { "id": "filler", "label": "Filler" },
   { "id": "frame", "label": "Frame" },
   { "id": "largeContainer", "label": "Large Container" },
+  { "id": "largeDancing", "label": "Large Dancing" },
   { "id": "largeDrapping", "label": "Large Draping" },
   { "id": "largeLateral", "label": "Large Lateral" },
   { "id": "largeRound", "label": "Large Round" },

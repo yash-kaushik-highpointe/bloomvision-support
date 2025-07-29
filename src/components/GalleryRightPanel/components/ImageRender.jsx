@@ -53,10 +53,11 @@ const ImageComponents = {
   lateral: RectangleImage,
   dancing: RectangleImage,
   drapping: RectangleImage,
-  fabricDrape: RectangleImage,
   chandelier: RectangleImage,
+  fabricDrape: RectangleImage,
   smallDancing: RectangleImage,
   largeLateral: RectangleImage,
+  largeDancing: RectangleImage,
   LargeDrapping: RectangleImage,
   longLowContainer: RectangleImage,
 };

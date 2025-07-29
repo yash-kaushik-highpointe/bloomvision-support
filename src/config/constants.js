@@ -102,6 +102,7 @@ export const FLOWER_DIMENSIONS = {
   fabricDrape: 36,
   chair: 42,
   chandelier: 36,
+  largeDancing: 8,
   longLowContainer: 12,
 };
 
