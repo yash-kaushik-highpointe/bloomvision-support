@@ -1,9 +1,10 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
-// Create axios instance with default config
 const api = axios.create();
 
-// Request interceptor to automatically add auth token
+let isRedirecting = false;
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("support_access_token");
@@ -17,19 +18,25 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle common errors
 api.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Handle 401 unauthorized errors
-    if (error.response?.status === 401) {
-      // Clear token and redirect to login if needed
+    if (error.response?.status === 403 || error.response?.status === 401) {
+      if (isRedirecting) {
+        return Promise.reject(error);
+      }
+
+      isRedirecting = true;
+
       localStorage.removeItem("support_access_token");
       localStorage.removeItem("support_refresh_token");
       localStorage.removeItem("support_role");
-      // You can add redirect logic here if needed
+
+      toast.error("Session Expired. Please Login again");
+
+      window.dispatchEvent(new CustomEvent("sessionExpired"));
     }
     return Promise.reject(error);
   }
