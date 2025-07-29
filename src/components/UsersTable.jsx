@@ -14,6 +14,8 @@ import timeChangeIcon from "../assets/time-change.svg";
 import bouquetIcon from "../assets/bouquet.svg";
 import templateData from "../data/template.json";
 
+import { UserCog } from "lucide-react";
+
 const UsersTable = ({
   users,
   formatDate,
@@ -21,6 +23,7 @@ const UsersTable = ({
   isAnyModalOpen,
   handleOpenModal,
   selectedOrganization,
+  handleImpersonateUser,
   handleOpenTemplateModal,
 }) => {
   const [hoveredTemplate, setHoveredTemplate] = useState(null);
@@ -203,6 +206,14 @@ const UsersTable = ({
                   }`}
                 >
                   <div className="flex items-center justify-start space-x-3">
+                    <button
+                      className="rounded-full hover:bg-gray-100 transition-colors duration-200 w-8 h-8 flex items-center justify-center"
+                      data-tooltip-id="impersonate-tooltip"
+                      data-tooltip-content="Impersonate User"
+                      onClick={() => handleImpersonateUser(org.owner)}
+                    >
+                      <UserCog className="w-5 h-5 text-black" />
+                    </button>
                     <button
                       onClick={() => handleOpenTemplateModal(org)}
                       className="rounded-full hover:bg-gray-100 transition-colors duration-200 w-8 h-8 flex items-center justify-center"

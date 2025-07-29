@@ -47,6 +47,17 @@ const OrganizationService = (baseURL) => ({
       throw error;
     }
   },
+  impersonateUser: async (email) => {
+    try {
+      const response = await api.post(`${baseURL}users/impersonate/code/`, {
+        email,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error impersonating user:", error);
+      throw error;
+    }
+  },
 });
 
 export default OrganizationService;

@@ -8,6 +8,13 @@ import { CONFIG } from "../App";
 import { ROUTES } from "../config/constants";
 import { authService } from "../services/authService";
 
+const IMPERSONATE_REDIRECT_URL = (token) => {
+  return {
+    dev: `https://dev.mybloomvision.com/impersonate?token=${token}`,
+    prod: `https://app.mybloomvision.com/impersonate?token=${token}`,
+  };
+};
+
 export const useOrganizationUsers = (env) => {
   const navigate = useNavigate();
 
@@ -157,6 +164,17 @@ export const useOrganizationUsers = (env) => {
     }
   };
 
+  const handleImpersonateUser = async ({ email }) => {
+    try {
+      let { token } = await OrganizationService(CONFIG[env]).impersonateUser(
+        email
+      );
+      window.open(IMPERSONATE_REDIRECT_URL(token)[env], "_blank");
+    } catch (err) {
+      toast.error("Failed to impersonate user");
+    }
+  };
+
   return {
     users,
     loading,
@@ -172,6 +190,7 @@ export const useOrganizationUsers = (env) => {
     handleCloseModal,
     isTemplateModalOpen,
     selectedOrganization,
+    handleImpersonateUser,
     handleUpdateTrialDate,
     handleOpenTemplateModal,
     handleCloseTemplateModal,
