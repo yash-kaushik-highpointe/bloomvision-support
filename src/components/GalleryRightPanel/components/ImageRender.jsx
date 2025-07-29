@@ -45,7 +45,6 @@ const ImageComponents = {
   chuppah: SquareImage,
   chair: SquareImage,
 
-  urn: RectangleImage,
   vase: RectangleImage,
   stem: RectangleImage,
   ribbon: RectangleImage,

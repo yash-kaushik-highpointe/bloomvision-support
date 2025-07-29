@@ -25,6 +25,5 @@
   { "id": "smallDancing", "label": "Small Dancing" },
   { "id": "smallRound", "label": "Small Round" },
   { "id": "stem", "label": "Stem" },
-  { "id": "urn", "label": "Urn" },
   { "id": "vase", "label": "Vase" }
 ]
