@@ -219,16 +219,6 @@ export const getTemplatePayload = (store) => {
   };
 };
 
-export const getImagesByCategory = (store, category) => {
-  const allImages = getAllImagesWithMetadata(store);
-  return allImages.filter((image) => image.metadata.category === category);
-};
-
-export const getImagesByFlowerId = (store, flowerId) => {
-  const allImages = getAllImagesWithMetadata(store);
-  return allImages.filter((image) => image.metadata.flowerId === flowerId);
-};
-
 export const getElementDetails = (imageData, store, templateData, category) => {
   const { dimension } = templateData;
 

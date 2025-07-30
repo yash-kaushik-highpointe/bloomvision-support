@@ -22,6 +22,10 @@
       {
         "id": "e5dea4a2-7d6c-4a52-9554-8f79c7e3589e",
         "label": "Structured Bouquet"
+      },
+      {
+        "id": "0a40b4db-0184-46a3-9340-db8b35359db6",
+        "label": "Full Floral Arbor"
       }
     ]
   },
@@ -72,6 +76,14 @@
       {
         "id": "ca6d2f61-1c80-48d9-a296-5212bdd29a45",
         "label": "Monofloral Runner Centerpiece"
+      },
+      {
+        "id": "0b5aad8f-ae17-4cf3-ad93-b4a56f6a3db0",
+        "label": "Lush and Large Rounded Elevated Centerpiece"
+      },
+      {
+        "id": "89dd757c-8acb-4fa8-97a5-5f86af873de9",
+        "label": "Lush and Large Rounded Elevated Centerpiece with Base Florals"
       }
     ]
   },
@@ -94,6 +106,10 @@
       {
         "id": "31e03f04-7a67-4134-a3bf-e056b99f6c26",
         "label": "Structured Aisle Arrangement"
+      },
+      {
+        "id": "e4c115cf-9a9c-4db0-8f89-28f00d17c111",
+        "label": "Grassy Ground Ceremony"
       }
     ]
   }
