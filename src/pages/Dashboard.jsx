@@ -25,9 +25,10 @@ const Dashboard = ({ env }) => {
     handleOpenModal,
     setNewTrialDate,
     handleCloseModal,
-    handleUpdateTrialDate,
     isTemplateModalOpen,
     selectedOrganization,
+    handleUpdateTrialDate,
+    handleImpersonateUser,
     handleOpenTemplateModal,
     handleCloseTemplateModal,
     handleUpdateTemplateAccess,
@@ -78,6 +79,7 @@ const Dashboard = ({ env }) => {
               isAnyModalOpen={isAnyModalOpen}
               handleOpenModal={handleOpenModal}
               selectedOrganization={selectedOrganization}
+              handleImpersonateUser={handleImpersonateUser}
               handleOpenTemplateModal={handleOpenTemplateModal}
             />
           )}
@@ -106,6 +108,19 @@ const Dashboard = ({ env }) => {
         env={env}
         isOpen={isBetaModalOpen}
         onClose={handleCloseBetaModal}
+      />
+
+      <Tooltip
+        id="impersonate-tooltip"
+        place="top"
+        style={{
+          backgroundColor: "#1F2937",
+          color: "white",
+          borderRadius: "4px",
+          padding: "4px 8px",
+          fontSize: "12px",
+          zIndex: 200,
+        }}
       />
 
       <Tooltip

@@ -45,7 +45,6 @@ const ImageComponents = {
   chuppah: SquareImage,
   chair: SquareImage,
 
-  urn: RectangleImage,
   vase: RectangleImage,
   stem: RectangleImage,
   ribbon: RectangleImage,
@@ -53,10 +52,11 @@ const ImageComponents = {
   lateral: RectangleImage,
   dancing: RectangleImage,
   drapping: RectangleImage,
-  fabricDrape: RectangleImage,
   chandelier: RectangleImage,
+  fabricDrape: RectangleImage,
   smallDancing: RectangleImage,
   largeLateral: RectangleImage,
+  largeDancing: RectangleImage,
   LargeDrapping: RectangleImage,
   longLowContainer: RectangleImage,
 };

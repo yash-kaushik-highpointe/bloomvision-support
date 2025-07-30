@@ -14,7 +14,6 @@ const POSITION_PREFIX = {
   mediumRound: "mr",
   bouquetCollar: "bc",
   largeContainer: "lc",
-  urn: "u",
   stem: "s",
   vase: "v",
   ribbon: "r",
@@ -30,6 +29,7 @@ const POSITION_PREFIX = {
   chair: "cr",
   mandap: "mp",
   chuppah: "cp",
+  largeDancing: "ldc",
   longLowContainer: "llc",
 };
 
@@ -60,7 +60,6 @@ const SquareComponents = {
   bouquetCollar: true,
   smallContainer: true,
   largeContainer: true,
-  urn: false,
   stem: false,
   vase: false,
   ribbon: false,
@@ -73,6 +72,7 @@ const SquareComponents = {
   largeDrapping: false,
   fabricDrape: false,
   chandelier: false,
+  largeDancing: false,
   longLowContainer: false,
 };
 

@@ -71,6 +71,16 @@ export function parseFileName(fileName) {
   if (category === "large+round") transformedCategory = "largeRound";
   else if (category === "medium+round") transformedCategory = "mediumRound";
   else if (category === "small+round") transformedCategory = "smallRound";
+  else if (category === "large+dancing") transformedCategory = "largeDancing";
+  else if (category === "large+drapping") transformedCategory = "largeDrapping";
+  else if (category === "large+lateral") transformedCategory = "largeLateral";
+  else if (category === "large+container")
+    transformedCategory = "largeContainer";
+  else if (category === "small+container")
+    transformedCategory = "smallContainer";
+  else if (category === "long+low+container")
+    transformedCategory = "longLowContainer";
+  else if (category === "fabric+drape") transformedCategory = "fabricDrape";
 
   return {
     name: transformedName,

@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
@@ -38,6 +39,24 @@ export const CONFIG = {
   dev: import.meta.env.VITE_API_BASE_URL,
 };
 
+const SessionExpiredHandler = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleSessionExpired = () => {
+      navigate(ROUTES.LOGIN, { replace: true });
+    };
+
+    window.addEventListener("sessionExpired", handleSessionExpired);
+
+    return () => {
+      window.removeEventListener("sessionExpired", handleSessionExpired);
+    };
+  }, [navigate]);
+
+  return null;
+};
+
 function App() {
   const dispatch = useDispatch();
   const [env, setEnv] = useState("dev");
@@ -53,6 +72,7 @@ function App() {
 
   return (
     <Router>
+      <SessionExpiredHandler />
       <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         <Route path="/" element={<Login />} />
