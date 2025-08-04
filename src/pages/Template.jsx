@@ -9,6 +9,7 @@ import TemplateTable from "../components/TemplateTable";
 import TemplateCloneModal from "../modals/TemplateCloneModal";
 import TemplateRecipeModal from "../modals/TemplateRecipeModal";
 import TemplateDeleteModal from "../modals/TemplateDeleteModal";
+import TemplateCommentModal from "../modals/TemplateCommentModal";
 
 import { useModal } from "../hooks/useModal";
 import { useSearchFilter } from "../hooks/useSearchFilter";
@@ -47,6 +48,13 @@ const Template = ({ env }) => {
     data: viewRecipeModalData,
     closeModal: closeViewRecipeModal,
     openModal: openViewRecipeModal,
+  } = useModal();
+
+  const {
+    isOpen: isCommentModalOpen,
+    data: commentModalData,
+    closeModal: closeCommentModal,
+    openModal: openCommentModal,
   } = useModal();
 
   const {
@@ -153,6 +161,7 @@ const Template = ({ env }) => {
               onEditRecord={openTemplateModal}
               onDeleteRecord={openDeleteModal}
               onViewRecipe={openViewRecipeModal}
+              onViewComment={openCommentModal}
               onDuplicateRecord={openDuplicateModal}
             />
           )}
@@ -187,6 +196,14 @@ const Template = ({ env }) => {
             isOpen={isViewRecipeModalOpen}
             onClose={closeViewRecipeModal}
           />
+
+          <TemplateCommentModal
+            env={env}
+            data={commentModalData}
+            isOpen={isCommentModalOpen}
+            onClose={closeCommentModal}
+            onSaveSuccess={handleSaveSuccess}
+          />
         </div>
       </div>
 
@@ -216,6 +233,18 @@ const Template = ({ env }) => {
       />
       <Tooltip
         id="view-recipe-tooltip"
+        place="top"
+        style={{
+          backgroundColor: "#1F2937",
+          color: "white",
+          borderRadius: "4px",
+          padding: "4px 8px",
+          fontSize: "12px",
+          zIndex: 200,
+        }}
+      />
+      <Tooltip
+        id="view-comment-tooltip"
         place="top"
         style={{
           backgroundColor: "#1F2937",
