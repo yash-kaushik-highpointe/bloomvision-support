@@ -58,6 +58,18 @@ const OrganizationService = (baseURL) => ({
       throw error;
     }
   },
+  bulkUpdateTemplates: async (data) => {
+    try {
+      const response = await api.put(
+        `${baseURL}organisations/skeletons/`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error bulk updating templates:", error);
+      throw error;
+    }
+  },
 });
 
 export default OrganizationService;

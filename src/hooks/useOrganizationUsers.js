@@ -177,8 +177,9 @@ export const useOrganizationUsers = (env) => {
 
   return {
     users,
-    loading,
     error,
+    loading,
+    setUsers,
     isUpdating,
     isDeleting,
     formatDate,

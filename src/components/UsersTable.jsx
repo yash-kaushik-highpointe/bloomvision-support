@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-import { useState, useRef } from "react";
 import {
   useFloating,
   autoUpdate,
@@ -8,32 +6,60 @@ import {
   shift,
   FloatingPortal,
 } from "@floating-ui/react";
+import PropTypes from "prop-types";
+import { UserCog } from "lucide-react";
+import { useState, useRef } from "react";
 
 import deleteIcon from "../assets/delete.svg";
-import timeChangeIcon from "../assets/time-change.svg";
 import bouquetIcon from "../assets/bouquet.svg";
 import templateData from "../data/template.json";
-
-import { UserCog } from "lucide-react";
+import timeChangeIcon from "../assets/time-change.svg";
 
 const UsersTable = ({
   users,
   formatDate,
   handleDelete,
   isAnyModalOpen,
+  selectedOrgIds,
   handleOpenModal,
-  selectedOrganization,
+  setSelectedOrgIds,
   handleImpersonateUser,
   handleOpenTemplateModal,
 }) => {
-  const [hoveredTemplate, setHoveredTemplate] = useState(null);
   const buttonRefs = useRef({});
+
+  const [hoveredTemplate, setHoveredTemplate] = useState(null);
 
   const { refs, floatingStyles } = useFloating({
     placement: "bottom-start",
     middleware: [offset(5), flip(), shift()],
     whileElementsMounted: autoUpdate,
   });
+
+  const handleSelectAll = (checked) => {
+    if (checked) {
+      const allIds = new Set(users.map((user) => user.id));
+      setSelectedOrgIds(allIds);
+    } else {
+      setSelectedOrgIds(new Set());
+    }
+  };
+
+  const handleRowSelection = (userId, checked) => {
+    const newSelectedRows = new Set(selectedOrgIds);
+    if (checked) {
+      newSelectedRows.add(userId);
+    } else {
+      newSelectedRows.delete(userId);
+    }
+    setSelectedOrgIds(newSelectedRows);
+  };
+
+  const isAllSelected =
+    users.length > 0 && selectedOrgIds.size === users.length;
+
+  const isIndeterminate =
+    selectedOrgIds.size > 0 && selectedOrgIds.size < users.length;
 
   const getTemplateLabels = (skeletonIds, org) => {
     if (!skeletonIds || skeletonIds.length === 0) {
@@ -107,6 +133,20 @@ const UsersTable = ({
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-[#f9fafb]"
               >
+                <input
+                  type="checkbox"
+                  checked={isAllSelected}
+                  ref={(input) => {
+                    if (input) input.indeterminate = isIndeterminate;
+                  }}
+                  onChange={(e) => handleSelectAll(e.target.checked)}
+                  className="h-4 w-4 bg-gray-100 border-gray-300 rounded cursor-pointer focus:outline-none"
+                />
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-[#f9fafb]"
+              >
                 Profile
               </th>
               <th
@@ -157,6 +197,16 @@ const UsersTable = ({
             {users.map((org) => (
               <tr key={org.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
+                  <input
+                    type="checkbox"
+                    checked={selectedOrgIds.has(org.id)}
+                    onChange={(e) =>
+                      handleRowSelection(org.id, e.target.checked)
+                    }
+                    className="h-4 w-4 bg-gray-100 border-gray-300 rounded cursor-pointer focus:outline-none"
+                  />
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
                   {org.owner.profile_picture ? (
                     <img
                       src={org.owner.profile_picture}
@@ -198,13 +248,7 @@ const UsersTable = ({
                     {org.owner.is_profile_complete ? "Complete" : "Incomplete"}
                   </span>
                 </td>
-                <td
-                  className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 min-w-[150px] sticky right-0 bg-white ${
-                    (selectedOrganization?.id ?? org.id) === org.id
-                      ? "z-10"
-                      : ""
-                  }`}
-                >
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 min-w-[150px] sticky right-0 bg-white">
                   <div className="flex items-center justify-start space-x-3">
                     <button
                       className="rounded-full hover:bg-gray-100 transition-colors duration-200 w-8 h-8 flex items-center justify-center"
@@ -265,8 +309,8 @@ const UsersTable = ({
 
 UsersTable.propTypes = {
   users: PropTypes.array.isRequired,
+  onSelectionChange: PropTypes.func,
   formatDate: PropTypes.func.isRequired,
-  selectedOrganization: PropTypes.object,
   handleDelete: PropTypes.func.isRequired,
   handleOpenModal: PropTypes.func.isRequired,
   handleOpenTemplateModal: PropTypes.func.isRequired,
