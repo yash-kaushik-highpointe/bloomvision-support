@@ -44,6 +44,7 @@ const ImageComponents = {
   mandap: SquareImage,
   chuppah: SquareImage,
   chair: SquareImage,
+  xlRound: SquareImage,
 
   vase: RectangleImage,
   stem: RectangleImage,

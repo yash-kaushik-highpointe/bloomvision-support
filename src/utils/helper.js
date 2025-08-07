@@ -74,6 +74,7 @@ export function parseFileName(fileName) {
   else if (category === "large+dancing") transformedCategory = "largeDancing";
   else if (category === "large+drapping") transformedCategory = "largeDrapping";
   else if (category === "large+lateral") transformedCategory = "largeLateral";
+  else if (category === "xl+round") transformedCategory = "xlRound";
   else if (category === "large+container")
     transformedCategory = "largeContainer";
   else if (category === "small+container")
