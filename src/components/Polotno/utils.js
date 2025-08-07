@@ -53,6 +53,7 @@ const SquareComponents = {
   filler: true,
   chair: true,
   mandap: true,
+  xlRound: true,
   chuppah: true,
   container: true,
   largeRound: true,

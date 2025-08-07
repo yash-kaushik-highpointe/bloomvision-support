@@ -1,9 +1,11 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 import teamIcon from "../assets/team.svg";
 import galleryIcon from "../assets/gallery.svg";
 import templateIcon from "../assets/bouquet.svg";
+
+import { getToken } from "../utils/auth";
 
 // Toggle Switch Component
 const ToggleSwitch = ({ isOn, onToggle }) => {
@@ -54,7 +56,10 @@ const Layout = ({ handleEnvChange }) => {
   const isGalleryActive = location.pathname === "/gallery";
   const isTemplateActive = location.pathname === "/template";
 
-  const disableEnvToggle = location.pathname.includes("/template/");
+  const userRole = useMemo(() => getToken("support_role"), []);
+
+  const disableEnvToggle =
+    location.pathname.includes("/template/") || userRole === "admin";
 
   const handleToggle = () => {
     setIsToggleOn((prev) => !prev);
@@ -91,7 +96,7 @@ const Layout = ({ handleEnvChange }) => {
           <Link
             to="/template"
             className={`flex items-center gap-x-2 px-3 py-2 rounded-lg transition-colors font-medium no-underline hover:no-underline hover:text-[#7a7a3a] focus:outline-none focus:ring-0 ${
-              isTemplateActive || disableEnvToggle
+              isTemplateActive
                 ? "bg-white text-[#7a7a3a] shadow font-semibold"
                 : "hover:bg-gray-100 text-gray-700"
             }`}
