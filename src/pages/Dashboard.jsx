@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { Tooltip } from "react-tooltip";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 
 import UsersTable from "../components/UsersTable";
 import TrialDateModal from "../components/TrialDateModal";
@@ -73,7 +73,7 @@ const Dashboard = ({ env }) => {
         );
         setSelectedOrgIds(new Set());
       } catch (error) {
-        console.log(error);
+        console.error(error);
         toast.error("Failed to bulk update templates");
       }
     },
@@ -93,6 +93,10 @@ const Dashboard = ({ env }) => {
     isBetaModalOpen,
     isBulkUpdateModalOpen,
   ]);
+
+  useEffect(() => {
+    setSelectedOrgIds(new Set());
+  }, [env]);
 
   return (
     <div className="h-full">
@@ -164,10 +168,11 @@ const Dashboard = ({ env }) => {
       />
 
       <BulkTemplateUpdateModal
+        orgs={users}
+        selectedOrgIds={selectedOrgIds}
         isOpen={isBulkUpdateModalOpen}
         onClose={toggleBulkUpdateModal}
         onSave={handleBulkUpdateTemplates}
-        currentTemplates={selectedOrganization?.skeletons}
       />
 
       <BetaTestUsersModal

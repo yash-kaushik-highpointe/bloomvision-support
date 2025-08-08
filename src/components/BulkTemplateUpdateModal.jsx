@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+
 import templateData from "../data/template.json";
+
+import { getSkeletonState } from "../utils/helper";
 
 const BulkTemplateUpdateModal = ({
   isOpen,
   onClose,
   onSave,
-  currentTemplates,
+  orgs,
+  selectedOrgIds,
 }) => {
-  const [selectedSkeletons, setSelectedSkeletons] = useState([]);
+  const [skeletonState, setSkeletonState] = useState({});
   const [expandedCategories, setExpandedCategories] = useState(
     templateData.map((cat) => cat.id)
   );
@@ -16,11 +20,10 @@ const BulkTemplateUpdateModal = ({
 
   useEffect(() => {
     if (isOpen) {
-      setSelectedSkeletons([]);
       setExpandedCategories(templateData.map((cat) => cat.id));
       setIsSaving(false);
     }
-  }, [isOpen, currentTemplates]);
+  }, [isOpen]);
 
   const toggleCategory = (categoryId) => {
     setExpandedCategories((prev) =>
@@ -30,23 +33,31 @@ const BulkTemplateUpdateModal = ({
     );
   };
 
-  const toggleSkeleton = (skeleton) => {
-    setSelectedSkeletons((prev) =>
-      prev.includes(skeleton.id)
-        ? prev.filter((id) => id !== skeleton.id)
-        : [...prev, skeleton.id]
-    );
+  const toggleSkeleton = (skeletonId) => {
+    setSkeletonState((prev) => {
+      return prev[skeletonId] === "checked"
+        ? { ...prev, [skeletonId]: "unchecked" }
+        : { ...prev, [skeletonId]: "checked" };
+    });
   };
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await onSave(selectedSkeletons);
+      let payload = Object.keys(skeletonState).filter(
+        (id) => skeletonState[id] === "checked"
+      );
+      await onSave(payload);
       onClose();
     } catch (error) {
       setIsSaving(false);
     }
   };
+
+  useEffect(() => {
+    let newSkeletonState = getSkeletonState(orgs, selectedOrgIds, templateData);
+    setSkeletonState(newSkeletonState);
+  }, [orgs, selectedOrgIds]);
 
   if (!isOpen) return null;
 
@@ -75,13 +86,18 @@ const BulkTemplateUpdateModal = ({
                       <div
                         key={skeleton.id}
                         className="flex items-center p-2 hover:bg-gray-50 cursor-pointer"
-                        onClick={() => toggleSkeleton(skeleton)}
+                        onClick={() => toggleSkeleton(skeleton.id)}
                       >
                         <input
                           type="checkbox"
-                          checked={selectedSkeletons.includes(skeleton.id)}
-                          onChange={() => {}}
                           className="mr-2"
+                          ref={(input) => {
+                            if (input)
+                              input.indeterminate =
+                                skeletonState[skeleton.id] === "indeterminate";
+                          }}
+                          checked={skeletonState[skeleton.id] === "checked"}
+                          onChange={() => {}}
                         />
                         <span>{skeleton.label}</span>
                       </div>
@@ -141,10 +157,11 @@ const BulkTemplateUpdateModal = ({
 };
 
 BulkTemplateUpdateModal.propTypes = {
+  orgs: PropTypes.array.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  currentTemplates: PropTypes.arrayOf(PropTypes.string),
+  selectedOrgIds: PropTypes.object.isRequired,
 };
 
 export default BulkTemplateUpdateModal;

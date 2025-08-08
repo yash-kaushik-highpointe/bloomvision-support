@@ -110,7 +110,7 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
       );
       dispatch(saveTemplateDetails({ templateId: data.id, data: response }));
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Failed to save Template Recipe");
     } finally {
       setIsLoading(false);

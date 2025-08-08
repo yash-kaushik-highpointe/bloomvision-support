@@ -153,3 +153,29 @@ export const getDisplayListAndMultiplier = (templateData) => {
     })),
   };
 };
+
+const getSkeletonStatus = (id, selectedOrgs) => {
+  if (selectedOrgs.length === 0) return "unchecked";
+
+  let isPresentInAll = selectedOrgs.every((org) => org.skeletons.includes(id));
+
+  let isPresentInAny = selectedOrgs.some((org) => org.skeletons.includes(id));
+
+  return isPresentInAll
+    ? "checked"
+    : isPresentInAny
+    ? "indeterminate"
+    : "unchecked";
+};
+
+export const getSkeletonState = (orgs, selectedOrgIds, skeletonGrouping) => {
+  let selectedOrgs = orgs.filter((org) => selectedOrgIds.has(org.id));
+
+  let allSkeletons = skeletonGrouping.flatMap((group) => group.skeletons);
+
+  return allSkeletons.reduce((skeletonState, { id }) => {
+    let skeletonStatus = getSkeletonStatus(id, selectedOrgs);
+    skeletonState[id] = skeletonStatus;
+    return skeletonState;
+  }, {});
+};

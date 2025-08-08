@@ -40,7 +40,7 @@ export const usePolotnoStorage = (env) => {
       );
       setIsStoreChanged(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Failed to save Template Details");
     } finally {
       setIsSaving(false);
