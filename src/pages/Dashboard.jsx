@@ -1,21 +1,28 @@
+import { toast } from "react-toastify";
 import { Tooltip } from "react-tooltip";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 
 import UsersTable from "../components/UsersTable";
 import TrialDateModal from "../components/TrialDateModal";
-import TemplateAccessModal from "../components/TemplateAccessModal";
-import BetaTestUsersModal from "../components/BetaTestUsersModal";
 import FullScreenLoader from "../components/FullScreenLoader";
+import BetaTestUsersModal from "../components/BetaTestUsersModal";
+import TemplateAccessModal from "../components/TemplateAccessModal";
+import BulkTemplateUpdateModal from "../components/BulkTemplateUpdateModal";
+import OrganizationService from "../services/organizationService";
 
 import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
+import { CONFIG } from "../App.jsx";
 
 const Dashboard = ({ env }) => {
+  const [selectedOrgIds, setSelectedOrgIds] = useState(new Set());
   const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
+  const [isBulkUpdateModalOpen, setIsBulkUpdateModalOpen] = useState(false);
 
   const {
     users,
     error,
     loading,
+    setUsers,
     isUpdating,
     isDeleting,
     formatDate,
@@ -42,9 +49,54 @@ const Dashboard = ({ env }) => {
     setIsBetaModalOpen(false);
   };
 
+  const toggleBulkUpdateModal = () => {
+    setIsBulkUpdateModalOpen((prev) => !prev);
+  };
+
+  const handleBulkUpdateTemplates = useCallback(
+    async (selectedSkeletons) => {
+      try {
+        await OrganizationService(CONFIG[env]).bulkUpdateTemplates({
+          organisation_ids: Array.from(selectedOrgIds),
+          template_ids: selectedSkeletons,
+        });
+        setUsers((prev) =>
+          prev.map((org) => {
+            if (selectedOrgIds.has(org.id)) {
+              return {
+                ...org,
+                skeletons: selectedSkeletons,
+              };
+            }
+            return org;
+          })
+        );
+        setSelectedOrgIds(new Set());
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to bulk update templates");
+      }
+    },
+    [selectedOrgIds, setUsers]
+  );
+
   const isAnyModalOpen = useMemo(() => {
-    return isModalOpen || isTemplateModalOpen || isBetaModalOpen;
-  }, [isModalOpen, isTemplateModalOpen, isBetaModalOpen]);
+    return (
+      isModalOpen ||
+      isTemplateModalOpen ||
+      isBetaModalOpen ||
+      isBulkUpdateModalOpen
+    );
+  }, [
+    isModalOpen,
+    isTemplateModalOpen,
+    isBetaModalOpen,
+    isBulkUpdateModalOpen,
+  ]);
+
+  useEffect(() => {
+    setSelectedOrgIds(new Set());
+  }, [env]);
 
   return (
     <div className="h-full">
@@ -55,14 +107,24 @@ const Dashboard = ({ env }) => {
             <h1 className="text-3xl font-bold text-gray-900">
               Organization Users
             </h1>
-            {env === "prod" && (
-              <button
-                onClick={handleOpenBetaModal}
-                className="px-4 py-2 text-sm font-medium text-[#7a7a3a] bg-[#e3e6d3] rounded-md hover:bg-[#e3e6d3] transition-colors focus:outline-none focus:ring-2 focus:bg-[#e3e6d3] focus:ring-offset-2"
-              >
-                Beta Test Users
-              </button>
-            )}
+            <div>
+              {env === "prod" && (
+                <button
+                  onClick={handleOpenBetaModal}
+                  className="px-4 py-2 text-sm font-medium text-[#7a7a3a] bg-[#e3e6d3] rounded-md hover:bg-[#e3e6d3] transition-colors focus:outline-none focus:ring-2 focus:bg-[#e3e6d3] focus:ring-offset-2"
+                >
+                  Beta Test Users
+                </button>
+              )}
+              {selectedOrgIds.size > 0 && (
+                <button
+                  onClick={toggleBulkUpdateModal}
+                  className="px-4 py-2 ms-4 text-sm font-medium text-[#7a7a3a] bg-[#e3e6d3] rounded-md hover:bg-[#e3e6d3] transition-colors focus:outline-none focus:ring-2 focus:bg-[#e3e6d3] focus:ring-offset-2"
+                >
+                  Bulk Update Templates
+                </button>
+              )}
+            </div>
           </div>
 
           {loading ? (
@@ -76,9 +138,10 @@ const Dashboard = ({ env }) => {
               users={users}
               formatDate={formatDate}
               handleDelete={handleDelete}
+              selectedOrgIds={selectedOrgIds}
               isAnyModalOpen={isAnyModalOpen}
               handleOpenModal={handleOpenModal}
-              selectedOrganization={selectedOrganization}
+              setSelectedOrgIds={setSelectedOrgIds}
               handleImpersonateUser={handleImpersonateUser}
               handleOpenTemplateModal={handleOpenTemplateModal}
             />
@@ -102,6 +165,14 @@ const Dashboard = ({ env }) => {
         onSave={handleUpdateTemplateAccess}
         ownerId={selectedOrganization?.owner.id}
         currentTemplates={selectedOrganization?.skeletons}
+      />
+
+      <BulkTemplateUpdateModal
+        orgs={users}
+        selectedOrgIds={selectedOrgIds}
+        isOpen={isBulkUpdateModalOpen}
+        onClose={toggleBulkUpdateModal}
+        onSave={handleBulkUpdateTemplates}
       />
 
       <BetaTestUsersModal

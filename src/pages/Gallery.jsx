@@ -1,12 +1,11 @@
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import FlowerList from "../components/FlowerList";
 import CategoryDropdown from "../components/Dropdown";
 import categories from "../data/flowerCategories.json";
-import GalleryService from "../services/flowerService";
 import RightPanel from "../components/GalleryRightPanel";
 
 import {
@@ -16,6 +15,7 @@ import {
 } from "../store/slices/flowersSlice";
 
 import { CONFIG } from "../App";
+import { getToken } from "../utils/auth";
 
 const isOnceFetched = categories.reduce((acc, { id }) => {
   acc[id] = false;
@@ -25,6 +25,8 @@ const isOnceFetched = categories.reduce((acc, { id }) => {
 function Gallery({ env }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const userRole = useMemo(() => getToken("support_role"), []);
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedFlower, setSelectedFlower] = useState(null);
@@ -64,6 +66,8 @@ function Gallery({ env }) {
     }
   };
 
+  const isEnvToggleDisabled = userRole === "admin";
+
   useEffect(() => {
     if (
       !flowersByCategory[selectedCategory] ||
@@ -91,7 +95,9 @@ function Gallery({ env }) {
       )}
       <button
         onClick={() => navigate("/upload")}
-        className="fixed top-4 right-[7rem] bg-[#827a3a] hover:bg-[#827a3a] text-white px-4 py-2 rounded-lg shadow-md transition-colors z-10"
+        className={`fixed top-4 ${
+          isEnvToggleDisabled ? "right-[2rem]" : "right-[7rem]"
+        } bg-[#827a3a] hover:bg-[#827a3a] text-white px-4 py-2 rounded-lg shadow-md transition-colors z-10`}
       >
         Add New Images
       </button>

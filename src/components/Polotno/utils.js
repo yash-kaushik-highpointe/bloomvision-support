@@ -31,6 +31,7 @@ const POSITION_PREFIX = {
   chuppah: "cp",
   largeDancing: "ldc",
   longLowContainer: "llc",
+  xlRound: "xlr",
 };
 
 export const filterRightPanel = (sections) => {
@@ -52,6 +53,7 @@ const SquareComponents = {
   filler: true,
   chair: true,
   mandap: true,
+  xlRound: true,
   chuppah: true,
   container: true,
   largeRound: true,

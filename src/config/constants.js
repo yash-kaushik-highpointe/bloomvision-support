@@ -94,6 +94,7 @@ export const FLOWER_DIMENSIONS = {
   smallDancing: 1,
   smallRound: 2,
   stem: 6,
+  xlRound: 16,
   vase: 24,
   smallContainer: 5,
   mandap: 180,
