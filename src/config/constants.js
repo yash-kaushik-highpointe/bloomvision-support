@@ -21,8 +21,9 @@ export const STATUS_OPTIONS = [
 export const CATEGORY_OPTIONS = [
   { value: "all", label: "All Categories" },
   { value: "Bouquet", label: "Bouquet" },
-  { value: "Centerpiece", label: "Centerpiece" },
   { value: "Ceremony", label: "Ceremony" },
+  { value: "Centerpiece", label: "Centerpiece" },
+  { value: "Installation", label: "Installation" },
 ];
 
 export const None = () => null;
