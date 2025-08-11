@@ -106,6 +106,14 @@ const TemplateTable = ({
                       Implemented
                     </span>
                   )}
+                  {template.status === "Revised" && (
+                    <span
+                      className="w-32 px-4 py-2 inline-flex justify-center text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                      style={{ minWidth: "8rem" }}
+                    >
+                      Revised
+                    </span>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {getDimension(template.dimension)}

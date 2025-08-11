@@ -15,6 +15,7 @@ export const STATUS_OPTIONS = [
   { value: "all", label: "All Statuses" },
   { value: "In Progress", label: "In Progress" },
   { value: "Ready for Dev", label: "Ready for Dev" },
+  { value: "Revised", label: "Revised" },
   { value: "Implemented", label: "Implemented" },
 ];
 
