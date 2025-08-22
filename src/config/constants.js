@@ -106,6 +106,8 @@ export const FLOWER_DIMENSIONS = {
   chandelier: 36,
   largeDancing: 8,
   longLowContainer: 12,
+  xsContainer: 1.5,
+  branch: 38,
 };
 
 export const VIEW_2_CATEGORIES = [
