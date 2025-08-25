@@ -86,7 +86,7 @@ function Gallery({ env }) {
   }, [selectedCategory, dispatch, flowersByCategory, env]);
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full p-5">
       {/* Full screen loader */}
       {isDeleting && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -97,33 +97,36 @@ function Gallery({ env }) {
         onClick={() => navigate("/upload")}
         className={`fixed top-4 ${
           isEnvToggleDisabled ? "right-[2rem]" : "right-[7rem]"
-        } bg-[#827a3a] hover:bg-[#827a3a] text-white px-4 py-2 rounded-lg shadow-md transition-colors z-10`}
+        } bg-[#827a3a] hover:bg-[#827a3a] text-white rounded-lg shadow-md transition-colors z-10 px-4 py-2`}
       >
         Add New Images
       </button>
       {/* Left Panel */}
-      <div className="fixed left-[20px] top-0 h-full flex items-center">
-        <div className="w-[242px] bg-[#e3e6d3] flex flex-col items-start pt-4 pb-4 px-4 rounded-2xl rounded-br-2xl box-border mt-2 mb-2 h-[95%]">
-          <div className="w-full">
-            <CategoryDropdown
-              options={categories}
-              value={selectedCategory}
-              onChange={handleCategoryChange}
+      <div className="h-full w-[242px]">
+        <div className="fixed left-[20px] top-0 h-full flex items-center">
+          <div className="w-[242px] flex flex-col items-start py-2 px-2 rounded-2xl rounded-br-2xl box-border mt-2 h-[95%]">
+            <div className="w-full mb-3">
+              <CategoryDropdown
+                bgColor="#fff"
+                border="1px solid #e3e6d3"
+                options={categories}
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+              />
+            </div>
+            <FlowerList
+              env={env}
+              images={images}
+              loading={loading}
+              onSelect={setSelectedFlower}
+              selectedId={selectedFlower?.id}
+              onDelete={handleFlowerDelete}
+              setIsDeleting={setIsDeleting}
             />
           </div>
-          <hr className="w-[calc(100%+2rem)] -mx-4 my-4 border-t-2 border-[#cdd1bc]" />
-          <FlowerList
-            env={env}
-            images={images}
-            loading={loading}
-            onSelect={setSelectedFlower}
-            selectedId={selectedFlower?.id}
-            onDelete={handleFlowerDelete}
-            setIsDeleting={setIsDeleting}
-          />
         </div>
       </div>
-      <div className="h-full w-[242px]" />
+      {/* Right Panel */}
       {selectedFlower && (
         <RightPanel
           env={env}

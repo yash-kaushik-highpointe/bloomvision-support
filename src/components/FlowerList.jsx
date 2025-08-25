@@ -83,13 +83,13 @@ function FlowerList({
 
   return (
     <div className="flex flex-col w-full h-[calc(100%-75px)]">
-      <div className="w-[208px] sticky top-0 z-1 bg-[#e3e6d3] pb-3">
+      <div className="sticky top-0 z-1 pb-4">
         <input
           type="text"
-          placeholder="Search flowers by name..."
+          placeholder="Search by name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-3 py-1.5 rounded-lg bg-[#f8faf3] border-none focus:outline-none focus:ring-2 focus:ring-[#e3e6d3] text-gray-900 placeholder-gray-500 text-m"
+          className="w-full px-3 py-1.5 rounded-lg bg-[#fff] border-[1px] border-[#e3e6d3] focus:outline-none text-gray-900 placeholder-gray-500 text-[16px]"
         />
       </div>
       <div className="flex flex-col gap-3 w-full overflow-y-auto">
@@ -102,8 +102,8 @@ function FlowerList({
             {filteredImages.map((img) => (
               <div
                 key={img.id}
-                className={`bg-white rounded-2xl shadow-md w-[208px] flex flex-col items-center p-0 cursor-pointer relative ${
-                  selectedId === img.id ? "border-2 border-blue-400" : ""
+                className={`bg-white rounded-2xl shadow-md w-[224px] flex flex-col items-center p-0 cursor-pointer relative ${
+                  selectedId === img.id ? "border-2 border-[#827a3a]" : ""
                 }`}
                 onClick={() => onSelect && onSelect(img)}
               >
@@ -118,7 +118,7 @@ function FlowerList({
                   <img
                     src={img.image}
                     alt={img.name}
-                    className={`h-[180px] w-[180px] object-contain rounded-[10px] bg-[#e3e6d3] mt-[13px] ${
+                    className={`h-[190px] w-[190px] object-contain rounded-[10px] bg-[#e3e6d3] mt-[13px] ${
                       img.dirtyMessage ? "filter blur-sm" : ""
                     }`}
                   />

@@ -12,19 +12,21 @@ function RightPanel({ selectedFlower, selectedCategory, onUpdate, env }) {
   }, [selectedFlower]);
 
   return (
-    <div className="flex-1 bg-gray-100 flex flex-row">
-      <ImageRenderer
-        name={selectedFlower.name}
-        image={image}
-        selectedCategory={selectedCategory}
-      />
-      <FlowerDetailsPanel
-        env={env}
-        colors={colors}
-        onUpdate={onUpdate}
-        onImageChange={setImage}
-        flower={{ ...selectedFlower, image }}
-      />
+    <div className="flex-1 flex flex-row pl-5">
+      <div className="bg-[#fff] flex w-full rounded-xl">
+        <ImageRenderer
+          name={selectedFlower.name}
+          image={image}
+          selectedCategory={selectedCategory}
+        />
+        <FlowerDetailsPanel
+          env={env}
+          colors={colors}
+          onUpdate={onUpdate}
+          onImageChange={setImage}
+          flower={{ ...selectedFlower, image }}
+        />
+      </div>
     </div>
   );
 }
