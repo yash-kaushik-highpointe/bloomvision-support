@@ -100,10 +100,20 @@ const GalleryService = (baseURL) => ({
       throw error;
     }
   },
-  deleteImage: async (flowerId, substituteFlowerId) => {
+  deleteVariant: async (flowerId, substituteFlowerId) => {
     try {
       const response = await api.delete(
         `${baseURL}flowers/delete/${flowerId}/?substitute_flower=${substituteFlowerId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteView: async (flowerId, view, substituteFlowerId) => {
+    try {
+      const response = await api.delete(
+        `${baseURL}flowers/delete/view/${flowerId}/?substitute_flower=${substituteFlowerId}&view=${view}`
       );
       return response.data;
     } catch (error) {

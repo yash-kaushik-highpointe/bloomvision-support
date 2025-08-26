@@ -66,8 +66,9 @@ function FlowerList({
     setIsDeleting(true);
     setDeletingId(selectedFlowerToDelete.id);
     try {
-      await GalleryService(CONFIG[env]).deleteImage(
-        selectedFlowerToDelete.id,
+      await GalleryService(CONFIG[env]).deleteView(
+        selectedFlowerToDelete.flowerId,
+        selectedFlowerToDelete.view,
         substituteFlowerId
       );
       onDelete(selectedFlowerToDelete);

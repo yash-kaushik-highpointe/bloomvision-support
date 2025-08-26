@@ -111,7 +111,7 @@ function ImageRenderer({ selectedCategory, variants, flowerId, env, ...rest }) {
 
   const handleDelete = async (variant) => {
     setIsDeleting(true);
-    await GalleryService(CONFIG[env]).deleteImage(variant.id, flowerId);
+    await GalleryService(CONFIG[env]).deleteVariant(variant.id, flowerId);
     dispatch(
       deleteVariant({
         category: selectedCategory,

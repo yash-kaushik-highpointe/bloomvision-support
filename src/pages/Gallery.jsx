@@ -9,7 +9,7 @@ import categories from "../data/flowerCategories.json";
 import RightPanel from "../components/GalleryRightPanel";
 
 import {
-  deleteFlower,
+  deleteView,
   updateFlower,
   fetchFlowersByCategory,
 } from "../store/slices/flowersSlice";
@@ -55,9 +55,9 @@ function Gallery({ env }) {
     }
   };
 
-  const handleFlowerDelete = async (deletedFlower) => {
+  const handleFlowerViewDelete = async (deletedFlower) => {
     try {
-      dispatch(deleteFlower({ ...deletedFlower, category: selectedCategory }));
+      dispatch(deleteView({ ...deletedFlower, category: selectedCategory }));
       setIsDeleting(false);
       setSelectedFlower(null);
     } catch (error) {
@@ -131,7 +131,7 @@ function Gallery({ env }) {
               images={images}
               loading={loading}
               onSelect={setSelectedFlower}
-              onDelete={handleFlowerDelete}
+              onDelete={handleFlowerViewDelete}
               setIsDeleting={setIsDeleting}
               selectedId={selectedFlower?.key}
             />

@@ -50,13 +50,15 @@ const flowersSlice = createSlice({
         flower.image = flower.variants[0].image;
       }
     },
-    deleteFlower: (state, action) => {
-      const { category, id, flowerId } = action.payload;
+    deleteView: (state, action) => {
+      const { category, flowerId, view } = action.payload;
       const images = state.flowersByCategory[category];
 
       if (!images) return;
 
-      const index = images.findIndex((flower) => flower.id === id);
+      const index = images.findIndex(
+        (flower) => flower.flowerId === flowerId && flower.view === view
+      );
       if (index === -1) return;
 
       // Remove the deleted flower
@@ -123,8 +125,8 @@ const flowersSlice = createSlice({
 export const {
   addFlower,
   addVariant,
+  deleteView,
   clearFlowers,
-  deleteFlower,
   updateFlower,
   deleteVariant,
 } = flowersSlice.actions;
