@@ -34,7 +34,10 @@ function Gallery({ env }) {
 
   const { flowersByCategory, loading } = useSelector((state) => state.flowers);
 
-  const images = flowersByCategory[selectedCategory] || [];
+  const images = useMemo(
+    () => flowersByCategory[selectedCategory] || [],
+    [flowersByCategory, selectedCategory]
+  );
 
   const handleCategoryChange = (...args) => {
     setSelectedCategory(...args);
@@ -85,6 +88,14 @@ function Gallery({ env }) {
     }
   }, [selectedCategory, dispatch, flowersByCategory, env]);
 
+  useEffect(() => {
+    if (images.length > 0 && selectedFlower) {
+      setSelectedFlower({
+        ...images.find((image) => image.key === selectedFlower.key),
+      });
+    }
+  }, [images]);
+
   return (
     <div className="flex h-full p-5">
       {/* Full screen loader */}
@@ -119,9 +130,9 @@ function Gallery({ env }) {
               images={images}
               loading={loading}
               onSelect={setSelectedFlower}
-              selectedId={selectedFlower?.id}
               onDelete={handleFlowerDelete}
               setIsDeleting={setIsDeleting}
+              selectedId={selectedFlower?.key}
             />
           </div>
         </div>
@@ -130,9 +141,9 @@ function Gallery({ env }) {
       {selectedFlower && (
         <RightPanel
           env={env}
+          onUpdate={handleFlowerUpdate}
           selectedFlower={selectedFlower}
           selectedCategory={selectedCategory}
-          onUpdate={handleFlowerUpdate}
         />
       )}
     </div>

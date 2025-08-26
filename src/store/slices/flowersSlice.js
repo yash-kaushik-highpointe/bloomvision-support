@@ -31,6 +31,14 @@ const flowersSlice = createSlice({
         state.flowersByCategory[category] = [flower];
       else state.flowersByCategory[category].push(flower);
     },
+    addVariant: (state, action) => {
+      const { category, flowerId, image, id, view } = action.payload;
+      const images = state.flowersByCategory[category];
+      const flower = images.find(
+        (flower) => flower.flowerId === flowerId && flower.view === view
+      );
+      if (flower) flower.variants.push({ image, id });
+    },
     deleteFlower: (state, action) => {
       const { category, id, flowerId } = action.payload;
       const images = state.flowersByCategory[category];
@@ -101,7 +109,12 @@ const flowersSlice = createSlice({
   },
 });
 
-export const { clearFlowers, deleteFlower, updateFlower, addFlower } =
-  flowersSlice.actions;
+export const {
+  addFlower,
+  addVariant,
+  clearFlowers,
+  deleteFlower,
+  updateFlower,
+} = flowersSlice.actions;
 
 export default flowersSlice.reducer;
