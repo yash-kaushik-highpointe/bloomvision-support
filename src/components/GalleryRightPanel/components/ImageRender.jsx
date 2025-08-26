@@ -6,7 +6,7 @@ import GalleryService from "../../../services/flowerService";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
 import { CONFIG } from "../../../App";
-import { addVariant } from "../../../store/slices/flowersSlice";
+import { addVariant, deleteVariant } from "../../../store/slices/flowersSlice";
 
 const SquareImage = ({ image, name }) => {
   return (
@@ -112,6 +112,14 @@ function ImageRenderer({ selectedCategory, variants, flowerId, env, ...rest }) {
   const handleDelete = async (variant) => {
     setIsDeleting(true);
     await GalleryService(CONFIG[env]).deleteImage(variant.id, flowerId);
+    dispatch(
+      deleteVariant({
+        category: selectedCategory,
+        flowerId,
+        id: variant.id,
+        view: rest.view,
+      })
+    );
     setIsDeleting(false);
   };
 

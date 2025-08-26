@@ -39,6 +39,17 @@ const flowersSlice = createSlice({
       );
       if (flower) flower.variants.push({ image, id });
     },
+    deleteVariant: (state, action) => {
+      const { category, flowerId, id, view } = action.payload;
+      const images = state.flowersByCategory[category];
+      const flower = images.find(
+        (flower) => flower.flowerId === flowerId && flower.view === view
+      );
+      if (flower) {
+        flower.variants = flower.variants.filter((v) => v.id !== id);
+        flower.image = flower.variants[0].image;
+      }
+    },
     deleteFlower: (state, action) => {
       const { category, id, flowerId } = action.payload;
       const images = state.flowersByCategory[category];
@@ -115,6 +126,7 @@ export const {
   clearFlowers,
   deleteFlower,
   updateFlower,
+  deleteVariant,
 } = flowersSlice.actions;
 
 export default flowersSlice.reducer;

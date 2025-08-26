@@ -31,13 +31,9 @@ function Gallery({ env }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedFlower, setSelectedFlower] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
+  const [images, setImages] = useState([]);
 
   const { flowersByCategory, loading } = useSelector((state) => state.flowers);
-
-  const images = useMemo(
-    () => flowersByCategory[selectedCategory] || [],
-    [flowersByCategory, selectedCategory]
-  );
 
   const handleCategoryChange = (...args) => {
     setSelectedCategory(...args);
@@ -95,6 +91,11 @@ function Gallery({ env }) {
       });
     }
   }, [images]);
+
+  useEffect(() => {
+    let tempImages = flowersByCategory[selectedCategory] || [];
+    setImages([...tempImages]);
+  }, [flowersByCategory, selectedCategory]);
 
   return (
     <div className="flex h-full p-5">
