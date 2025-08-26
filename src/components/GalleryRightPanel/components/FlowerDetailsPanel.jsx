@@ -13,7 +13,6 @@ import GalleryService from "../../../services/flowerService";
 import { CONFIG } from "../../../App";
 
 function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate, env }) {
-  const fileInputRef = useRef();
   const view2InputRef = useRef();
 
   const [formState, setFormState] = useState({
@@ -72,6 +71,7 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate, env }) {
           : flower.view,
         name: formState.isDirtyUpload ? flower.name : formState.name,
         color: formState.isDirtyUpload ? flower.color : formState.color,
+        flowerId: flower.flowerId,
       };
 
       const updatedFlower = formState.isDirtyUpload
@@ -79,7 +79,10 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate, env }) {
             flower.flowerId,
             updateData
           )
-        : await GalleryService(CONFIG[env]).updateImage(flower.id, updateData);
+        : await GalleryService(CONFIG[env]).updateImage(
+            flower.flowerId,
+            updateData
+          );
 
       setFormState((prev) => ({
         ...prev,
@@ -89,7 +92,10 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate, env }) {
         isDirtyUpload: false,
       }));
 
-      onUpdate?.(updatedFlower, formState.isDirtyUpload);
+      onUpdate?.(
+        formState.isDirtyUpload ? updatedFlower : updateData,
+        formState.isDirtyUpload
+      );
     } catch (_) {
       toast.error("Error updating flower details");
       setFormState((prev) => ({
@@ -110,7 +116,7 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate, env }) {
       isSaving: false,
       isDirtyUpload: false,
     });
-  }, [flower.id]);
+  }, [flower.key]);
 
   const buttonText = useMemo(() => {
     if (formState.isSaving) return "Saving...";
@@ -160,22 +166,6 @@ function FlowerDetailsPanel({ flower, colors, onImageChange, onUpdate, env }) {
           </div>
         </div>
         <div>
-          {/* Re-upload Flower */}
-          <button
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition text-base font-semibold mb-2"
-            onClick={() => fileInputRef.current.click()}
-            type="button"
-          >
-            Re-upload Flower
-          </button>
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={(e) => handleFileChange(e, false)}
-          />
-
           {/* Upload View 2 Button */}
           {flower.dirtyMessage && (
             <button

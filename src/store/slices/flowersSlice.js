@@ -98,16 +98,17 @@ const flowersSlice = createSlice({
       });
     },
     updateFlower: (state, action) => {
-      const { category, flowerId, id, isNewView, view } = action.payload;
-      const searchKey = isNewView ? "flowerId" : "id";
-      const searchValue = isNewView ? flowerId : id;
+      const { category, flowerId, isNewView, view, id, image, name, color } =
+        action.payload;
 
       const images = state.flowersByCategory[category];
 
       if (!images) return;
 
-      const index = images.findIndex(
-        (flower) => flower[searchKey] === searchValue
+      const index = images.findIndex((flower) =>
+        isNewView
+          ? flower.flowerId === flowerId
+          : flower.flowerId === flowerId && flower.view === view
       );
 
       if (index === -1) return;
@@ -116,12 +117,31 @@ const flowersSlice = createSlice({
         images[index].dirtyMessage = "";
 
         if (view === "view_1") {
-          images.splice(index, 0, action.payload);
+          images.splice(index, 0, {
+            view,
+            name,
+            color,
+            image,
+            flowerId,
+            dirtyMessage: "",
+            key: `${flowerId}_0`,
+            variants: [{ id, image }],
+          });
         } else if (view === "view_2") {
-          images.splice(index + 1, 0, action.payload);
+          images.splice(index + 1, 0, {
+            view,
+            name,
+            color,
+            image,
+            flowerId,
+            dirtyMessage: "",
+            key: `${flowerId}_1`,
+            variants: [{ id, image }],
+          });
         }
       } else {
-        images[index] = action.payload;
+        images[index].name = name;
+        images[index].color = color;
       }
     },
   },

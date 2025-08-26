@@ -49,7 +49,6 @@ function Gallery({ env }) {
           isNewView,
         })
       );
-      setSelectedFlower(updatedFlower);
     } catch (error) {
       toast.error("Failed to update flower");
     }
