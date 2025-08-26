@@ -27,9 +27,31 @@ const flowersSlice = createSlice({
     },
     addFlower: (state, action) => {
       const { category, ...flower } = action.payload;
+      let { flowerId, color, id, image, name, view, dirtyMessage } = flower;
       if (!state.flowersByCategory[category])
-        state.flowersByCategory[category] = [flower];
-      else state.flowersByCategory[category].push(flower);
+        state.flowersByCategory[category] = [
+          {
+            name,
+            view,
+            color,
+            image,
+            flowerId,
+            dirtyMessage,
+            key: `${flowerId}_0`,
+            variants: [{ id, image }],
+          },
+        ];
+      else
+        state.flowersByCategory[category].push({
+          view,
+          name,
+          image,
+          color,
+          flowerId,
+          dirtyMessage,
+          key: `${flowerId}_0`,
+          variants: [{ id, image }],
+        });
     },
     addVariant: (state, action) => {
       const { category, flowerId, image, id, view } = action.payload;
