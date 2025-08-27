@@ -38,6 +38,7 @@ export function transformFlowerData(apiResponse) {
       let key = `${id}_${index}`;
       let view = index === 0 ? "view_1" : "view_2";
       let image = variants[0]?.image;
+      let flowerVariantId = variants[0]?.id;
 
       return {
         key,
@@ -47,6 +48,7 @@ export function transformFlowerData(apiResponse) {
         image,
         flowerId: id,
         dirtyMessage,
+        id: flowerVariantId,
         variants: variants.map((variant) => ({
           id: variant.id,
           image: variant.image,
