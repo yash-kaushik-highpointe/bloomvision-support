@@ -31,6 +31,7 @@ const flowersSlice = createSlice({
       if (!state.flowersByCategory[category])
         state.flowersByCategory[category] = [
           {
+            id,
             name,
             view,
             color,
@@ -43,10 +44,11 @@ const flowersSlice = createSlice({
         ];
       else
         state.flowersByCategory[category].push({
-          view,
+          id,
           name,
-          image,
+          view,
           color,
+          image,
           flowerId,
           dirtyMessage,
           key: `${flowerId}_0`,
@@ -70,6 +72,7 @@ const flowersSlice = createSlice({
       if (flower) {
         flower.variants = flower.variants.filter((v) => v.id !== id);
         flower.image = flower.variants[0].image;
+        flower.id = flower.variants[0].id;
       }
     },
     deleteView: (state, action) => {
@@ -118,6 +121,7 @@ const flowersSlice = createSlice({
 
         if (view === "view_1") {
           images.splice(index, 0, {
+            id,
             view,
             name,
             color,
@@ -129,6 +133,7 @@ const flowersSlice = createSlice({
           });
         } else if (view === "view_2") {
           images.splice(index + 1, 0, {
+            id,
             view,
             name,
             color,
