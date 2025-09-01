@@ -42,10 +42,11 @@ const NoCategoryImage = ({ image, name }) => (
 
 const ImageComponents = {
   bulk: SquareImage,
-  frame: SquareImage,
+  stem: SquareImage,
   chair: SquareImage,
-  branch: SquareImage,
+  frame: SquareImage,
   filler: SquareImage,
+  branch: SquareImage,
   mandap: SquareImage,
   chuppah: SquareImage,
   xlRound: SquareImage,
@@ -58,7 +59,6 @@ const ImageComponents = {
   smallContainer: SquareImage,
 
   vase: RectangleImage,
-  stem: RectangleImage,
   ribbon: RectangleImage,
   pedestal: RectangleImage,
   lateral: RectangleImage,

@@ -26,7 +26,7 @@
   { "id": "smallContainer", "label": "Small Container" },
   { "id": "smallDancing", "label": "Small Dancing" },
   { "id": "smallRound", "label": "Small Round" },
-  { "id": "stem", "label": "Stem" },
+  { "id": "stem", "label": "Stem/Ribbon Short" },
   { "id": "vase", "label": "Vase" },
   { "id": "xlRound", "label": "XL Round" }
 ]

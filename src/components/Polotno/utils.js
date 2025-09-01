@@ -51,6 +51,7 @@ export const filterRightPanel = (sections) => {
 
 const SquareComponents = {
   frame: true,
+  stem: true,
   bulk: true,
   filler: true,
   branch: true,
@@ -65,7 +66,6 @@ const SquareComponents = {
   bouquetCollar: true,
   smallContainer: true,
   largeContainer: true,
-  stem: false,
   vase: false,
   ribbon: false,
   lateral: false,
