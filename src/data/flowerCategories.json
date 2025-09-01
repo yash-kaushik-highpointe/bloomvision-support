@@ -1,5 +1,6 @@
 [
   { "id": "bouquetCollar", "label": "Bouquet Collar" },
+  { "id": "branch", "label": "Branch" },
   { "id": "bulk", "label": "Bulk" },
   { "id": "chair", "label": "Chair" },
   { "id": "chandelier", "label": "Chandelier" },
@@ -9,8 +10,6 @@
   { "id": "drapping", "label": "Draping" },
   { "id": "fabricDrape", "label": "Fabric Drape" },
   { "id": "filler", "label": "Filler" },
-  { "id": "branch", "label": "Branch" },
-  { "id": "xsContainer", "label": "XS Container" },
   { "id": "frame", "label": "Frame" },
   { "id": "largeContainer", "label": "Large Container" },
   { "id": "largeDancing", "label": "Large Dancing" },
@@ -22,11 +21,12 @@
   { "id": "mandap", "label": "Mandap" },
   { "id": "mediumRound", "label": "Medium Round" },
   { "id": "pedestal", "label": "Pedestal" },
-  { "id": "ribbon", "label": "Ribbon / Stem" },
   { "id": "smallContainer", "label": "Small Container" },
   { "id": "smallDancing", "label": "Small Dancing" },
   { "id": "smallRound", "label": "Small Round" },
-  { "id": "stem", "label": "Stem/Ribbon Short" },
+  { "id": "ribbon", "label": "Stem / Ribbon Long" },
+  { "id": "stem", "label": "Stem / Ribbon Short" },
   { "id": "vase", "label": "Vase" },
-  { "id": "xlRound", "label": "XL Round" }
+  { "id": "xlRound", "label": "XL Round" },
+  { "id": "xsContainer", "label": "XS Container" }
 ]
