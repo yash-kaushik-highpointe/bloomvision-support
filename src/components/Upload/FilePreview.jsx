@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ImageRenderer from "../GalleryRightPanel/components/ImageRender";
+import ImageRenderer from "./ImageRenderer";
 
 const FilePreview = ({ file, category }) => {
   const [previewUrl, setPreviewUrl] = useState(null);

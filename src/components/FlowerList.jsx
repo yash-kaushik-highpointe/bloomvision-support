@@ -66,8 +66,9 @@ function FlowerList({
     setIsDeleting(true);
     setDeletingId(selectedFlowerToDelete.id);
     try {
-      await GalleryService(CONFIG[env]).deleteImage(
-        selectedFlowerToDelete.id,
+      await GalleryService(CONFIG[env]).deleteView(
+        selectedFlowerToDelete.flowerId,
+        selectedFlowerToDelete.view,
         substituteFlowerId
       );
       onDelete(selectedFlowerToDelete);
@@ -82,14 +83,14 @@ function FlowerList({
   };
 
   return (
-    <div className="flex flex-col w-full h-[calc(100%-75px)]">
-      <div className="w-[208px] sticky top-0 z-1 bg-[#e3e6d3] pb-3">
+    <div className="flex flex-col w-full h-[calc(100%-45px)]">
+      <div className="sticky top-0 z-1 pb-4">
         <input
           type="text"
-          placeholder="Search flowers by name..."
+          placeholder="Search by name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-3 py-1.5 rounded-lg bg-[#f8faf3] border-none focus:outline-none focus:ring-2 focus:ring-[#e3e6d3] text-gray-900 placeholder-gray-500 text-m"
+          className="w-full px-3 py-1.5 rounded-lg bg-[#fff] border-[1px] border-[#e3e6d3] focus:outline-none text-gray-900 placeholder-gray-500 text-[16px]"
         />
       </div>
       <div className="flex flex-col gap-3 w-full overflow-y-auto">
@@ -99,54 +100,58 @@ function FlowerList({
           </div>
         ) : (
           <div className="flex flex-col items-center gap-4 w-full">
-            {filteredImages.map((img) => (
-              <div
-                key={img.id}
-                className={`bg-white rounded-2xl shadow-md w-[208px] flex flex-col items-center p-0 cursor-pointer relative ${
-                  selectedId === img.id ? "border-2 border-blue-400" : ""
-                }`}
-                onClick={() => onSelect && onSelect(img)}
-              >
-                <button
-                  onClick={(e) => handleDelete(e, img)}
-                  className="absolute top-1 right-1 z-[9] p-1.5 bg-white rounded-full"
-                  disabled={deletingId === img.id}
+            {filteredImages.map((detail) => {
+              const { key, image, name, dirtyMessage, color } = detail;
+
+              return (
+                <div
+                  key={key}
+                  className={`bg-white rounded-2xl shadow-md w-[224px] h-[260px]  flex flex-col items-center p-0 cursor-pointer relative ${
+                    selectedId === key ? "border-2 border-[#827a3a]" : ""
+                  }`}
+                  onClick={() => onSelect && onSelect(detail)}
                 >
-                  <img src={deleteIcon} alt="Delete" className="w-4 h-4" />
-                </button>
-                <div className="flex justify-center relative w-full">
-                  <img
-                    src={img.image}
-                    alt={img.name}
-                    className={`h-[180px] w-[180px] object-contain rounded-[10px] bg-[#e3e6d3] mt-[13px] ${
-                      img.dirtyMessage ? "filter blur-sm" : ""
-                    }`}
-                  />
-                  {!!img.dirtyMessage && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center z-1">
-                      <ErrorSVG />
-                      <span className="text-xs text-red-600 text-center bg-white/80 px-2 py-1 rounded font-medium">
-                        {img.dirtyMessage}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="flex items-center w-full px-4 py-3">
-                  <span
-                    className="font-semibold text-base text-gray-900 truncate flex-1 mr-3"
-                    title={img.name}
+                  <button
+                    onClick={(e) => handleDelete(e, detail)}
+                    className="absolute top-1 right-1 z-[9] p-1.5 bg-white rounded-full"
+                    disabled={deletingId === key}
                   >
-                    {img.name}
-                  </span>
-                  {img.color !== "#zzzzzz" && (
-                    <span
-                      className="w-[20px] h-[20px] rounded-full border border-gray-200 flex-shrink-0"
-                      style={{ backgroundColor: img.color }}
+                    <img src={deleteIcon} alt="Delete" className="w-4 h-4" />
+                  </button>
+                  <div className="flex justify-center relative w-full mt-1">
+                    <img
+                      src={image}
+                      alt={name}
+                      className={`h-[190px] w-[190px] object-contain rounded-[10px] bg-[#e3e6d3] mt-[13px] ${
+                        dirtyMessage ? "filter blur-sm" : ""
+                      }`}
                     />
-                  )}
+                    {!!dirtyMessage && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center z-1">
+                        <ErrorSVG />
+                        <span className="text-xs text-red-600 text-center bg-white/80 px-2 py-1 rounded font-medium">
+                          {dirtyMessage}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center w-full px-4 py-3">
+                    <span
+                      className="font-semibold text-base text-gray-900 truncate flex-1 mr-3"
+                      title={name}
+                    >
+                      {name}
+                    </span>
+                    {color !== "#zzzzzz" && (
+                      <span
+                        className="w-[20px] h-[20px] rounded-full border border-gray-200 flex-shrink-0"
+                        style={{ backgroundColor: color }}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

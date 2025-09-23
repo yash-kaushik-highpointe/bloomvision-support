@@ -27,17 +27,63 @@ const flowersSlice = createSlice({
     },
     addFlower: (state, action) => {
       const { category, ...flower } = action.payload;
+      let { flowerId, color, id, image, name, view, dirtyMessage } = flower;
       if (!state.flowersByCategory[category])
-        state.flowersByCategory[category] = [flower];
-      else state.flowersByCategory[category].push(flower);
+        state.flowersByCategory[category] = [
+          {
+            id,
+            name,
+            view,
+            color,
+            image,
+            flowerId,
+            dirtyMessage,
+            key: `${flowerId}_0`,
+            variants: [{ id, image }],
+          },
+        ];
+      else
+        state.flowersByCategory[category].push({
+          id,
+          name,
+          view,
+          color,
+          image,
+          flowerId,
+          dirtyMessage,
+          key: `${flowerId}_0`,
+          variants: [{ id, image }],
+        });
     },
-    deleteFlower: (state, action) => {
-      const { category, id, flowerId } = action.payload;
+    addVariant: (state, action) => {
+      const { category, flowerId, image, id, view } = action.payload;
+      const images = state.flowersByCategory[category];
+      const flower = images.find(
+        (flower) => flower.flowerId === flowerId && flower.view === view
+      );
+      if (flower) flower.variants.push({ image, id });
+    },
+    deleteVariant: (state, action) => {
+      const { category, flowerId, id, view } = action.payload;
+      const images = state.flowersByCategory[category];
+      const flower = images.find(
+        (flower) => flower.flowerId === flowerId && flower.view === view
+      );
+      if (flower) {
+        flower.variants = flower.variants.filter((v) => v.id !== id);
+        flower.image = flower.variants[0].image;
+        flower.id = flower.variants[0].id;
+      }
+    },
+    deleteView: (state, action) => {
+      const { category, flowerId, view } = action.payload;
       const images = state.flowersByCategory[category];
 
       if (!images) return;
 
-      const index = images.findIndex((flower) => flower.id === id);
+      const index = images.findIndex(
+        (flower) => flower.flowerId === flowerId && flower.view === view
+      );
       if (index === -1) return;
 
       // Remove the deleted flower
@@ -55,16 +101,17 @@ const flowersSlice = createSlice({
       });
     },
     updateFlower: (state, action) => {
-      const { category, flowerId, id, isNewView, view } = action.payload;
-      const searchKey = isNewView ? "flowerId" : "id";
-      const searchValue = isNewView ? flowerId : id;
+      const { category, flowerId, isNewView, view, id, image, name, color } =
+        action.payload;
 
       const images = state.flowersByCategory[category];
 
       if (!images) return;
 
-      const index = images.findIndex(
-        (flower) => flower[searchKey] === searchValue
+      const index = images.findIndex((flower) =>
+        isNewView
+          ? flower.flowerId === flowerId
+          : flower.flowerId === flowerId && flower.view === view
       );
 
       if (index === -1) return;
@@ -73,12 +120,33 @@ const flowersSlice = createSlice({
         images[index].dirtyMessage = "";
 
         if (view === "view_1") {
-          images.splice(index, 0, action.payload);
+          images.splice(index, 0, {
+            id,
+            view,
+            name,
+            color,
+            image,
+            flowerId,
+            dirtyMessage: "",
+            key: `${flowerId}_0`,
+            variants: [{ id, image }],
+          });
         } else if (view === "view_2") {
-          images.splice(index + 1, 0, action.payload);
+          images.splice(index + 1, 0, {
+            id,
+            view,
+            name,
+            color,
+            image,
+            flowerId,
+            dirtyMessage: "",
+            key: `${flowerId}_1`,
+            variants: [{ id, image }],
+          });
         }
       } else {
-        images[index] = action.payload;
+        images[index].name = name;
+        images[index].color = color;
       }
     },
   },
@@ -101,7 +169,13 @@ const flowersSlice = createSlice({
   },
 });
 
-export const { clearFlowers, deleteFlower, updateFlower, addFlower } =
-  flowersSlice.actions;
+export const {
+  addFlower,
+  addVariant,
+  deleteView,
+  clearFlowers,
+  updateFlower,
+  deleteVariant,
+} = flowersSlice.actions;
 
 export default flowersSlice.reducer;

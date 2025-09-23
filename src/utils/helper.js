@@ -12,32 +12,49 @@ export function transformFlowerData(apiResponse) {
 
   return apiResponse.flatMap((flower) => {
     const { category, name, color, image_detail, id } = flower;
-    const imageDetails = Object.values(image_detail || {});
+    const { view_1: view1Flowers, view_2: view2Flowers } = image_detail || {};
+
+    let mappingArray = [];
 
     // Check for missing views
     let dirtyMessage = "";
     if (roundCategories.includes(category)) {
-      const hasView1 = imageDetails.some(
-        (detail) => detail.view_angle === "view_1"
-      );
-      const hasView2 = imageDetails.some(
-        (detail) => detail.view_angle === "view_2"
-      );
+      const hasView1 = view1Flowers?.length > 0;
+      const hasView2 = view2Flowers?.length > 0;
       const messages = [];
+
       if (!hasView1) messages.push("View 1 missing");
+      else mappingArray.push(view1Flowers);
+
       if (!hasView2) messages.push("View 2 missing");
+      else mappingArray.push(view2Flowers);
+
       dirtyMessage = messages.join(", ");
+    } else {
+      mappingArray.push(view1Flowers);
     }
 
-    return imageDetails.map((detail) => ({
-      name,
-      color,
-      dirtyMessage,
-      flowerId: id,
-      id: detail.id,
-      image: detail.image,
-      view: detail.view_angle,
-    }));
+    return mappingArray.map((variants, index) => {
+      let key = `${id}_${index}`;
+      let view = index === 0 ? "view_1" : "view_2";
+      let image = variants[0]?.image;
+      let flowerVariantId = variants[0]?.id;
+
+      return {
+        key,
+        name,
+        color,
+        view,
+        image,
+        flowerId: id,
+        dirtyMessage,
+        id: flowerVariantId,
+        variants: variants.map((variant) => ({
+          id: variant.id,
+          image: variant.image,
+        })),
+      };
+    });
   });
 }
 

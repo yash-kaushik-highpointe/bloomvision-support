@@ -1,15 +1,23 @@
 import React from "react";
 import Select from "react-select";
 
-const customStyles = (bgColor) => ({
-  control: (provided) => ({
+const customStyles = ({ bgColor, border }) => ({
+  control: (provided, state) => ({
     ...provided,
     background: bgColor ?? "#f8faf3",
     minHeight: 40,
     boxShadow: "none",
     fontSize: 16,
     borderRadius: 10,
-    border: "none",
+    border: border ?? "none",
+    outline: "none",
+    "&:hover": {
+      outline: "none",
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+    },
   }),
   option: (provided, state) => ({
     ...provided,
@@ -39,7 +47,7 @@ function Dropdown({ options, value, onChange, bgColor, ...rest }) {
       options={selectOptions}
       value={selected}
       onChange={(opt) => onChange(opt.value)}
-      styles={customStyles(bgColor)}
+      styles={customStyles({ bgColor, ...rest })}
       isSearchable={false}
       menuPlacement="auto"
       {...rest}

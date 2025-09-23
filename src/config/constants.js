@@ -15,6 +15,7 @@ export const STATUS_OPTIONS = [
   { value: "all", label: "All Statuses" },
   { value: "In Progress", label: "In Progress" },
   { value: "Ready for Dev", label: "Ready for Dev" },
+  { value: "Revised", label: "Revised" },
   { value: "Implemented", label: "Implemented" },
 ];
 
@@ -105,6 +106,8 @@ export const FLOWER_DIMENSIONS = {
   chandelier: 36,
   largeDancing: 8,
   longLowContainer: 12,
+  xsContainer: 1.5,
+  branch: 38,
 };
 
 export const VIEW_2_CATEGORIES = [
