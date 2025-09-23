@@ -131,14 +131,14 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
       return {
         ...acc,
         [stack.id]: {
-          width: `${dimensions.width}%`,
-          height: `${dimensions.height}%`,
-          top: `${position.top}%`,
-          left: `${position.left}%`,
-          transform: `rotate(${position.rotate}deg) ${
-            position.flipX ? "scaleX(-1)" : ""
-          } ${position.flipY ? "scaleY(-1)" : ""}`,
-          zIndex: stack.zIndex,
+          width: `${dimensions.width}%;`,
+          height: `${dimensions.height}%;`,
+          top: `${position.top}%;`,
+          left: `${position.left}%;`,
+          transform: `rotate(${position.rotate}deg)${
+            position.flipX ? " scaleX(-1)" : ""
+          }${position.flipY ? " scaleY(-1)" : ""};`,
+          "z-index": `${stack.zIndex};`,
         },
       };
     }, {});
