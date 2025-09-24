@@ -135,7 +135,7 @@ function TemplateRecipeModal({ isOpen, onClose, data, env }) {
           height: `${dimensions.height}%;`,
           top: `${position.top}%;`,
           left: `${position.left}%;`,
-          transform: `rotate(${position.rotate}deg)${
+          transform: `rotate(${Math.round(position.rotate * 100) / 100}deg)${
             position.flipX ? " scaleX(-1)" : ""
           }${position.flipY ? " scaleY(-1)" : ""};`,
           "z-index": `${stack.zIndex};`,
