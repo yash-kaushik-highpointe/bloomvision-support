@@ -196,3 +196,11 @@ export const getSkeletonState = (orgs, selectedOrgIds, skeletonGrouping) => {
     return skeletonState;
   }, {});
 };
+
+export const getFlowerNameFromSrc = (string) => {
+  const parts = string.split("/");
+  const flowerName = parts[parts.length - 1].replace(/%2B/g, " ");
+  let flowerNameParts = flowerName.split("_");
+  flowerNameParts.pop();
+  return flowerNameParts.join("_");
+};

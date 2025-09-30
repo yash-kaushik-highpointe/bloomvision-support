@@ -2,10 +2,12 @@ import { useDispatch } from "react-redux";
 import React, { useState, useEffect, useRef } from "react";
 
 import deleteIcon from "../../../assets/delete.svg";
+import downloadIcon from "../../../assets/download.svg";
 import GalleryService from "../../../services/flowerService";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
 import { CONFIG } from "../../../App";
+import { getFlowerNameFromSrc } from "../../../utils/helper";
 import { addVariant, deleteVariant } from "../../../store/slices/flowersSlice";
 
 const SquareImage = ({ image, name }) => {
@@ -123,6 +125,22 @@ function ImageRenderer({ selectedCategory, variants, flowerId, env, ...rest }) {
     setIsDeleting(false);
   };
 
+  const handleDownload = (image, variantName) => {
+    fetch(image)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = `${getFlowerNameFromSrc(image)}_${variantName}.png`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      });
+  };
+
   useEffect(() => {
     setSelectedVariant(variants[variants.length - 1]);
     setIsDeleteVisible(variants.length > 1);
@@ -166,6 +184,18 @@ function ImageRenderer({ selectedCategory, variants, flowerId, env, ...rest }) {
                 <div className="text-sm font-300 mt-2 text-center text-[#827a3a] absolute top-[115px]">
                   Variant {index + 1}
                 </div>
+                <button
+                  onClick={() =>
+                    handleDownload(variant.image, `variant${index + 1}`)
+                  }
+                  className="absolute top-1 left-2 z-[9] w-[24px] h-[24px] p-1 rounded-full outline-none"
+                >
+                  <img
+                    src={downloadIcon}
+                    alt="download"
+                    className="w-[13px] h-[13px]"
+                  />
+                </button>
                 {isDeleteVisible && (
                   <button
                     onClick={() => handleDelete(variant)}
