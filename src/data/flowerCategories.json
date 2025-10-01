@@ -1,32 +1,64 @@
 [
-  { "id": "bouquetCollar", "label": "Bouquet Collar" },
-  { "id": "branch", "label": "Branch" },
-  { "id": "bulk", "label": "Bulk" },
-  { "id": "chair", "label": "Chair" },
-  { "id": "chandelier", "label": "Chandelier" },
-  { "id": "chuppah", "label": "Chuppah" },
-  { "id": "container", "label": "Container" },
-  { "id": "dancing", "label": "Dancing" },
-  { "id": "drapping", "label": "Draping" },
-  { "id": "fabricDrape", "label": "Fabric Drape" },
-  { "id": "filler", "label": "Filler" },
-  { "id": "frame", "label": "Frame" },
-  { "id": "largeContainer", "label": "Large Container" },
-  { "id": "largeDancing", "label": "Large Dancing" },
-  { "id": "largeDrapping", "label": "Large Draping" },
-  { "id": "largeLateral", "label": "Large Lateral" },
-  { "id": "largeRound", "label": "Large Round" },
-  { "id": "lateral", "label": "Lateral" },
-  { "id": "longLowContainer", "label": "Long Low Container" },
-  { "id": "mandap", "label": "Mandap" },
-  { "id": "mediumRound", "label": "Medium Round" },
-  { "id": "pedestal", "label": "Pedestal" },
-  { "id": "smallContainer", "label": "Small Container" },
-  { "id": "smallDancing", "label": "Small Dancing" },
-  { "id": "smallRound", "label": "Small Round" },
-  { "id": "ribbon", "label": "Stem / Ribbon Long" },
-  { "id": "stem", "label": "Stem / Ribbon Short" },
-  { "id": "vase", "label": "Vase" },
-  { "id": "xlRound", "label": "XL Round" },
-  { "id": "xsContainer", "label": "XS Container" }
+  {
+    "label": "Rounds",
+    "options": [
+      { "id": "xsRound", "label": "X-Small Round" },
+      { "id": "smallRound", "label": "Small Round" },
+      { "id": "mediumRound", "label": "Round" },
+      { "id": "largeRound", "label": "Large Round" },
+      { "id": "xlRound", "label": "X-Large Round" }
+    ]
+  },
+  {
+    "label": "Draping / Dancing / Laterals",
+    "options": [
+      { "id": "drapping", "label": "Draping" },
+      { "id": "largeDrapping", "label": "Long Draping" },
+      { "id": "smallDancing", "label": "Short Dancing" },
+      { "id": "dancing", "label": "Dancing" },
+      { "id": "largeDancing", "label": "Tall Dancing" },
+      { "id": "lateral", "label": "Lateral" },
+      { "id": "largeLateral", "label": "Tall Lateral" }
+    ]
+  },
+  {
+    "label": "Fillers and Bulk",
+    "options": [
+      { "id": "bulk", "label": "Bulk" },
+      { "id": "xsFiller", "label": "X-Small Filler" },
+      { "id": "smallFiller", "label": "Small Filler" },
+      { "id": "filler", "label": "Filler" }
+    ]
+  },
+  {
+    "label": "Ribbons / Stems / Containers",
+    "options": [
+      { "id": "bouquetCollar", "label": "Collar" },
+      { "id": "xsContainer", "label": "X-Small Container" },
+      { "id": "smallContainer", "label": "Small Container" },
+      { "id": "container", "label": "Container" },
+      { "id": "largeContainer", "label": "Large Container" },
+      { "id": "ribbon", "label": "Ribbon" },
+      { "id": "stem", "label": "Stem" },
+      { "id": "vase", "label": "Vase" },
+      { "id": "pedestal", "label": "Pedestal" },
+      { "id": "longLowContainer", "label": "Narrow Low Container" },
+      { "id": "lowContainer", "label": "Low Container" },
+      { "id": "wideLowContainer", "label": "Wide Low Container" }
+    ]
+  },
+  {
+    "label": "Ceremony Structures",
+    "options": [
+      { "id": "branch", "label": "Branch" },
+      { "id": "frame", "label": "Frame" },
+      { "id": "mandap", "label": "Mandap" },
+      { "id": "chuppah", "label": "Chuppah" },
+      { "id": "smallChandelier", "label": "Small Chandelier" },
+      { "id": "chandelier", "label": "Chandelier" },
+      { "id": "largeChandelier", "label": "Large Chandelier" },
+      { "id": "fabricDrape", "label": "Fabric Drape" },
+      { "id": "chair", "label": "Chair" }
+    ]
+  }
 ]

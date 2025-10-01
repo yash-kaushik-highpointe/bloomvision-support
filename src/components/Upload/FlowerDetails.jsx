@@ -18,6 +18,7 @@ const FlowerDetails = ({
         <div className="w-full mb-4">
           <label className="text-xs font-semibold mb-1 block">Category</label>
           <Dropdown
+            grouped
             value={formData.category}
             options={categories}
             onChange={(val) => onInputChange("category", val)}

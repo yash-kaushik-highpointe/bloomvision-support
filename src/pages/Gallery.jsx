@@ -17,7 +17,12 @@ import {
 import { CONFIG } from "../App";
 import { getToken } from "../utils/auth";
 
-const isOnceFetched = categories.reduce((acc, { id }) => {
+const reduceCategories = categories.reduce(
+  (acc, { options }) => [...acc, ...options],
+  []
+);
+
+const isOnceFetched = reduceCategories.reduce((acc, { id }) => {
   acc[id] = false;
   return acc;
 }, {});
@@ -30,7 +35,9 @@ function Gallery({ env }) {
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedFlower, setSelectedFlower] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
+  const [selectedCategory, setSelectedCategory] = useState(
+    reduceCategories[0].id
+  );
   const [images, setImages] = useState([]);
 
   const { flowersByCategory, loading } = useSelector((state) => state.flowers);
@@ -118,10 +125,11 @@ function Gallery({ env }) {
           <div className="w-[242px] flex flex-col items-start py-2 px-2 rounded-2xl rounded-br-2xl box-border mt-2 h-[95%]">
             <div className="w-full mb-3">
               <CategoryDropdown
+                grouped
                 bgColor="#fff"
-                border="1px solid #e3e6d3"
                 options={categories}
                 value={selectedCategory}
+                border="1px solid #e3e6d3"
                 onChange={handleCategoryChange}
               />
             </div>

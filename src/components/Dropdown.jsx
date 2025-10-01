@@ -7,7 +7,7 @@ const customStyles = ({ bgColor, border }) => ({
     background: bgColor ?? "#f8faf3",
     minHeight: 40,
     boxShadow: "none",
-    fontSize: 16,
+    fontSize: 14,
     borderRadius: 10,
     border: border ?? "none",
     outline: "none",
@@ -27,20 +27,41 @@ const customStyles = ({ bgColor, border }) => ({
       ? "#f0f2ea"
       : "#fff",
     color: "#222",
-    fontSize: 16,
+    fontSize: 14,
   }),
   menu: (provided) => ({
     ...provided,
     zIndex: 1000,
   }),
+  groupHeading: (provided, state) => ({
+    ...provided,
+    fontSize: 12,
+    borderTop: state.data?.isFirstGroup ? "none" : "1px solid #e5e7eb",
+    paddingTop: state.data?.isFirstGroup ? "8px" : "12px",
+  }),
 });
 
-function Dropdown({ options, value, onChange, bgColor, ...rest }) {
-  const selectOptions = options.map((cat) => ({
-    value: cat.id,
-    label: cat.label,
-  }));
-  const selected = selectOptions.find((opt) => opt.value === value);
+function Dropdown({ options, value, onChange, bgColor, grouped, ...rest }) {
+  const selectOptions = grouped
+    ? options.map((group, index) => ({
+        ...group,
+        isFirstGroup: index === 0,
+        options: group.options.map((cat) => ({
+          value: cat.id,
+          label: cat.label,
+        })),
+      }))
+    : options.map((option) => ({
+        value: option.id,
+        label: option.label,
+      }));
+
+  // Find the selected option from the nested options
+  const selected = grouped
+    ? selectOptions
+        .map((group) => group.options.find((opt) => opt.value === value))
+        .find((opt) => opt !== undefined) || null
+    : selectOptions.find((opt) => opt.value === value) || null;
 
   return (
     <Select
