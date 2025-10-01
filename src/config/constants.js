@@ -108,6 +108,14 @@ export const FLOWER_DIMENSIONS = {
   longLowContainer: 12,
   xsContainer: 1.5,
   branch: 38,
+
+  xsRound: 1,
+  xsFiller: 1.5,
+  smallFiller: 2.5,
+  lowContainer: 8,
+  wideLowContainer: 12,
+  smallChandelier: 14,
+  largeChandelier: 36,
 };
 
 export const VIEW_2_CATEGORIES = [
