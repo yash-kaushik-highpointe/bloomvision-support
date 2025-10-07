@@ -4,32 +4,8 @@
     "label": "Bouquet",
     "skeletons": [
       {
-        "id": "5cf62703-0fd6-4e58-b689-f3e304e8087d",
-        "label": "Oval Bouquet"
-      },
-      {
-        "id": "f5a09e08-0d3e-4e69-9361-b8052161b009",
-        "label": "Garden Bouquet"
-      },
-      {
-        "id": "0d587e97-aee8-4331-ac46-68844513f73b",
-        "label": "Dancing Garden Bouquet"
-      },
-      {
-        "id": "83ed103c-9ca9-4a52-9ea6-7e1071bc7760",
-        "label": "Petite Mono Floral"
-      },
-      {
         "id": "e5dea4a2-7d6c-4a52-9554-8f79c7e3589e",
         "label": "Structured Bouquet"
-      },
-      {
-        "id": "ddff5258-be15-4517-a1af-d318d9c61fff",
-        "label": "Small Single Flower Bouquet Petite"
-      },
-      {
-        "id": "f97869b1-f341-4ff4-9764-d6205f57f317",
-        "label": "Long Stem Bouquet"
       },
       {
         "id": "89c65937-ae4c-444d-b5b2-25589b5a4790",
