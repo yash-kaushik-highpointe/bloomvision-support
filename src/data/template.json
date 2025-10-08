@@ -4,32 +4,8 @@
     "label": "Bouquet",
     "skeletons": [
       {
-        "id": "5cf62703-0fd6-4e58-b689-f3e304e8087d",
-        "label": "Oval Bouquet"
-      },
-      {
-        "id": "f5a09e08-0d3e-4e69-9361-b8052161b009",
-        "label": "Garden Bouquet"
-      },
-      {
-        "id": "0d587e97-aee8-4331-ac46-68844513f73b",
-        "label": "Dancing Garden Bouquet"
-      },
-      {
-        "id": "83ed103c-9ca9-4a52-9ea6-7e1071bc7760",
-        "label": "Petite Mono Floral"
-      },
-      {
         "id": "e5dea4a2-7d6c-4a52-9554-8f79c7e3589e",
         "label": "Structured Bouquet"
-      },
-      {
-        "id": "ddff5258-be15-4517-a1af-d318d9c61fff",
-        "label": "Small Single Flower Bouquet Petite"
-      },
-      {
-        "id": "f97869b1-f341-4ff4-9764-d6205f57f317",
-        "label": "Long Stem Bouquet"
       },
       {
         "id": "89c65937-ae4c-444d-b5b2-25589b5a4790",
@@ -75,11 +51,11 @@
       },
       {
         "id": "f2399695-53db-49ac-bdac-1df44b6a3489",
-        "label": "8ft Table Garden Centerpiece"
+        "label": " Garden Table Centerpiece – Large"
       },
       {
         "id": "73f9dbed-e10c-493b-8eb3-dac8679e0026",
-        "label": "Hanging Chandelier Oval"
+        "label": "Hanging Oval Chandelier "
       },
       {
         "id": "a0347c07-f50d-4b66-bb92-534ccf3fb053",
@@ -91,11 +67,11 @@
       },
       {
         "id": "0b5aad8f-ae17-4cf3-ad93-b4a56f6a3db0",
-        "label": "Lush and Large Rounded Elevated Centerpiece"
+        "label": "Elevated Lush Round Centerpiece"
       },
       {
         "id": "89dd757c-8acb-4fa8-97a5-5f86af873de9",
-        "label": "Lush and Large Rounded Elevated Centerpiece with Base Florals"
+        "label": "Elevated Lush Round Centerpiece (Base Florals)"
       },
       {
         "id": "65026dae-b086-4fd1-a7b0-d7ea01db2ff9",
@@ -125,7 +101,7 @@
       },
       {
         "id": "e4c115cf-9a9c-4db0-8f89-28f00d17c111",
-        "label": "Grassy Ground Ceremony"
+        "label": "Grassy Ground Arrangement"
       },
       {
         "id": "0a40b4db-0184-46a3-9340-db8b35359db6",

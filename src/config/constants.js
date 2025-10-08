@@ -78,7 +78,7 @@ export const TOOLBAR_COMPONENTS = {
 };
 
 export const FLOWER_DIMENSIONS = {
-  bouquetCollar: 24,
+  bouquetCollar: 7, // 24
   bulk: 5,
   container: 12,
   dancing: 3,
@@ -96,18 +96,26 @@ export const FLOWER_DIMENSIONS = {
   smallDancing: 1,
   smallRound: 2,
   stem: 6,
-  xlRound: 16,
+  xlRound: 12, // 16
   vase: 24,
   smallContainer: 5,
-  mandap: 180,
-  chuppah: 180,
+  mandap: 144, // 180
+  chuppah: 120, // 180
   fabricDrape: 36,
   chair: 42,
-  chandelier: 36,
+  chandelier: 20, // 36
   largeDancing: 8,
-  longLowContainer: 12,
-  xsContainer: 1.5,
+  longLowContainer: 4, // 12
+  xsContainer: 2, // 1.5
   branch: 38,
+
+  xsRound: 1,
+  xsFiller: 1.5,
+  smallFiller: 2.5,
+  lowContainer: 8,
+  wideLowContainer: 12,
+  smallChandelier: 14,
+  largeChandelier: 36,
 };
 
 export const VIEW_2_CATEGORIES = [

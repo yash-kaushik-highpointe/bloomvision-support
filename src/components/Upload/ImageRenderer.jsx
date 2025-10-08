@@ -48,6 +48,14 @@ const ImageComponents = {
   largeContainer: SquareImage,
   smallContainer: SquareImage,
 
+  xsRound: SquareImage,
+  xsFiller: SquareImage,
+  smallFiller: SquareImage,
+  lowContainer: RectangleImage,
+  wideLowContainer: RectangleImage,
+  smallChandelier: RectangleImage,
+  largeChandelier: RectangleImage,
+
   vase: RectangleImage,
   ribbon: RectangleImage,
   pedestal: RectangleImage,

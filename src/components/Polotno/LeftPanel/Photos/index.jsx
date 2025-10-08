@@ -10,12 +10,19 @@ import categories from "../../../../data/flowerCategories.json";
 import { CONFIG } from "../../../../App";
 import { fetchFlowersByCategory } from "../../../../store/slices/flowersSlice";
 
+const reduceCategories = categories.reduce(
+  (acc, { options }) => [...acc, ...options],
+  []
+);
+
 const Photos = observer(({ store, env, templateData }) => {
   const dispatch = useDispatch();
 
   const { flowersByCategory, loading } = useSelector((state) => state.flowers);
 
-  const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
+  const [selectedCategory, setSelectedCategory] = useState(
+    reduceCategories[0].id
+  );
 
   const handleCategoryChange = (...args) => {
     setSelectedCategory(...args);
@@ -37,6 +44,7 @@ const Photos = observer(({ store, env, templateData }) => {
   return (
     <div className="w-full h-full">
       <CategoryDropdown
+        grouped
         className="mt-1"
         bgColor="#e3e6d3"
         options={categories}

@@ -34,6 +34,14 @@ const POSITION_PREFIX = {
   largeDancing: "ldc",
   longLowContainer: "llc",
   xlRound: "xlr",
+
+  xsRound: "xsr",
+  xsFiller: "xsf",
+  smallFiller: "sf",
+  lowContainer: "lowc",
+  wideLowContainer: "wlc",
+  smallChandelier: "sch",
+  largeChandelier: "lch",
 };
 
 export const filterRightPanel = (sections) => {
@@ -66,6 +74,15 @@ const SquareComponents = {
   bouquetCollar: true,
   smallContainer: true,
   largeContainer: true,
+
+  xsRound: true,
+  xsFiller: true,
+  smallFiller: true,
+  lowContainer: false,
+  wideLowContainer: false,
+  smallChandelier: false,
+  largeChandelier: false,
+
   vase: false,
   ribbon: false,
   lateral: false,
