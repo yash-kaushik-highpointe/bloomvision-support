@@ -98,7 +98,7 @@ export function parseFileName(fileName) {
     transformedCategory = "smallContainer";
   else if (category === "long+low+container")
     transformedCategory = "longLowContainer";
-  else if (category === "fabric+drape") transformedCategory = "fabricDrape";
+  else if (category === "fabricdrape") transformedCategory = "fabricNGarland";
 
   return {
     name: transformedName,
