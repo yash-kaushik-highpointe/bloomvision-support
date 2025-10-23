@@ -57,7 +57,7 @@
       { "id": "smallChandelier", "label": "Small Chandelier" },
       { "id": "chandelier", "label": "Chandelier" },
       { "id": "largeChandelier", "label": "Large Chandelier" },
-      { "id": "fabricDrape", "label": "Fabric Drape" },
+      { "id": "fabricNGarland", "label": "Fabric & Garland" },
       { "id": "chair", "label": "Chair" }
     ]
   }

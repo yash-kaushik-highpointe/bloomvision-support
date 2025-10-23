@@ -101,7 +101,7 @@ export const FLOWER_DIMENSIONS = {
   smallContainer: 5,
   mandap: 144, // 180
   chuppah: 120, // 180
-  fabricDrape: 36,
+  fabricNGarland: 36,
   chair: 42,
   chandelier: 20, // 36
   largeDancing: 8,
