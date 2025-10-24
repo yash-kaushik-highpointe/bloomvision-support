@@ -4,16 +4,28 @@
     "label": "Bouquet",
     "skeletons": [
       {
-        "id": "e5dea4a2-7d6c-4a52-9554-8f79c7e3589e",
-        "label": "Structured Bouquet"
-      },
-      {
         "id": "89c65937-ae4c-444d-b5b2-25589b5a4790",
         "label": "Mixed Garden Round Bouquet"
       },
       {
         "id": "ea9724a9-4683-4ca3-92a8-21134efa0fc9",
         "label": "Modern Cascade Bouquet"
+      },
+      {
+        "id": "03d6ad3f-d242-4bfe-a5ab-7355536f8e8e",
+        "label": "Loose Garden Bouquet"
+      },
+      {
+        "id": "27b72182-b224-42e1-b86a-b5e9e91b1de1",
+        "label": "Draping Bouquet"
+      },
+      {
+        "id": "f85371ca-b500-4680-915e-450ba0029ddb",
+        "label": "Petite Bouquet"
+      },
+      {
+        "id": "7dc79d35-1264-4979-8273-13df216c87ff",
+        "label": "Modern Structured Bouquet"
       }
     ]
   },
@@ -26,16 +38,16 @@
         "label": "Low Mixed Arrangement"
       },
       {
-        "id": "375b9b06-fa65-482e-9808-a4995c32c62c",
-        "label": "Simple Garden Compote"
-      },
-      {
         "id": "50d98ec5-08af-4520-856d-1047417fb4a0",
         "label": "Garden Compote"
       },
       {
         "id": "e57450ed-124e-4da9-94dc-a6de4fe92c83",
         "label": "Dancing Garden Compote"
+      },
+      {
+        "id": "375b9b06-fa65-482e-9808-a4995c32c62c",
+        "label": "Simple Garden Compote"
       },
       {
         "id": "82b44614-36f2-4f5b-aeb6-db5cb5cce0da",
@@ -46,20 +58,12 @@
         "label": "Movement Centerpiece"
       },
       {
+        "id": "f2399695-53db-49ac-bdac-1df44b6a3489",
+        "label": "Garden Table Centerpiece (8 ft)"
+      },
+      {
         "id": "14bbd5a7-7d24-4ae2-adf5-94b819dca193",
         "label": "Petite Frog Arrangement"
-      },
-      {
-        "id": "f2399695-53db-49ac-bdac-1df44b6a3489",
-        "label": " Garden Table Centerpiece – Large"
-      },
-      {
-        "id": "73f9dbed-e10c-493b-8eb3-dac8679e0026",
-        "label": "Hanging Oval Chandelier "
-      },
-      {
-        "id": "a0347c07-f50d-4b66-bb92-534ccf3fb053",
-        "label": "Modern Structured Chuppah"
       },
       {
         "id": "ca6d2f61-1c80-48d9-a296-5212bdd29a45",
@@ -76,6 +80,30 @@
       {
         "id": "65026dae-b086-4fd1-a7b0-d7ea01db2ff9",
         "label": "Low Rounded Centerpiece"
+      },
+      {
+        "id": "f8eeb168-0bcc-47c5-ae31-98faaf1ff4c5",
+        "label": "Bud Vase Centerpiece Dancing Flowers"
+      },
+      {
+        "id": "986f5fac-f97a-4d7b-ab05-bd325e0301b6",
+        "label": "Bud Vase Centerpiece Lateral Flowers"
+      },
+      {
+        "id": "b95e463f-6c42-4869-b8cc-66933a5c326a",
+        "label": "Spilling End Table Centerpiece"
+      },
+      {
+        "id": "cc0c8d51-c330-4156-bc47-7c6ba7fbd126",
+        "label": "Garden Table Centerpiece (3 ft)"
+      },
+      {
+        "id": "48fdef49-4e85-46e7-a9bc-4c82c56c8565",
+        "label": "Garden Table Centerpiece (2 ft)"
+      },
+      {
+        "id": "6d81f5d6-4b6e-42d4-832d-41e858898721",
+        "label": "Movement Compote Centerpiece"
       }
     ]
   },
@@ -100,12 +128,46 @@
         "label": "Structured Aisle Arrangement"
       },
       {
-        "id": "e4c115cf-9a9c-4db0-8f89-28f00d17c111",
-        "label": "Grassy Ground Arrangement"
+        "id": "a0347c07-f50d-4b66-bb92-534ccf3fb053",
+        "label": "Modern Structured Chuppah"
       },
       {
-        "id": "0a40b4db-0184-46a3-9340-db8b35359db6",
-        "label": "Full Floral Arbor"
+        "id": "31fbb9aa-55d2-4db8-a659-23f1c8e8344d",
+        "label": "Organic Lush Garden Arbor"
+      },
+      {
+        "id": "296ceaa8-0011-4642-9c02-8c7b12168068",
+        "label": "Ceremony Ground Nest"
+      },
+      {
+        "id": "3a470532-51e6-4dab-87f3-a67ceecc313e",
+        "label": "Sculptural Arrangement"
+      },
+      {
+        "id": "bc7f0b48-9199-451d-a023-86830e9cf067",
+        "label": "Mandap Traditional"
+      }
+    ]
+  },
+  {
+    "id": "installation",
+    "label": "Installation",
+    "skeletons": [
+      {
+        "id": "f1614ed2-8a1a-4405-98c6-802cc521189e",
+        "label": "Wide Rectangle Hanging Installation"
+      },
+      {
+        "id": "16b54b50-3b0f-43db-a037-841c60212d52",
+        "label": "Staircase Installation Left Side"
+      },
+      {
+        "id": "d2a8b1fb-b5b7-4116-9c05-dc31e7eb62b7",
+        "label": "Staircase Installation Right Side"
+      },
+      {
+        "id": "73f9dbed-e10c-493b-8eb3-dac8679e0026",
+        "label": "Hanging Oval Chandelier"
       }
     ]
   }
