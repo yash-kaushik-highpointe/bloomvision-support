@@ -8,15 +8,19 @@ import FullScreenLoader from "../components/FullScreenLoader";
 import BetaTestUsersModal from "../components/BetaTestUsersModal";
 import TemplateAccessModal from "../components/TemplateAccessModal";
 import BulkTemplateUpdateModal from "../components/BulkTemplateUpdateModal";
+import Dropdown from "../components/Dropdown";
 import OrganizationService from "../services/organizationService";
 
 import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
 import { CONFIG } from "../App.jsx";
+import { PAYMENT_STATUS_OPTIONS } from "../config/constants";
 
 const Dashboard = ({ env }) => {
   const [selectedOrgIds, setSelectedOrgIds] = useState(new Set());
   const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
   const [isBulkUpdateModalOpen, setIsBulkUpdateModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const {
     users,
@@ -25,7 +29,6 @@ const Dashboard = ({ env }) => {
     setUsers,
     isUpdating,
     isDeleting,
-    formatDate,
     isModalOpen,
     newTrialDate,
     handleDelete,
@@ -80,6 +83,22 @@ const Dashboard = ({ env }) => {
     [selectedOrgIds, setUsers]
   );
 
+  const filteredUsers = useMemo(() => {
+    return users.filter((user) => {
+      // Search filter
+      const matchesSearch =
+        searchTerm === "" ||
+        user.business_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.owner?.email?.toLowerCase().includes(searchTerm.toLowerCase());
+
+      // Status filter
+      const matchesStatus =
+        statusFilter === "All" || user.status === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [users, searchTerm, statusFilter]);
+
   const isAnyModalOpen = useMemo(() => {
     return (
       isModalOpen ||
@@ -96,6 +115,8 @@ const Dashboard = ({ env }) => {
 
   useEffect(() => {
     setSelectedOrgIds(new Set());
+    setSearchTerm("");
+    setStatusFilter("All");
   }, [env]);
 
   return (
@@ -103,11 +124,11 @@ const Dashboard = ({ env }) => {
       {isDeleting && <FullScreenLoader />}
       <div className="max-w-8xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg p-6">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-gray-900">
               Organization Users
             </h1>
-            <div>
+            <div className="flex items-center gap-4">
               {env === "prod" && (
                 <button
                   onClick={handleOpenBetaModal}
@@ -119,12 +140,34 @@ const Dashboard = ({ env }) => {
               {selectedOrgIds.size > 0 && (
                 <button
                   onClick={toggleBulkUpdateModal}
-                  className="px-4 py-2 ms-4 text-sm font-medium text-[#7a7a3a] bg-[#e3e6d3] rounded-md hover:bg-[#e3e6d3] transition-colors focus:outline-none focus:ring-2 focus:bg-[#e3e6d3] focus:ring-offset-2"
+                  className="px-4 py-2 text-sm font-medium text-[#7a7a3a] bg-[#e3e6d3] rounded-md hover:bg-[#e3e6d3] transition-colors focus:outline-none focus:ring-2 focus:bg-[#e3e6d3] focus:ring-offset-2"
                 >
                   Bulk Update Templates
                 </button>
               )}
             </div>
+          </div>
+
+          <div className="flex items-center gap-4 mb-2">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search for Company Name or Email"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-80 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:outline-none"
+              />
+            </div>
+
+            <Dropdown
+              options={PAYMENT_STATUS_OPTIONS}
+              value={statusFilter}
+              onChange={setStatusFilter}
+              bgColor="#fff"
+              border="1px solid #d1d5db"
+              borderRadius={7}
+              className="w-40"
+            />
           </div>
 
           {loading ? (
@@ -135,8 +178,7 @@ const Dashboard = ({ env }) => {
             <div className="text-red-600 p-4 bg-red-50 rounded-lg">{error}</div>
           ) : (
             <UsersTable
-              users={users}
-              formatDate={formatDate}
+              users={filteredUsers}
               handleDelete={handleDelete}
               selectedOrgIds={selectedOrgIds}
               isAnyModalOpen={isAnyModalOpen}

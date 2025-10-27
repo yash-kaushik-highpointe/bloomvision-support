@@ -124,3 +124,20 @@ export const VIEW_2_CATEGORIES = [
   "mediumRound",
   "smallRound",
 ];
+
+export const PAYMENT_STATUS_OPTIONS = [
+  { id: "All", label: "All" },
+  { id: "Active", label: "Active" },
+  { id: "Trial", label: "Trial" },
+  { id: "Payment Issue", label: "Payment Issue" },
+  { id: "Suspended", label: "Suspended" },
+  { id: "Inactive", label: "Inactive" },
+];
+
+export const PAYMENT_STATUS = {
+  Active: { label: "Active", color: "#00B870" },
+  Trial: { label: "Trial", color: "#60A5FA" },
+  Overdue: { label: "Overdue", color: "#FFD700" },
+  Suspended: { label: "Suspended", color: "#E30613" },
+  Inactive: { label: "Inactive", color: "#6B7280" },
+};

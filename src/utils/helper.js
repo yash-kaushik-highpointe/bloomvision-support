@@ -117,6 +117,38 @@ export const formatDate = (dateString) => {
   });
 };
 
+export const addToDate = (dateString, days) => {
+  if (!dateString) return;
+  const date = new Date(dateString);
+  date.setDate(date.getDate() + days);
+  return date.toISOString().split("T")[0];
+};
+
+export const formatUserTableDate = (dateString) => {
+  if (!dateString) return "---";
+
+  const inputDate = new Date(dateString);
+  inputDate.setHours(0, 0, 0, 0);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Difference in days between today and the input date
+  const diffMs = today - inputDate;
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+  // If the input date is today or before (1+ days have passed)
+  if (diffDays >= 1) {
+    return "---";
+  }
+
+  // Otherwise, format as YYYY-MM-DD
+  const year = inputDate.getFullYear();
+  const month = String(inputDate.getMonth() + 1).padStart(2, "0");
+  const day = String(inputDate.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 export const getTotalInches = (feet, inches) => feet * 12 + inches;
 
 export const getDimension = (dimension) => {

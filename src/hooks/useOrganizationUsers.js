@@ -52,16 +52,6 @@ export const useOrganizationUsers = (env) => {
     }
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
   const handleOpenModal = (org) => {
     setSelectedOrganization(org);
     const formattedDate = org.trial_ends
@@ -182,7 +172,6 @@ export const useOrganizationUsers = (env) => {
     setUsers,
     isUpdating,
     isDeleting,
-    formatDate,
     isModalOpen,
     newTrialDate,
     handleDelete,

@@ -1,14 +1,14 @@
 import React from "react";
 import Select from "react-select";
 
-const customStyles = ({ bgColor, border }) => ({
+const customStyles = ({ bgColor, border, borderRadius }) => ({
   control: (provided, state) => ({
     ...provided,
     background: bgColor ?? "#f8faf3",
     minHeight: 40,
     boxShadow: "none",
     fontSize: 14,
-    borderRadius: 10,
+    borderRadius: borderRadius ?? 10,
     border: border ?? "none",
     outline: "none",
     "&:hover": {
