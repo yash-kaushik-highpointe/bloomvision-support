@@ -17,6 +17,7 @@ import Redirect from "./pages/Redirect";
 import Template from "./pages/Template";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
+import CustomerDetail from "./pages/CustomerDetail";
 
 import { ROUTES } from "./config/constants";
 import { authService } from "./services/authService";
@@ -87,9 +88,10 @@ function App() {
         >
           <Route path="/gallery" element={<Gallery env={env} />} />
           <Route path="/upload" element={<Upload env={env} />} />
-          <Route path="/organisations" element={<Dashboard env={env} />} />
+          <Route path="/customers" element={<Dashboard env={env} />} />
           <Route path="/template" element={<Template env={env} />} />
           <Route path="/template/:id" element={<Polotno env={env} />} />
+          <Route path="/customers/:id" element={<CustomerDetail env={env} />} />
         </Route>
 
         <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />

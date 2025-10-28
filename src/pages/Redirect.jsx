@@ -25,7 +25,7 @@ const Redirect = ({ env }) => {
         setToken(access_token, "support_access_token");
         setToken(refresh_token, "support_refresh_token");
         setToken(role, "support_role");
-        navigate("/organisations");
+        navigate("/customers");
       } catch (error) {
         error;
         toast.error("Authentication failed. Please try again.");

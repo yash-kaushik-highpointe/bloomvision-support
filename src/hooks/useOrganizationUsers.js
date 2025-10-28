@@ -1,12 +1,18 @@
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-import OrganizationService from "../services/organizationService";
+import { useDispatch, useSelector } from "react-redux";
 
 import { CONFIG } from "../App";
 import { ROUTES } from "../config/constants";
 import { authService } from "../services/authService";
+import {
+  fetchOrganizationUsers,
+  updateTrialEndDate,
+  updateTemplateAccess,
+  impersonateUser,
+  clearError,
+} from "../store/slices/customerSlice";
 
 const IMPERSONATE_REDIRECT_URL = (token) => {
   return {
@@ -17,16 +23,18 @@ const IMPERSONATE_REDIRECT_URL = (token) => {
 
 export const useOrganizationUsers = (env) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Redux state for data
+  const { users, loading, error, isUpdating } = useSelector(
+    (state) => state.customer
+  );
+
+  // Local state for UI
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newTrialDate, setNewTrialDate] = useState("");
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
+  const [newTrialDate, setNewTrialDate] = useState("");
 
   useEffect(() => {
     if (!authService.isAuthenticated()) {
@@ -34,23 +42,10 @@ export const useOrganizationUsers = (env) => {
       return;
     }
 
-    fetchUsers();
-  }, [navigate, env]);
-
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const data = await OrganizationService(
-        CONFIG[env]
-      ).getOrganizationUsers();
-      setUsers(data);
-    } catch (err) {
-      setError("Failed to fetch organization users");
-      console.error(err);
-    } finally {
-      setLoading(false);
+    if (users.length === 0) {
+      dispatch(fetchOrganizationUsers({ env, config: CONFIG }));
     }
-  };
+  }, [navigate, env, users.length, dispatch]);
 
   const handleOpenModal = (org) => {
     setSelectedOrganization(org);
@@ -70,47 +65,22 @@ export const useOrganizationUsers = (env) => {
   const handleUpdateTrialDate = async () => {
     if (!selectedOrganization) return;
 
-    setIsUpdating(true);
     try {
-      await OrganizationService(CONFIG[env]).updateTrialEndDate(
-        selectedOrganization.owner.id,
-        newTrialDate,
-        selectedOrganization.skeletons
-      );
-
-      setUsers(
-        users.map((org) => {
-          if (org.owner.id === selectedOrganization.owner.id) {
-            return {
-              ...org,
-              trial_ends: newTrialDate,
-            };
-          }
-          return org;
+      await dispatch(
+        updateTrialEndDate({
+          env,
+          config: CONFIG,
+          ownerId: selectedOrganization.owner.id,
+          newTrialDate,
+          skeletons: selectedOrganization.skeletons,
         })
-      );
+      ).unwrap();
 
       handleCloseModal();
     } catch (err) {
       console.error("Failed to update trial date:", err);
       handleCloseModal();
       toast.error("Failed to update trial end date");
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  const handleDelete = async (organizationId) => {
-    setIsDeleting(true);
-    try {
-      await OrganizationService(CONFIG[env]).deleteOrganization(organizationId);
-      setUsers(users.filter((org) => org.id !== organizationId));
-      toast.success("Organization deleted successfully");
-    } catch (err) {
-      console.error("Failed to delete organization:", err);
-      toast.error("Failed to delete organization");
-    } finally {
-      setIsDeleting(false);
     }
   };
 
@@ -131,23 +101,15 @@ export const useOrganizationUsers = (env) => {
     selectedTemplateIds
   ) => {
     try {
-      await OrganizationService(CONFIG[env]).updateTemplateAccess(
-        ownerId,
-        selectedTemplateIds,
-        org.trial_ends
-      );
-
-      setUsers(
-        users.map((org) => {
-          if (org.owner.id === ownerId) {
-            return {
-              ...org,
-              skeletons: selectedTemplateIds,
-            };
-          }
-          return org;
+      await dispatch(
+        updateTemplateAccess({
+          env,
+          config: CONFIG,
+          ownerId,
+          selectedTemplateIds,
+          trialEnds: org.trial_ends,
         })
-      );
+      ).unwrap();
     } catch (err) {
       console.error("Failed to update template access:", err);
       toast.error("Failed to update template access");
@@ -156,25 +118,33 @@ export const useOrganizationUsers = (env) => {
 
   const handleImpersonateUser = async ({ email }) => {
     try {
-      let { token } = await OrganizationService(CONFIG[env]).impersonateUser(
-        email
-      );
+      const { token } = await dispatch(
+        impersonateUser({
+          env,
+          config: CONFIG,
+          email,
+        })
+      ).unwrap();
       window.open(IMPERSONATE_REDIRECT_URL(token)[env], "_blank");
     } catch (err) {
       toast.error("Failed to impersonate user");
     }
   };
 
+  // Clear error when component unmounts
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
   return {
     users,
     error,
     loading,
-    setUsers,
     isUpdating,
-    isDeleting,
     isModalOpen,
     newTrialDate,
-    handleDelete,
     handleOpenModal,
     setNewTrialDate,
     handleCloseModal,

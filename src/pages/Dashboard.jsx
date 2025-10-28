@@ -1,21 +1,21 @@
 import { toast } from "react-toastify";
-import { Tooltip } from "react-tooltip";
+import { useNavigate } from "react-router-dom";
 import { useState, useMemo, useCallback, useEffect } from "react";
 
+import Dropdown from "../components/Dropdown";
 import UsersTable from "../components/UsersTable";
-import TrialDateModal from "../components/TrialDateModal";
 import FullScreenLoader from "../components/FullScreenLoader";
 import BetaTestUsersModal from "../components/BetaTestUsersModal";
-import TemplateAccessModal from "../components/TemplateAccessModal";
 import BulkTemplateUpdateModal from "../components/BulkTemplateUpdateModal";
-import Dropdown from "../components/Dropdown";
 import OrganizationService from "../services/organizationService";
 
-import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
 import { CONFIG } from "../App.jsx";
+import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
 import { PAYMENT_STATUS_OPTIONS } from "../config/constants";
 
 const Dashboard = ({ env }) => {
+  const navigate = useNavigate();
+
   const [selectedOrgIds, setSelectedOrgIds] = useState(new Set());
   const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
   const [isBulkUpdateModalOpen, setIsBulkUpdateModalOpen] = useState(false);
@@ -27,21 +27,9 @@ const Dashboard = ({ env }) => {
     error,
     loading,
     setUsers,
-    isUpdating,
     isDeleting,
     isModalOpen,
-    newTrialDate,
-    handleDelete,
-    handleOpenModal,
-    setNewTrialDate,
-    handleCloseModal,
     isTemplateModalOpen,
-    selectedOrganization,
-    handleUpdateTrialDate,
-    handleImpersonateUser,
-    handleOpenTemplateModal,
-    handleCloseTemplateModal,
-    handleUpdateTemplateAccess,
   } = useOrganizationUsers(env);
 
   const handleOpenBetaModal = () => {
@@ -54,6 +42,10 @@ const Dashboard = ({ env }) => {
 
   const toggleBulkUpdateModal = () => {
     setIsBulkUpdateModalOpen((prev) => !prev);
+  };
+
+  const handleManageCustomer = (customerId) => {
+    navigate(`/customers/${customerId}`);
   };
 
   const handleBulkUpdateTemplates = useCallback(
@@ -125,9 +117,7 @@ const Dashboard = ({ env }) => {
       <div className="max-w-8xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg p-6">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Organization Users
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900">Customers</h1>
             <div className="flex items-center gap-4">
               {env === "prod" && (
                 <button
@@ -179,35 +169,14 @@ const Dashboard = ({ env }) => {
           ) : (
             <UsersTable
               users={filteredUsers}
-              handleDelete={handleDelete}
               selectedOrgIds={selectedOrgIds}
               isAnyModalOpen={isAnyModalOpen}
-              handleOpenModal={handleOpenModal}
               setSelectedOrgIds={setSelectedOrgIds}
-              handleImpersonateUser={handleImpersonateUser}
-              handleOpenTemplateModal={handleOpenTemplateModal}
+              handleManageCustomer={handleManageCustomer}
             />
           )}
         </div>
       </div>
-
-      <TrialDateModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        newTrialDate={newTrialDate}
-        setNewTrialDate={setNewTrialDate}
-        onUpdate={handleUpdateTrialDate}
-        isUpdating={isUpdating}
-      />
-
-      <TemplateAccessModal
-        org={selectedOrganization}
-        isOpen={isTemplateModalOpen}
-        onClose={handleCloseTemplateModal}
-        onSave={handleUpdateTemplateAccess}
-        ownerId={selectedOrganization?.owner.id}
-        currentTemplates={selectedOrganization?.skeletons}
-      />
 
       <BulkTemplateUpdateModal
         orgs={users}
@@ -221,56 +190,6 @@ const Dashboard = ({ env }) => {
         env={env}
         isOpen={isBetaModalOpen}
         onClose={handleCloseBetaModal}
-      />
-
-      <Tooltip
-        id="impersonate-tooltip"
-        place="top"
-        style={{
-          backgroundColor: "#1F2937",
-          color: "white",
-          borderRadius: "4px",
-          padding: "4px 8px",
-          fontSize: "12px",
-          zIndex: 200,
-        }}
-      />
-
-      <Tooltip
-        id="change-trial-tooltip"
-        place="top"
-        style={{
-          backgroundColor: "#1F2937",
-          color: "white",
-          borderRadius: "4px",
-          padding: "4px 8px",
-          fontSize: "12px",
-          zIndex: 200,
-        }}
-      />
-      <Tooltip
-        id="delete-tooltip"
-        place="top"
-        style={{
-          backgroundColor: "#1F2937",
-          color: "white",
-          borderRadius: "4px",
-          padding: "4px 8px",
-          fontSize: "12px",
-          zIndex: 200,
-        }}
-      />
-      <Tooltip
-        id="bouquet-tooltip"
-        place="top"
-        style={{
-          backgroundColor: "#1F2937",
-          color: "white",
-          borderRadius: "4px",
-          padding: "4px 8px",
-          fontSize: "12px",
-          zIndex: 200,
-        }}
       />
     </div>
   );

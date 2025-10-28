@@ -9,6 +9,7 @@ const UsersTable = ({
   isAnyModalOpen,
   selectedOrgIds,
   setSelectedOrgIds,
+  handleManageCustomer,
 }) => {
   const handleSelectAll = (checked) => {
     if (checked) {
@@ -205,7 +206,10 @@ const UsersTable = ({
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 min-w-[150px] sticky right-0 bg-white">
-                  <button className="px-3 py-1 text-sm text-gray-600 border border-gray-600 bg-gray-200 rounded-md outline-none focus:outline-none">
+                  <button
+                    onClick={() => handleManageCustomer(org.id)}
+                    className="px-3 py-1 text-sm text-gray-600 border border-gray-600 bg-gray-100 rounded-md outline-none focus:outline-none"
+                  >
                     Manage
                   </button>
                 </td>
@@ -220,10 +224,10 @@ const UsersTable = ({
 
 UsersTable.propTypes = {
   users: PropTypes.array.isRequired,
-  onSelectionChange: PropTypes.func,
-  handleDelete: PropTypes.func.isRequired,
-  handleOpenModal: PropTypes.func.isRequired,
-  handleOpenTemplateModal: PropTypes.func.isRequired,
+  isAnyModalOpen: PropTypes.bool.isRequired,
+  setSelectedOrgIds: PropTypes.func.isRequired,
+  handleManageCustomer: PropTypes.func.isRequired,
+  selectedOrgIds: PropTypes.instanceOf(Set).isRequired,
 };
 
 export default UsersTable;

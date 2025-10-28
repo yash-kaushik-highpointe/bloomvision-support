@@ -1,6 +1,6 @@
 export const ROUTES = {
   LOGIN: "/",
-  ORGANISATIONS: "/organisations",
+  ORGANISATIONS: "/customers",
 };
 
 export const AUTH = {

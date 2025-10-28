@@ -50,9 +50,7 @@ const Layout = ({ handleEnvChange }) => {
   const location = useLocation();
   const [isToggleOn, setIsToggleOn] = useState(false);
 
-  const isOrgActive =
-    location.pathname === "/organisations" ||
-    location.pathname === "/organization";
+  const isOrgActive = location.pathname === "/customers";
   const isGalleryActive = location.pathname === "/gallery";
   const isTemplateActive = location.pathname === "/template";
 
@@ -72,7 +70,7 @@ const Layout = ({ handleEnvChange }) => {
       <nav className="bg-[#e3e6d3] border-b border-gray-200 px-4 sm:px-6 py-3 w-full max-w-[500px] mx-auto rounded-b-[15px]">
         <div className="flex justify-center items-center gap-x-8">
           <Link
-            to="/organisations"
+            to="/customers"
             className={`flex items-center gap-x-2 px-3 py-2 rounded-lg transition-colors font-medium no-underline hover:no-underline hover:text-[#7a7a3a] focus:outline-none focus:ring-0 ${
               isOrgActive
                 ? "bg-white text-[#7a7a3a] shadow font-semibold"
