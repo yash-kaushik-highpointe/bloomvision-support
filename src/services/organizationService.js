@@ -33,12 +33,11 @@ const OrganizationService = (baseURL) => ({
       throw error;
     }
   },
-  updateTemplateAccess: async (ownerId, skeletons, trial_ends) => {
+  updateTemplateAccess: async (organizationId, skeletons) => {
     try {
       const response = await api.post(`${baseURL}users/update/trial/`, {
         skeletons,
-        trial_ends,
-        owner_id: ownerId,
+        organisation_id: organizationId,
       });
       return response.data;
     } catch (error) {

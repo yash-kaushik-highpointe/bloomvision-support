@@ -2,14 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import templateData from "../data/template.json";
 
-const TemplateAccessModal = ({
-  org,
-  isOpen,
-  onClose,
-  onSave,
-  ownerId,
-  currentTemplates,
-}) => {
+const TemplateAccessModal = ({ isOpen, onClose, onSave, currentTemplates }) => {
   const [selectedSkeletons, setSelectedSkeletons] = useState([]);
   const [expandedCategories, setExpandedCategories] = useState(
     templateData.map((cat) => cat.id)
@@ -43,7 +36,7 @@ const TemplateAccessModal = ({
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await onSave(org, ownerId, selectedSkeletons);
+      await onSave(selectedSkeletons);
       onClose();
     } catch (error) {
       setIsSaving(false);

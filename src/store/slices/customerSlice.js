@@ -27,13 +27,12 @@ export const updateTrialEndDate = createAsyncThunk(
 
 export const updateTemplateAccess = createAsyncThunk(
   "customer/updateTemplateAccess",
-  async ({ env, ownerId, selectedTemplateIds, trialEnds }) => {
-    await OrganizationService(CONFIG[env]).updateTemplateAccess(
-      ownerId,
-      selectedTemplateIds,
-      trialEnds
+  async ({ env, organizationId, selectedTemplateIds }) => {
+    let data = await OrganizationService(CONFIG[env]).updateTemplateAccess(
+      organizationId,
+      selectedTemplateIds
     );
-    return { ownerId, selectedTemplateIds };
+    return { organizationId, data };
   }
 );
 
@@ -114,13 +113,10 @@ const customerSlice = createSlice({
       })
       // Update template access
       .addCase(updateTemplateAccess.fulfilled, (state, action) => {
-        const { ownerId, selectedTemplateIds } = action.payload;
+        const { organizationId, data } = action.payload;
         state.users = state.users.map((org) => {
-          if (org.owner.id === ownerId) {
-            return {
-              ...org,
-              skeletons: selectedTemplateIds,
-            };
+          if (org.id === organizationId) {
+            return data;
           }
           return org;
         });

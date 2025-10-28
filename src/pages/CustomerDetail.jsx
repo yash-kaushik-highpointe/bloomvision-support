@@ -12,19 +12,22 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
 import TrialDateModal from "../components/TrialDateModal";
 import FullScreenLoader from "../components/FullScreenLoader";
 import ImpersonateUserModal from "../components/ImpersonateUserModal";
+import TemplateAccessModal from "../components/TemplateAccessModal";
 
-import { PAYMENT_STATUS } from "../config/constants";
 import { formatDate } from "../utils/helper";
+import { PAYMENT_STATUS } from "../config/constants";
+import { updateTemplateAccess } from "../store/slices/customerSlice";
 import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
 
 export default function CustomerDetail({ env }) {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const { id: customerId } = useParams();
 
   const { users, loading } = useOrganizationUsers(env);
@@ -56,6 +59,21 @@ export default function CustomerDetail({ env }) {
 
   const handleExit = () => {
     navigate("/customers");
+  };
+
+  const handleUpdateTemplateAccess = async (selectedTemplateIds) => {
+    try {
+      await dispatch(
+        updateTemplateAccess({
+          env,
+          selectedTemplateIds,
+          organizationId: customer?.id,
+        })
+      ).unwrap();
+    } catch (err) {
+      console.error("Failed to update template access:", err);
+      toast.error("Failed to update template access");
+    }
   };
 
   if (loading) {
@@ -265,7 +283,10 @@ export default function CustomerDetail({ env }) {
 
             <div className="space-y-3">
               {/* Template Access */}
-              <button className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors">
+              <button
+                className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors"
+                onClick={() => setOpenModal("TEMPLATE_ACCESS")}
+              >
                 <div className="flex items-center">
                   <Info className="h-5 w-5 text-gray-400 mr-3" />
                   <span className="text-gray-900">Template Access</span>
@@ -279,8 +300,10 @@ export default function CustomerDetail({ env }) {
                 onClick={() => setOpenModal("IMPERSONATE_USER")}
               >
                 <div className="flex items-center">
-                  <User className="h-5 w-5 text-gray-400 mr-3" />
-                  <span className="text-gray-900">Impersonate User</span>
+                  <User className="h-5 w-5 text-blue-500 mr-3" />
+                  <span className="text-gray-900 font-semibold">
+                    Impersonate User
+                  </span>
                 </div>
                 <ChevronRight className="h-4 w-4 text-gray-400" />
               </button>
@@ -313,6 +336,15 @@ export default function CustomerDetail({ env }) {
           env={env}
           onClose={handleCloseModal}
           email={customer?.owner?.email}
+        />
+      )}
+
+      {openModal === "TEMPLATE_ACCESS" && (
+        <TemplateAccessModal
+          onClose={handleCloseModal}
+          onSave={handleUpdateTemplateAccess}
+          currentTemplates={customer?.skeletons}
+          isOpen={openModal === "TEMPLATE_ACCESS"}
         />
       )}
     </div>
