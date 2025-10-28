@@ -78,7 +78,7 @@ const Layout = ({ handleEnvChange }) => {
             }`}
           >
             <img src={teamIcon} alt="Organization" className="w-5 h-5" />
-            <span className="hover:no-underline">Organisations</span>
+            <span className="hover:no-underline">Customers</span>
           </Link>
           <Link
             to="/gallery"

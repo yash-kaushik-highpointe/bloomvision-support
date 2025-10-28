@@ -16,6 +16,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import TrialDateModal from "../components/TrialDateModal";
 import FullScreenLoader from "../components/FullScreenLoader";
+import ImpersonateUserModal from "../components/ImpersonateUserModal";
 
 import { PAYMENT_STATUS } from "../config/constants";
 import { formatDate } from "../utils/helper";
@@ -269,16 +270,19 @@ export default function CustomerDetail({ env }) {
                   <Info className="h-5 w-5 text-gray-400 mr-3" />
                   <span className="text-gray-900">Template Access</span>
                 </div>
-                <span className="text-gray-400">→</span>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
               </button>
 
               {/* Impersonate User */}
-              <button className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors">
+              <button
+                className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors focus:outline-none focus:ring-0"
+                onClick={() => setOpenModal("IMPERSONATE_USER")}
+              >
                 <div className="flex items-center">
                   <User className="h-5 w-5 text-gray-400 mr-3" />
                   <span className="text-gray-900">Impersonate User</span>
                 </div>
-                <span className="text-gray-400">→</span>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
               </button>
 
               {/* Password Reset */}
@@ -287,7 +291,7 @@ export default function CustomerDetail({ env }) {
                   <Key className="h-5 w-5 text-gray-400 mr-3" />
                   <span className="text-gray-900">Password Reset</span>
                 </div>
-                <span className="text-gray-400">→</span>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
               </button>
             </div>
           </div>
@@ -301,6 +305,14 @@ export default function CustomerDetail({ env }) {
           newTrialDate={newTrialDate}
           organizationId={customer?.id}
           setNewTrialDate={setNewTrialDate}
+        />
+      )}
+
+      {openModal === "IMPERSONATE_USER" && (
+        <ImpersonateUserModal
+          env={env}
+          onClose={handleCloseModal}
+          email={customer?.owner?.email}
         />
       )}
     </div>
