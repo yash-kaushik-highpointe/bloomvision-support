@@ -1,36 +1,29 @@
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState, useMemo, useCallback, useEffect } from "react";
 
 import Dropdown from "../components/Dropdown";
 import UsersTable from "../components/UsersTable";
-import FullScreenLoader from "../components/FullScreenLoader";
 import BetaTestUsersModal from "../components/BetaTestUsersModal";
 import BulkTemplateUpdateModal from "../components/BulkTemplateUpdateModal";
-import OrganizationService from "../services/organizationService";
 
 import { CONFIG } from "../App.jsx";
 import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
 import { PAYMENT_STATUS_OPTIONS } from "../config/constants";
+import { bulkUpdateTemplates } from "../store/slices/customerSlice";
 
 const Dashboard = ({ env }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [selectedOrgIds, setSelectedOrgIds] = useState(new Set());
-  const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
-  const [isBulkUpdateModalOpen, setIsBulkUpdateModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
+  const [selectedOrgIds, setSelectedOrgIds] = useState(new Set());
+  const [isBulkUpdateModalOpen, setIsBulkUpdateModalOpen] = useState(false);
 
-  const {
-    users,
-    error,
-    loading,
-    setUsers,
-    isDeleting,
-    isModalOpen,
-    isTemplateModalOpen,
-  } = useOrganizationUsers(env);
+  const { users, error, loading } = useOrganizationUsers(env);
 
   const handleOpenBetaModal = () => {
     setIsBetaModalOpen(true);
@@ -51,28 +44,22 @@ const Dashboard = ({ env }) => {
   const handleBulkUpdateTemplates = useCallback(
     async (selectedSkeletons) => {
       try {
-        await OrganizationService(CONFIG[env]).bulkUpdateTemplates({
-          organisation_ids: Array.from(selectedOrgIds),
-          template_ids: selectedSkeletons,
-        });
-        setUsers((prev) =>
-          prev.map((org) => {
-            if (selectedOrgIds.has(org.id)) {
-              return {
-                ...org,
-                skeletons: selectedSkeletons,
-              };
-            }
-            return org;
+        await dispatch(
+          bulkUpdateTemplates({
+            env,
+            config: CONFIG,
+            organisationIds: Array.from(selectedOrgIds),
+            templateIds: selectedSkeletons,
           })
-        );
+        ).unwrap();
+
         setSelectedOrgIds(new Set());
       } catch (error) {
         console.error(error);
         toast.error("Failed to bulk update templates");
       }
     },
-    [selectedOrgIds, setUsers]
+    [selectedOrgIds, dispatch, env]
   );
 
   const filteredUsers = useMemo(() => {
@@ -92,18 +79,8 @@ const Dashboard = ({ env }) => {
   }, [users, searchTerm, statusFilter]);
 
   const isAnyModalOpen = useMemo(() => {
-    return (
-      isModalOpen ||
-      isTemplateModalOpen ||
-      isBetaModalOpen ||
-      isBulkUpdateModalOpen
-    );
-  }, [
-    isModalOpen,
-    isTemplateModalOpen,
-    isBetaModalOpen,
-    isBulkUpdateModalOpen,
-  ]);
+    return isBetaModalOpen || isBulkUpdateModalOpen;
+  }, [isBetaModalOpen, isBulkUpdateModalOpen]);
 
   useEffect(() => {
     setSelectedOrgIds(new Set());
@@ -113,7 +90,6 @@ const Dashboard = ({ env }) => {
 
   return (
     <div className="h-full">
-      {isDeleting && <FullScreenLoader />}
       <div className="max-w-8xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg p-6">
           <div className="flex justify-between items-center mb-6">

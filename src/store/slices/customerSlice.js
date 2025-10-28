@@ -46,6 +46,17 @@ export const impersonateUser = createAsyncThunk(
   }
 );
 
+export const bulkUpdateTemplates = createAsyncThunk(
+  "customer/bulkUpdateTemplates",
+  async ({ env, config, organisationIds, templateIds }) => {
+    await OrganizationService(config[env]).bulkUpdateTemplates({
+      organisation_ids: organisationIds,
+      template_ids: templateIds,
+    });
+    return { organisationIds, templateIds };
+  }
+);
+
 const initialState = {
   users: [],
   loading: false,
@@ -121,6 +132,22 @@ const customerSlice = createSlice({
       })
       // Impersonate user
       .addCase(impersonateUser.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      // Bulk update templates
+      .addCase(bulkUpdateTemplates.fulfilled, (state, action) => {
+        const { organisationIds, templateIds } = action.payload;
+        state.users = state.users.map((org) => {
+          if (organisationIds.includes(org.id)) {
+            return {
+              ...org,
+              skeletons: templateIds,
+            };
+          }
+          return org;
+        });
+      })
+      .addCase(bulkUpdateTemplates.rejected, (state, action) => {
         state.error = action.error.message;
       });
   },
