@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import OrganizationService from "../../services/organizationService";
+import { CONFIG } from "../../App";
 
 // Async thunks
 export const fetchOrganizationUsers = createAsyncThunk(
   "customer/fetchOrganizationUsers",
-  async ({ env, config }) => {
+  async ({ env }) => {
     const response = await OrganizationService(
-      config[env]
+      CONFIG[env]
     ).getOrganizationUsers();
     return response;
   }
@@ -14,20 +15,20 @@ export const fetchOrganizationUsers = createAsyncThunk(
 
 export const updateTrialEndDate = createAsyncThunk(
   "customer/updateTrialEndDate",
-  async ({ env, config, ownerId, newTrialDate, skeletons }) => {
-    await OrganizationService(config[env]).updateTrialEndDate(
-      ownerId,
-      newTrialDate,
-      skeletons
+  async ({ env, organizationId, newTrialDate, callback }) => {
+    let data = await OrganizationService(CONFIG[env]).updateTrialEndDate(
+      organizationId,
+      newTrialDate
     );
-    return { ownerId, newTrialDate };
+    callback?.();
+    return { data, organizationId };
   }
 );
 
 export const updateTemplateAccess = createAsyncThunk(
   "customer/updateTemplateAccess",
-  async ({ env, config, ownerId, selectedTemplateIds, trialEnds }) => {
-    await OrganizationService(config[env]).updateTemplateAccess(
+  async ({ env, ownerId, selectedTemplateIds, trialEnds }) => {
+    await OrganizationService(CONFIG[env]).updateTemplateAccess(
       ownerId,
       selectedTemplateIds,
       trialEnds
@@ -38,8 +39,8 @@ export const updateTemplateAccess = createAsyncThunk(
 
 export const impersonateUser = createAsyncThunk(
   "customer/impersonateUser",
-  async ({ env, config, email }) => {
-    const response = await OrganizationService(config[env]).impersonateUser(
+  async ({ env, email }) => {
+    const response = await OrganizationService(CONFIG[env]).impersonateUser(
       email
     );
     return response;
@@ -48,8 +49,8 @@ export const impersonateUser = createAsyncThunk(
 
 export const bulkUpdateTemplates = createAsyncThunk(
   "customer/bulkUpdateTemplates",
-  async ({ env, config, organisationIds, templateIds }) => {
-    await OrganizationService(config[env]).bulkUpdateTemplates({
+  async ({ env, organisationIds, templateIds }) => {
+    await OrganizationService(CONFIG[env]).bulkUpdateTemplates({
       organisation_ids: organisationIds,
       template_ids: templateIds,
     });
@@ -99,13 +100,10 @@ const customerSlice = createSlice({
       })
       .addCase(updateTrialEndDate.fulfilled, (state, action) => {
         state.isUpdating = false;
-        const { ownerId, newTrialDate } = action.payload;
+        const { organizationId, data } = action.payload;
         state.users = state.users.map((org) => {
-          if (org.owner.id === ownerId) {
-            return {
-              ...org,
-              trial_ends: newTrialDate,
-            };
+          if (org.id === organizationId) {
+            return data;
           }
           return org;
         });

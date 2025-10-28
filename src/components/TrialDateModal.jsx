@@ -1,14 +1,31 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { updateTrialEndDate } from "../store/slices/customerSlice";
 
 const TrialDateModal = ({
-  isOpen,
+  env,
+  organizationId,
   onClose,
-  onUpdate,
-  isUpdating,
   newTrialDate,
   setNewTrialDate,
 }) => {
-  if (!isOpen) return null;
+  const dispatch = useDispatch();
+
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const handleUpdate = async () => {
+    setIsUpdating(true);
+    dispatch(
+      updateTrialEndDate({
+        env,
+        organizationId,
+        newTrialDate,
+        callback: onClose,
+      })
+    );
+  };
 
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
@@ -34,7 +51,7 @@ const TrialDateModal = ({
             Cancel
           </button>
           <button
-            onClick={onUpdate}
+            onClick={handleUpdate}
             disabled={isUpdating}
             className="px-4 py-2 bg-[#7a7a3a] text-white rounded hover:bg-[#7a7a3a] disabled:opacity-50 flex items-center gap-2"
           >
@@ -47,12 +64,11 @@ const TrialDateModal = ({
 };
 
 TrialDateModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
+  env: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   newTrialDate: PropTypes.string.isRequired,
   setNewTrialDate: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  isUpdating: PropTypes.bool.isRequired,
+  organizationId: PropTypes.string.isRequired,
 };
 
 export default TrialDateModal;

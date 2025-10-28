@@ -10,12 +10,11 @@ const OrganizationService = (baseURL) => ({
       throw error;
     }
   },
-  updateTrialEndDate: async (ownerId, newDate, skeletons) => {
+  updateTrialEndDate: async (organizationId, newDate) => {
     try {
       const response = await api.post(`${baseURL}users/update/trial/`, {
-        skeletons,
+        organisation_id: organizationId,
         trial_ends: newDate,
-        owner_id: ownerId,
       });
       return response.data;
     } catch (error) {
