@@ -10,15 +10,19 @@ import {
   Calendar,
   Lock,
   ChevronRight,
+  ReceiptText,
 } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
 import TrialDateModal from "../components/TrialDateModal";
+import ReactivateModal from "../components/ReactivateModal";
 import FullScreenLoader from "../components/FullScreenLoader";
-import ImpersonateUserModal from "../components/ImpersonateUserModal";
+import PasswordResetModal from "../components/PasswordResetModal";
+import SuspendAccountModal from "../components/SuspendAccountModal";
 import TemplateAccessModal from "../components/TemplateAccessModal";
+import ImpersonateUserModal from "../components/ImpersonateUserModal";
 
 import { formatDate } from "../utils/helper";
 import { PAYMENT_STATUS } from "../config/constants";
@@ -43,6 +47,13 @@ export default function CustomerDetail({ env }) {
   const subscriptionEndDate = customer?.subscription?.period_end;
   const subscriptionStartDate = customer?.subscription?.period_start;
   const address = customer?.subscription?.address;
+  const isSuspensionAllowed =
+    customer?.status === "Active" || customer?.status === "Overdue";
+  const isSuspended = customer?.status === "Suspended";
+  const isImpersonateAllowed =
+    customer?.status === "Active" ||
+    customer?.status === "Trial" ||
+    customer?.status === "Overdue";
 
   const handleOpenTrailModal = () => {
     const formattedDate = customer?.trial_ends
@@ -74,6 +85,15 @@ export default function CustomerDetail({ env }) {
       console.error("Failed to update template access:", err);
       toast.error("Failed to update template access");
     }
+  };
+
+  const handleViewInStripe = () => {
+    window.open(
+      `https://dashboard.stripe.com/${env === "dev" ? "test/" : ""}customers/${
+        customer?.subscription?.customer_id
+      }`,
+      "_blank"
+    );
   };
 
   if (loading) {
@@ -237,42 +257,83 @@ export default function CustomerDetail({ env }) {
 
           <div className="space-y-3">
             {/* View in Stripe */}
-            <button className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors">
+            <button
+              onClick={handleViewInStripe}
+              className="w-full flex items-center justify-between p-3 border border-gray-300 text-left hover:bg-gray-50 rounded-md transition-colors focus:outline-none focus:ring-0"
+            >
               <div className="flex items-center">
-                <ExternalLink className="h-5 w-5 text-gray-400 mr-3" />
-                <span className="text-gray-900">View in Stripe</span>
+                <ReceiptText className="h-4 w-4 text-blue-500 mr-3" />
+                <span className="text-gray-900 font-semibold">
+                  View in Stripe
+                </span>
               </div>
               <ExternalLink className="h-4 w-4 text-gray-400" />
             </button>
 
             {/* Add Credit */}
-            <button className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors">
+            <button
+              disabled
+              className="w-full flex items-center justify-between border border-gray-100 p-3 text-left cursor-not-allowed bg-gray-100 rounded-md transition-colors focus:outline-none focus:ring-0"
+            >
               <div className="flex items-center">
-                <DollarSign className="h-5 w-5 text-gray-400 mr-3" />
-                <span className="text-gray-900">Add Credit</span>
+                <DollarSign className="h-4 w-4 text-gray-300 mr-3" />
+                <span className="text-gray-400 font-semibold">Add Credit</span>
               </div>
-              <span className="text-gray-400">→</span>
             </button>
 
             {/* Suspend Account */}
-            <button className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors">
-              <div className="flex items-center">
-                <Pause className="h-5 w-5 text-red-500 mr-3" />
-                <span className="text-gray-900">Suspend Account</span>
-              </div>
-              <span className="text-gray-400">→</span>
-            </button>
+            {isSuspensionAllowed ? (
+              <button
+                onClick={() => setOpenModal("SUSPEND_ACCOUNT")}
+                className="w-full flex items-center border border-gray-300 justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors focus:outline-none focus:ring-0"
+              >
+                <div className="flex items-center">
+                  <Pause className="h-4 w-4 text-red-500 mr-3" />
+                  <span className="text-gray-900 font-semibold">
+                    Suspend Account
+                  </span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
+              </button>
+            ) : (
+              <button className="w-full flex flex-col p-3 text-left bg-gray-100 cursor-not-allowed rounded-md transition-colors focus:outline-none focus:ring-0">
+                <div className="flex items-center">
+                  <Pause className="h-4 w-4 text-gray-300 mr-3" />
+                  <span className="text-gray-400 font-semibold">
+                    Suspend Account
+                  </span>
+                </div>
+                <p className="text-xs text-gray-400 ml-7">
+                  Only available for active accounts
+                </p>
+              </button>
+            )}
 
             {/* Reactivate Account */}
-            <div className="w-full p-3 text-left rounded-md bg-gray-50">
-              <div className="flex items-center">
-                <RotateCcw className="h-5 w-5 text-gray-300 mr-3" />
-                <span className="text-gray-400">Reactivate Account</span>
+            {isSuspended ? (
+              <button
+                onClick={() => setOpenModal("REACTIVATE_ACCOUNT")}
+                className="w-full flex items-center justify-between p-3 text-left rounded-md border border-gray-300 hover:bg-gray-50 rounded-md transition-colors focus:outline-none focus:ring-0"
+              >
+                <div className="flex items-center">
+                  <RotateCcw className="h-5 w-5 text-green-500 mr-3" />
+                  <span className="text-gray-900 font-semibold">
+                    Reactivate Account
+                  </span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
+              </button>
+            ) : (
+              <div className="w-full p-3 text-left rounded-md bg-gray-100 cursor-not-allowed">
+                <div className="flex items-center">
+                  <RotateCcw className="h-5 w-5 text-gray-300 mr-3" />
+                  <span className="text-gray-400">Reactivate Account</span>
+                </div>
+                <p className="text-xs text-gray-400 ml-8">
+                  Only available for suspended accounts
+                </p>
               </div>
-              <p className="text-xs text-gray-400 mt-1 ml-8">
-                Only available for suspended accounts
-              </p>
-            </div>
+            )}
           </div>
 
           {/* Support Section */}
@@ -288,31 +349,49 @@ export default function CustomerDetail({ env }) {
                 onClick={() => setOpenModal("TEMPLATE_ACCESS")}
               >
                 <div className="flex items-center">
-                  <Info className="h-5 w-5 text-gray-400 mr-3" />
-                  <span className="text-gray-900">Template Access</span>
+                  <Info className="h-5 w-5 text-blue-500 mr-3" />
+                  <span className="text-gray-900 font-semibold">
+                    Template Access
+                  </span>
                 </div>
                 <ChevronRight className="h-4 w-4 text-gray-400" />
               </button>
 
               {/* Impersonate User */}
               <button
-                className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors focus:outline-none focus:ring-0"
+                disabled={!isImpersonateAllowed}
+                className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors focus:outline-none focus:ring-0 disabled:cursor-not-allowed disabled:bg-gray-100"
                 onClick={() => setOpenModal("IMPERSONATE_USER")}
               >
                 <div className="flex items-center">
-                  <User className="h-5 w-5 text-blue-500 mr-3" />
-                  <span className="text-gray-900 font-semibold">
+                  <User
+                    className={`h-5 w-5 ${
+                      isImpersonateAllowed ? "text-blue-500" : "text-gray-400"
+                    } mr-3`}
+                  />
+                  <span
+                    className={`font-semibold ${
+                      isImpersonateAllowed ? "text-gray-900" : "text-gray-400"
+                    }`}
+                  >
                     Impersonate User
                   </span>
                 </div>
-                <ChevronRight className="h-4 w-4 text-gray-400" />
+                {isImpersonateAllowed && (
+                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                )}
               </button>
 
               {/* Password Reset */}
-              <button className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors">
+              <button
+                className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-md transition-colors"
+                onClick={() => setOpenModal("PASSWORD_RESET")}
+              >
                 <div className="flex items-center">
-                  <Key className="h-5 w-5 text-gray-400 mr-3" />
-                  <span className="text-gray-900">Password Reset</span>
+                  <Key className="h-5 w-5 text-blue-500 mr-3" />
+                  <span className="text-gray-900 font-semibold">
+                    Password Reset
+                  </span>
                 </div>
                 <ChevronRight className="h-4 w-4 text-gray-400" />
               </button>
@@ -345,6 +424,26 @@ export default function CustomerDetail({ env }) {
           onSave={handleUpdateTemplateAccess}
           currentTemplates={customer?.skeletons}
           isOpen={openModal === "TEMPLATE_ACCESS"}
+        />
+      )}
+
+      {openModal === "PASSWORD_RESET" && (
+        <PasswordResetModal onClose={handleCloseModal} />
+      )}
+
+      {openModal === "SUSPEND_ACCOUNT" && (
+        <SuspendAccountModal
+          env={env}
+          customerId={customer?.id}
+          onClose={handleCloseModal}
+        />
+      )}
+
+      {openModal === "REACTIVATE_ACCOUNT" && (
+        <ReactivateModal
+          env={env}
+          customerId={customer?.id}
+          onClose={handleCloseModal}
         />
       )}
     </div>

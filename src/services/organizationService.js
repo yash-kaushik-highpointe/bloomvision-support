@@ -68,6 +68,32 @@ const OrganizationService = (baseURL) => ({
       throw error;
     }
   },
+  suspendAccount: async (organizationId, reason, notes) => {
+    try {
+      const response = await api.post(
+        `${baseURL}organisations/${organizationId}/suspend/`,
+        {
+          reason,
+          notes,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error suspending account:", error);
+      throw error;
+    }
+  },
+  reactivateAccount: async (organizationId) => {
+    try {
+      const response = await api.post(
+        `${baseURL}organisations/${organizationId}/reactivate/`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error reactivating account:", error);
+      throw error;
+    }
+  },
 });
 
 export default OrganizationService;

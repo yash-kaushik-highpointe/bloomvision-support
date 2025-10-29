@@ -57,6 +57,28 @@ export const bulkUpdateTemplates = createAsyncThunk(
   }
 );
 
+export const suspendAccount = createAsyncThunk(
+  "customer/suspendAccount",
+  async ({ env, organizationId, reason, additionalNotes }) => {
+    let data = await OrganizationService(CONFIG[env]).suspendAccount(
+      organizationId,
+      reason,
+      additionalNotes
+    );
+    return { organizationId, data };
+  }
+);
+
+export const reactivateAccount = createAsyncThunk(
+  "customer/reactivateAccount",
+  async ({ env, organizationId }) => {
+    let data = await OrganizationService(CONFIG[env]).reactivateAccount(
+      organizationId
+    );
+    return { organizationId, data };
+  }
+);
+
 const initialState = {
   users: [],
   loading: false,
@@ -142,6 +164,32 @@ const customerSlice = createSlice({
         });
       })
       .addCase(bulkUpdateTemplates.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      // Suspend account
+      .addCase(suspendAccount.fulfilled, (state, action) => {
+        const { organizationId, data } = action.payload;
+        state.users = state.users.map((org) => {
+          if (org.id === organizationId) {
+            return data;
+          }
+          return org;
+        });
+      })
+      .addCase(suspendAccount.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      // Reactivate account
+      .addCase(reactivateAccount.fulfilled, (state, action) => {
+        const { organizationId, data } = action.payload;
+        state.users = state.users.map((org) => {
+          if (org.id === organizationId) {
+            return data;
+          }
+          return org;
+        });
+      })
+      .addCase(reactivateAccount.rejected, (state, action) => {
         state.error = action.error.message;
       });
   },
