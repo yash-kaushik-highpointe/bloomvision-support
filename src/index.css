@@ -23,3 +23,14 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* removed legacy react-datepicker styles */
+
+/* DayPicker: remove focus outlines */
+.rdp-day:focus,
+.rdp-nav button:focus,
+.rdp-nav button:focus-visible,
+.rdp-caption_dropdown:focus-visible {
+  outline: none;
+  box-shadow: none;
+}

@@ -24,8 +24,8 @@ import SuspendAccountModal from "../components/SuspendAccountModal";
 import TemplateAccessModal from "../components/TemplateAccessModal";
 import ImpersonateUserModal from "../components/ImpersonateUserModal";
 
-import { formatDate } from "../utils/helper";
 import { PAYMENT_STATUS } from "../config/constants";
+import { formatDate, getTrialExpiryInDays } from "../utils/helper";
 import { updateTemplateAccess } from "../store/slices/customerSlice";
 import { useOrganizationUsers } from "../hooks/useOrganizationUsers";
 
@@ -95,6 +95,8 @@ export default function CustomerDetail({ env }) {
       "_blank"
     );
   };
+
+  const trialExpiryInDays = getTrialExpiryInDays(customer?.trial_ends);
 
   if (loading) {
     return <FullScreenLoader />;
@@ -201,7 +203,11 @@ export default function CustomerDetail({ env }) {
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
                   {customer.status === "Trial" ? (
-                    <span>Trail Ends: {formatDate(customer?.trial_ends)}</span>
+                    <span>
+                      Trail Ends: {formatDate(customer?.trial_ends)} - (
+                      {trialExpiryInDays}{" "}
+                      {trialExpiryInDays === 1 ? "day" : "days"} left)
+                    </span>
                   ) : (
                     <span>
                       {subscriptionEndDate ? "Subscription" : "Trial"} Ended on{" "}

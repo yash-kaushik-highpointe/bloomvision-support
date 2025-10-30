@@ -236,3 +236,16 @@ export const getFlowerNameFromSrc = (string) => {
   flowerNameParts.pop();
   return flowerNameParts.join("_");
 };
+
+export const getTrialExpiryInDays = (trialEnds) => {
+  if (!trialEnds) return;
+
+  const trialEndsDate = new Date(trialEnds);
+  const currentDate = new Date();
+
+  const timeDifference = trialEndsDate.getTime() - currentDate.getTime();
+  const millisecondsInADay = 1000 * 60 * 60 * 24;
+  const daysDifference = timeDifference / millisecondsInADay;
+
+  return daysDifference > 0 ? Math.ceil(daysDifference) : 0;
+};

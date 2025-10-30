@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { parse } from "date-fns";
 import { useDispatch } from "react-redux";
+import DatePicker from "./DatePicker";
 
 import { updateTrialEndDate } from "../store/slices/customerSlice";
 
@@ -35,12 +37,11 @@ const TrialDateModal = ({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             New Trial End Date
           </label>
-          <input
-            type="date"
+          <DatePicker
             value={newTrialDate}
-            onChange={(e) => setNewTrialDate(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            min={new Date().toISOString().split("T")[0]}
+            onChange={setNewTrialDate}
+            disabledPast
+            toYear={2100}
           />
         </div>
         <div className="flex justify-end space-x-3">
