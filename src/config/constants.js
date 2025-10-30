@@ -129,7 +129,7 @@ export const PAYMENT_STATUS_OPTIONS = [
   { id: "All", label: "All" },
   { id: "Active", label: "Active" },
   { id: "Trial", label: "Trial" },
-  { id: "Payment Issue", label: "Payment Issue" },
+  { id: "Overdue", label: "Overdue" },
   { id: "Suspended", label: "Suspended" },
   { id: "Inactive", label: "Inactive" },
 ];
